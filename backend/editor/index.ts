@@ -21,7 +21,7 @@ app.listen(PORT, () => {
 });
 
 // Initialize routes
-app.get('/', function (req, res) {
+app.get("/", function (req, res) {
   res.send("App is running");
 });
 
