@@ -6,12 +6,12 @@ export default async function getEditorsController(httpRequest: Request) {
   };
 
   try {
-    const notes = await EditorDb.findAll();
+    const editors = await EditorDb.findAll();
     return {
       headers,
       statusCode: 200,
       body: {
-        data: notes,
+        data: editors,
       },
     };
   } catch (err: any) {

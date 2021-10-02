@@ -1,13 +1,13 @@
-import getNoteRules from "./get-note";
-import updateNoteRules from "./update-note";
-import createNoteRules from "./create-note";
-import deleteNoteRules from "./delete-note";
+import getEditorRules from "./get-editor";
+import updateEditorRules from "./update-editor";
+import createEditorRules from "./create-editor";
+import deleteEditorRules from "./delete-editor";
 
 export default Object.freeze({
-  getNoteRules,
-  createNoteRules,
-  updateNoteRules,
-  deleteNoteRules,
+  getEditorRules,
+  createEditorRules,
+  updateEditorRules,
+  deleteEditorRules,
 });
 
-export { getNoteRules, createNoteRules, updateNoteRules, deleteNoteRules };
+export { getEditorRules, createEditorRules, updateEditorRules, deleteEditorRules };
