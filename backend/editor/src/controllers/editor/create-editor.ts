@@ -1,22 +1,20 @@
 import _ from "lodash";
 
 import Editor from "../../models/interfaces/editor";
-import { editorDb } from "../../data-access";
+import { editorService } from "../../services";
 
 /**
  * @description Create new editor
  * @function createEditorController
  */
-export default async function createEditorController(
-  httpRequest: Request & { context: { validated: Partial<Editor> } },
-) {
+async function createEditorController(httpRequest: Request & { context: { validated: Partial<Editor> } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
     const editorDetails: Editor = _.get(httpRequest, "context.validated");
-    const created_editor = await editorDb.insert(editorDetails);
+    const created_editor = await editorService.insert(editorDetails);
     if (!created_editor) {
       throw new Error(`Editor was not created.`);
     }
@@ -38,3 +36,5 @@ export default async function createEditorController(
     };
   }
 }
+
+export default createEditorController;

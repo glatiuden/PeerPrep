@@ -1,12 +1,12 @@
-import { editorDb } from "../../data-access";
+import { editorService } from "../../services";
 
-export default async function getEditorsController(httpRequest: Request) {
+async function getEditorsController(httpRequest: Request) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const editors = await editorDb.findAll();
+    const editors = await editorService.findAll();
     return {
       headers,
       statusCode: 200,
@@ -24,3 +24,5 @@ export default async function getEditorsController(httpRequest: Request) {
     };
   }
 }
+
+export default getEditorsController;

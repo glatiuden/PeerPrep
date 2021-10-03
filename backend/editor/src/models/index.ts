@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import editorSchema from "./schemas/editor";
 import IEditor from "./interfaces/editor";
 
-const EditorDbModel = mongoose.model<IEditor & mongoose.Document>("Editor", editorSchema);
+const editorDbModel = mongoose.model<IEditor & mongoose.Document>("Editor", editorSchema);
 
-export default Object.freeze({ EditorDbModel });
-export { EditorDbModel };
+export default Object.freeze({ editorDbModel });
+export { editorDbModel };

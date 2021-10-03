@@ -2,7 +2,11 @@ import mongoose from "mongoose";
 
 import IEditor from "../models/interfaces/editor";
 
-function makeEditorDb({ editorDbModel }: { editorDbModel: mongoose.Model<IEditor & mongoose.Document> }) {
+export default function makeEditorService({
+  editorDbModel,
+}: {
+  editorDbModel: mongoose.Model<IEditor & mongoose.Document>;
+}) {
   return new (class MongooseEditorDb {
     async insert(insertPayload: Partial<IEditor>): Promise<IEditor | null> {
       const result = await editorDbModel.create([insertPayload]);
@@ -53,5 +57,3 @@ function makeEditorDb({ editorDbModel }: { editorDbModel: mongoose.Model<IEditor
     }
   })();
 }
-
-export default makeEditorDb;
