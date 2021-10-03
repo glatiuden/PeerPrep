@@ -23,7 +23,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ["@/assets/css/main.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ["~/plugins/lodash", "~/plugins/axios", "~/plugins/vuetify"],
@@ -49,10 +49,11 @@ export default {
     theme: {
       themes: {
         light: {
-          primary: "#3f51b5",
-          secondary: "#b0bec5",
-          accent: "#8c9eff",
-          error: "#b71c1c",
+          primary: "#1E3888",
+          secondary: "#47A8BD",
+          accent: "#F5E663",
+          error: "#9C3848",
+          warning: "#FFAD69",
         },
       },
     },
@@ -62,7 +63,7 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "http://localhost:3001",
+    baseURL: "http://localhost:3001", // Temporary Hardcoded until ELB is implemented
     prefix: "/api",
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar

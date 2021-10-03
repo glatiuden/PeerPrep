@@ -1,9 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar :clipped-left="clipped" fixed app>
+    <!-- <v-app-bar :clipped-left="clipped" fixed app>
       <v-toolbar-title>PeerPrep</v-toolbar-title>
       <v-spacer></v-spacer>
-    </v-app-bar>
+    </v-app-bar> -->
+    <AppBar />
+
     <v-main>
       <v-container style="max-width: 80rem">
         <Nuxt />
@@ -15,7 +17,12 @@
   </v-app>
 </template>
 <script>
+import AppBar from "@/components/AppBar";
+
 export default {
+  components: {
+    AppBar,
+  },
   data() {
     return {
       clipped: false,
@@ -23,21 +30,21 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          icon: "mdi-apps",
+          title: "Welcome",
+          to: "/",
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
+          icon: "mdi-chart-bubble",
+          title: "Inspire",
+          to: "/inspire",
+        },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js'
-    }
-  }
-}
+      title: "Vuetify.js",
+    };
+  },
+};
 </script>
