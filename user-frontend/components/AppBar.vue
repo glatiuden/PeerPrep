@@ -24,13 +24,7 @@
           content-class="soft-box-shadow"
         >
           <template #activator="{ on, attrs }">
-            <v-tab
-              :class="tab_width_class"
-              v-bind="attrs"
-              :ripple="false"
-              v-on="on"
-              @click="disableSliders"
-            >
+            <v-tab v-bind="attrs" :ripple="false" v-on="on">
               <v-icon small class="mr-1">{{ nav.icon }}</v-icon>
               <span class="black--text font-weight-bold">
                 {{ nav.title }}
@@ -82,13 +76,7 @@
           </v-list>
         </v-menu>
 
-        <v-tab
-          v-else-if="!nav.only_mobile"
-          :key="index"
-          :to="nav.to"
-          exact
-          :class="tab_width_class"
-        >
+        <v-tab v-else-if="!nav.only_mobile" :key="index" :to="nav.to" exact>
           <v-icon small class="mr-1">{{ nav.icon }}</v-icon>
           <span class="black--text font-weight-bold">{{ nav.title }}</span>
         </v-tab>
@@ -104,6 +92,7 @@ export default {
   name: "AppBar",
   data() {
     return {
+      tab: 0,
       clipped: false,
       fixed: false,
       rightDrawer: false,
