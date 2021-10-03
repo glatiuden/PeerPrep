@@ -1,4 +1,4 @@
-import { EditorDb } from "../../data-access";
+import { editorDb } from "../../data-access";
 
 export default async function getEditorsController(httpRequest: Request) {
   const headers = {
@@ -6,7 +6,7 @@ export default async function getEditorsController(httpRequest: Request) {
   };
 
   try {
-    const editors = await EditorDb.findAll();
+    const editors = await editorDb.findAll();
     return {
       headers,
       statusCode: 200,

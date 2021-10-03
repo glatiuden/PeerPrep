@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 import Editor from "../../models/interfaces/editor";
-import { EditorDb } from "../../data-access";
+import { editorDb } from "../../data-access";
 
 /**
  * @description Create new editor
@@ -16,7 +16,7 @@ export default async function createEditorController(
 
   try {
     const editorDetails: Editor = _.get(httpRequest, "context.validated");
-    const created_editor = await EditorDb.insert(editorDetails);
+    const created_editor = await editorDb.insert(editorDetails);
     if (!created_editor) {
       throw new Error(`Editor was not created.`);
     }

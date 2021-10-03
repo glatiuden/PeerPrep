@@ -1,8 +1,8 @@
 import makeEditorDb from "./editor";
 import { EditorDbModel } from "../models";
 
-const EditorDb = makeEditorDb({ editorDbModel: EditorDbModel });
+const editorDb = makeEditorDb({ editorDbModel: EditorDbModel });
 
-export default Object.freeze({ EditorDb });
+export default Object.freeze({ editorDb });
 
-export { EditorDb };
+export { editorDb };
