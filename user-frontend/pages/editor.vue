@@ -59,7 +59,8 @@ export default {
   methods: {
     async save() {
       const mock_data = {
-        match_id: "6159df98a525e1a46872718c",
+        match_id: "6159df98a525e1a46872718d", // Hardcoded temporarily
+        programming_language: this.selected_language,
         content: this.content,
       };
 

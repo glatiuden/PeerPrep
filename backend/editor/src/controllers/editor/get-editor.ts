@@ -2,6 +2,10 @@ import _ from "lodash";
 
 import { editorService } from "../../services";
 
+/**
+ * @description Get editor by ID
+ * @function getEditorController
+ */
 async function getEditorController(httpRequest: Request & { context: { validated: { editor_id: string } } }) {
   const headers = {
     "Content-Type": "application/json",
