@@ -1,22 +1,43 @@
 <template>
   <v-row>
-    <v-col class="text-center">
+    <v-col cols="12">
+      <v-card outlined>
+        <v-card-title
+          >Question: {Question Name}
+          <v-spacer></v-spacer>
+          <b>Time Left: 15:00</b>
+        </v-card-title>
+        <v-card-text> Question Body </v-card-text>
+        <v-card-actions class="pb-3">
+          <v-spacer></v-spacer>
+          <v-btn color="primary" depressed>Hint</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+    <v-col cols="12" lg="8">
       <v-select
         v-model="selected_language"
-        :items="['java', 'c_cpp', 'javascript']"
+        label="Programming Language"
+        :items="programming_languages"
+        outlined
+        dense
+        hide-details="auto"
+        item-text="text"
+        item-value="value"
         @change="editorInit"
       >
       </v-select>
       <AceEditor
         v-model="content"
+        class="my-3"
         :lang="selected_language"
         theme="monokai"
         width="100%"
-        height="300px"
+        height="500px"
         :options="{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
-          fontSize: 14,
+          fontSize: 15,
           highlightActiveLine: true,
           enableSnippets: true,
           showLineNumbers: true,
@@ -35,6 +56,7 @@
         @init="editorInit"
       />
     </v-col>
+    <v-col> Some Chat Interface Here </v-col>
   </v-row>
 </template>
 <script>
@@ -45,28 +67,35 @@ export default {
   data() {
     return {
       selected_language: "javascript",
-      content: "let a = 123;\nlet b = 321;",
+      content: "",
+      programming_languages: [
+        {
+          text: "C++",
+          value: "c_cpp",
+        },
+        {
+          text: "Java",
+          value: "java",
+        },
+        {
+          text: "JavaScript",
+          value: "javascript",
+        },
+      ],
     };
   },
-  // async fetch() {
-  //   const db_value = await this.GET_EDITOR({
-  //     editor_id: "6159e05a1166e6ca0e78bfa1",
-  //   });
-  //   if (db_value) {
-  //     this.content = db_value.content;
-  //   }
-  // },
   methods: {
     async save() {
+      console.log(this.selected_language);
       const mock_data = {
         match_id: "6159df98a525e1a46872718d", // Hardcoded temporarily
         programming_language: this.selected_language,
         content: this.content,
       };
 
-      await this.CREATE_EDITOR({
-        editor: mock_data,
-      });
+      // await this.CREATE_EDITOR({
+      //   editor: mock_data,
+      // });
     },
     editorInit: function () {
       require("brace/ext/language_tools"); //language extension prerequsite...

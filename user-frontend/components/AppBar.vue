@@ -103,6 +103,12 @@ export default {
           to: "/",
         },
         {
+          id: "question",
+          title: "Question",
+          to: "/question",
+        },
+        // Temporarily for Testing
+        {
           id: "editor",
           title: "Editor",
           to: "/editor",
