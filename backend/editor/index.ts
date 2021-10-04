@@ -4,8 +4,9 @@ dotenv.config();
 import cors from "cors";
 import bodyParser from "body-parser";
 import express from "express";
-import router from "./src/routes";
+import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
+import router from "./src/routes";
 
 const app = express();
 const corsOptions = {
@@ -16,6 +17,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(makeLogger());
 
 makeDb();
 const PORT = process.env.port || 3001;

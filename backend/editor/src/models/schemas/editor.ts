@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const editorSchema = new mongoose.Schema(
   {
     match_id: { type: String, trim: true, unique: true },
+    programming_language: { type: String, trim: true, lowercase: true },
     content: { type: String, default: "" },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },

@@ -1,5 +1,9 @@
 import { editorService } from "../../services";
 
+/**
+ * @description Get all editors
+ * @function getEditorsController
+ */
 async function getEditorsController(httpRequest: Request) {
   const headers = {
     "Content-Type": "application/json",
