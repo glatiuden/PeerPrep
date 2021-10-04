@@ -1,7 +1,7 @@
 import { editorService } from "../../services";
 
 /**
- * @description Get all editors
+ * @description Get all editor records
  * @function getEditorsController
  */
 async function getEditorsController(httpRequest: Request) {
