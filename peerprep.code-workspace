@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "user-frontend"
+		},
+		{
+			"path": "admin-frontend"
+		},
+		{
+			"path": "ops"
+		},
+		{
+			"path": "backend"
+		}
+	]
+}
