@@ -1,11 +1,6 @@
 <template>
   <v-app>
-    <!-- <v-app-bar :clipped-left="clipped" fixed app>
-      <v-toolbar-title>PeerPrep</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar> -->
     <AppBar />
-
     <v-main>
       <v-container style="max-width: 80rem">
         <Nuxt />

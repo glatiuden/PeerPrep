@@ -15,108 +15,22 @@
       </v-card>
     </v-col>
     <v-col cols="12" lg="8">
-      <v-select
-        v-model="selected_language"
-        label="Programming Language"
-        :items="programming_languages"
-        outlined
-        dense
-        hide-details="auto"
-        item-text="text"
-        item-value="value"
-        @change="editorInit"
-      >
-      </v-select>
-      <AceEditor
-        v-model="content"
-        class="my-3"
-        :lang="selected_language"
-        theme="monokai"
-        width="100%"
-        height="500px"
-        :options="{
-          enableBasicAutocompletion: true,
-          enableLiveAutocompletion: true,
-          fontSize: 15,
-          highlightActiveLine: true,
-          enableSnippets: true,
-          showLineNumbers: true,
-          tabSize: 2,
-          showPrintMargin: false,
-          showGutter: true,
-        }"
-        :commands="[
-          {
-            name: 'save',
-            bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
-            exec: save,
-            readOnly: true,
-          },
-        ]"
-        @init="editorInit"
-      />
+      <BaseCodeEditor />
     </v-col>
-    <v-col> Some Chat Interface Here </v-col>
+    <v-col> <BaseChat /> </v-col>
   </v-row>
 </template>
 <script>
 import editorMixins from "@/mixins/note";
 
-export default {
-  mixins: [editorMixins],
-  data() {
-    return {
-      selected_language: "javascript",
-      content: "",
-      programming_languages: [
-        {
-          text: "C++",
-          value: "c_cpp",
-        },
-        {
-          text: "Java",
-          value: "java",
-        },
-        {
-          text: "JavaScript",
-          value: "javascript",
-        },
-      ],
-    };
-  },
-  methods: {
-    async save() {
-      console.log(this.selected_language);
-      const mock_data = {
-        match_id: "6159df98a525e1a46872718d", // Hardcoded temporarily
-        programming_language: this.selected_language,
-        content: this.content,
-      };
+import BaseChat from "@/components/Editor/BaseChat";
+import BaseCodeEditor from "@/components/Editor/BaseCodeEditor";
 
-      // await this.CREATE_EDITOR({
-      //   editor: mock_data,
-      // });
-    },
-    editorInit: function () {
-      require("brace/ext/language_tools"); //language extension prerequsite...
-      switch (this.selected_language) {
-        case "java":
-          require("brace/mode/java");
-          require("brace/snippets/java"); //snippet
-          break;
-        case "javascript":
-          require("brace/mode/html");
-          require("brace/mode/javascript"); //language
-          require("brace/snippets/javascript"); //snippet
-          require("brace/mode/less");
-          break;
-        case "c_cpp":
-          require("brace/mode/c_cpp");
-          require("brace/snippets/c_cpp"); //snippet
-          break;
-      }
-      require("brace/theme/monokai");
-    },
+export default {
+  components: {
+    BaseChat,
+    BaseCodeEditor,
   },
+  mixins: [editorMixins],
 };
 </script>

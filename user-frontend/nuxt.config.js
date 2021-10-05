@@ -1,5 +1,3 @@
-import colors from "vuetify/es5/util/colors";
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -31,6 +29,8 @@ export default {
     "~/plugins/axios",
     "~/plugins/vuetify",
     { src: "@/plugins/ace-editor", mode: "client", ssr: false },
+    { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
+    { src: "@/plugins/vue-chat-scroll", mode: "client", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
