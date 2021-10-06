@@ -1,10 +1,15 @@
 import { Schema } from "mongoose";
 
-const editorSchema = new Schema(
+const chatSchema = new Schema(
   {
     match_id: { type: Schema.Types.ObjectId, trim: true, unique: true },
-    programming_language: { type: String, trim: true, lowercase: true },
-    content: { type: String, default: "" },
+    content: [
+      {
+        user_id: { type: Schema.Types.ObjectId, default: "" },
+        message: { type: String, default: "" },
+        time_sent: { type: Date },
+      },
+    ],
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
@@ -18,4 +23,4 @@ const editorSchema = new Schema(
   },
 );
 
-export default editorSchema;
+export default chatSchema;
