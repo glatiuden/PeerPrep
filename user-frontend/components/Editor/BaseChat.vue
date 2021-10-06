@@ -73,27 +73,6 @@ export default {
   margin-bottom: 10px;
 }
 
-.message {
-  border: 1px solid lightblue;
-  border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 15px;
-}
-
-.message-title {
-  font-size: 1rem;
-  display: inline;
-}
-
-.message-text {
-  color: gray;
-  margin-bottom: 0;
-}
-
-.user-typing {
-  height: 1rem;
-}
-
 .receive {
   background-color: #182533;
 }

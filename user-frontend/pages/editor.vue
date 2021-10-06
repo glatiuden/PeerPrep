@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="app-max-width mx-auto">
     <v-col cols="12">
       <v-card outlined>
         <v-card-title

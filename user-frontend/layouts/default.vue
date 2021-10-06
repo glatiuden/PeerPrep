@@ -1,13 +1,15 @@
 <template>
   <v-app>
     <AppBar />
-    <v-main>
-      <v-container style="max-width: 80rem">
-        <Nuxt />
-      </v-container>
+    <v-main class="mt-6">
+      <Nuxt />
     </v-main>
     <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      PeerPrep
+      <v-spacer></v-spacer>
+      <span class="float-right">
+        &copy; {{ new Date().getFullYear() }} All rights reserved.
+      </span>
     </v-footer>
   </v-app>
 </template>

@@ -11,6 +11,8 @@
       :max-width="160"
       contain
       :src="require('~/assets/logo.png')"
+      class="ml-2 clickable"
+      @click="$router.push('/')"
     />
 
     <v-tabs v-model="tab" align-with-title show-arrows class="ml-0 ml-sm-5">
@@ -84,6 +86,14 @@
     </v-tabs>
 
     <v-spacer></v-spacer>
+    <div class="d-flex">
+      <v-btn outlined small :large="!is_mobile" color="primary" class="mr-2">
+        Login
+      </v-btn>
+      <v-btn depressed small :large="!is_mobile" color="primary">
+        Sign up
+      </v-btn>
+    </div>
   </v-app-bar>
 </template>
 
@@ -104,7 +114,7 @@ export default {
         },
         {
           id: "question",
-          title: "Question",
+          title: "Questions",
           to: "/question",
         },
         // Temporarily for Testing
