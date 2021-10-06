@@ -21,7 +21,7 @@
   </v-row>
 </template>
 <script>
-import editorMixins from "@/mixins/note";
+import editorMixins from "~/mixins/editor";
 
 import BaseChat from "@/components/Editor/BaseChat";
 import BaseCodeEditor from "@/components/Editor/BaseCodeEditor";

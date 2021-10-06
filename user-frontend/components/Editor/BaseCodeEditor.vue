@@ -43,7 +43,7 @@
   </div>
 </template>
 <script>
-import editorMixins from "@/mixins/note";
+import editorMixins from "~/mixins/editor";
 
 export default {
   mixins: [editorMixins],
@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     async save() {
-      console.log(this.selected_language);
       const mock_data = {
         match_id: "6159df98a525e1a46872718d", // Hardcoded temporarily
         programming_language: this.selected_language,
