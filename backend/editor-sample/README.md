@@ -43,7 +43,7 @@ Example of `.env`
 NODE_ENV="staging"
 MONGO_USERNAME="admin"
 MONGO_PASSWORD="VMx7kGHQx02xtgl6"
-MONGOD_CLUSTER="cluster0.l5ldk"
+MONGO_CLUSTER="cluster0.l5ldk"
 MONGO_DB="editor-service"
 ```
 
