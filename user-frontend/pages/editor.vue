@@ -17,7 +17,7 @@
     <v-col cols="12" lg="8">
       <BaseCodeEditor />
     </v-col>
-    <v-col> <BaseChat /> </v-col>
+    <v-col> <BaseChat /></v-col>
   </v-row>
 </template>
 <script>
@@ -32,15 +32,5 @@ export default {
     BaseCodeEditor,
   },
   mixins: [editorMixins],
-  mounted() {
-    this.socket = this.$nuxtSocket({
-      name: "home",
-    });
-    /* Listen for events: */
-    this.socket.on("connection", (msg, cb) => {
-      console.log(msg);
-      /* Handle event */
-    });
-  },
 };
 </script>
