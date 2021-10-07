@@ -32,5 +32,15 @@ export default {
     BaseCodeEditor,
   },
   mixins: [editorMixins],
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      name: "home",
+    });
+    /* Listen for events: */
+    this.socket.on("connection", (msg, cb) => {
+      console.log(msg);
+      /* Handle event */
+    });
+  },
 };
 </script>

@@ -46,8 +46,16 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios"],
-
+  modules: ["@nuxtjs/axios", "nuxt-socket-io"],
+  io: {
+    // module options
+    sockets: [
+      {
+        name: "main",
+        url: "http://localhost:3001",
+      },
+    ],
+  },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ["~/assets/variables.scss"],
