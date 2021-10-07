@@ -98,8 +98,11 @@
 </template>
 
 <script>
+import systemMixins from "@/mixins/system";
+
 export default {
   name: "AppBar",
+  mixins: [systemMixins],
   data() {
     return {
       tab: 0,
