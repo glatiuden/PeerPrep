@@ -16,7 +16,7 @@
         <div v-for="(message, index) in messages" :key="index" class="mx-2">
           <div class="float-right rounded-lg pa-3 my-2 send" style="width: 60%">
             <small>
-              <b>{{ message.name }}</b> @ {{ message.time }}
+              <b>{{ message.username }}</b> @ {{ message.time }}
             </small>
             <br />
             <span class="text-body-2">{{ message.text }}</span>
@@ -50,15 +50,33 @@ export default {
     return {
       messages: [],
       chat_message: "",
+      match_id: "abc123", // Temporarily hardcoded
     };
+  },
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      name: "chat",
+    });
+
+    this.socket.on("connect", () => {
+      this.socket.emit("room", this.match_id);
+    });
+
+    this.socket.on("message", (data) => {
+      console.log("Incoming message: ", data);
+      this.messages.push(data);
+    });
   },
   methods: {
     sendMessage() {
-      this.messages.push({
-        name: "Max",
+      const message = {
+        username: "Max",
         text: this.chat_message,
         time: this.$moment().format("hh:mm A"),
-        username: "Max",
+      };
+      this.socket.emit("message", {
+        match_id: this.match_id,
+        payload: message,
       });
       this.chat_message = "";
     },

@@ -70,7 +70,7 @@ export default {
   },
   mounted() {
     this.socket = this.$nuxtSocket({
-      name: "home",
+      name: "editor",
     });
 
     this.socket.on("connect", () => {

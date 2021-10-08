@@ -51,8 +51,13 @@ export default {
     // module options
     sockets: [
       {
-        name: "main",
+        name: "editor",
+        default: true,
         url: "http://localhost:3001",
+      },
+      {
+        name: "chat",
+        url: "http://localhost:3002",
       },
     ],
   },
