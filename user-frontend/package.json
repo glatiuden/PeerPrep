@@ -22,6 +22,7 @@
     "nuxt-socket-io": "^1.1.24",
     "vue-chat-scroll": "^1.4.0",
     "vue-lottie": "^0.2.1",
+    "vue-webrtc": "^2.0.0",
     "vuejs-ace-editor": "^1.0.1",
     "vuetify": "^2.5.5"
   },

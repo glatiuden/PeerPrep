@@ -31,6 +31,7 @@ export default {
     { src: "@/plugins/ace-editor", mode: "client", ssr: false },
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
     { src: "@/plugins/vue-chat-scroll", mode: "client", ssr: false },
+    { src: "@/plugins/vue-webrtc", mode: "client", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
