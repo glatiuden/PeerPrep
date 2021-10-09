@@ -8,6 +8,7 @@ export default interface IUser {
   display_name: string;
   email: string;
   password: string;
+  password_hash: string;
   role: UserRole;
   deleted_at?: Date;
   created_at: Date;

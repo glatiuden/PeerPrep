@@ -9,7 +9,7 @@ const userSchema = new Schema(
   {
     display_name: { type: String, required: true },
     email: { type: String, unique: true, required: true },
-    password: { type: String, trim: true, required: true },
+    password_hash: { type: String, trim: true, required: true },
     role: { type: String, enum: UserRole },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },

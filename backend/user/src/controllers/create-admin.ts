@@ -1,7 +1,8 @@
 import _ from "lodash";
+import bcrypt from "bcrypt";
+
 import IUser from "../models/interfaces/user";
 import { userService } from "../services";
-
 
 /**
  * @description Create new user record in database
@@ -14,11 +15,11 @@ async function createAdminController(httpRequest: Request & { context: { validat
 
   try {
     const userDetails: IUser = _.get(httpRequest, "context.validated");
+    userDetails.password_hash = await bcrypt.hash(userDetails.password, 1);
     const created_user = await userService.insertAdmin(userDetails);
     if (!created_user) {
       throw new Error(`User was not created.`);
     }
-
     return {
       headers,
       statusCode: 200,

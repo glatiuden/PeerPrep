@@ -6,6 +6,7 @@ import updateUserController from "./update-user";
 import deleteUserController from "./delete-user";
 import hardDeleteUserController from "./hard-delete-user";
 import deleteAllUsersController from "./reset-users";
+import loginUserController from "./login-user";
 
 const chatController = Object.freeze({
   createUserController,
@@ -16,6 +17,7 @@ const chatController = Object.freeze({
   hardDeleteUserController,
   deleteAllUsersController,
   updateUserController,
+  loginUserController,
 });
 
 export default chatController;
@@ -29,4 +31,5 @@ export {
   hardDeleteUserController,
   deleteAllUsersController,
   updateUserController,
+  loginUserController,
 };

@@ -32,6 +32,14 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
       return null;
     }
 
+    async findByEmail({ email }: { email: string }): Promise<IUser | null> {
+      const existing = await userDbModel.findOne({ email: email });
+      if (existing) {
+        return existing;
+      }
+      return null;
+    }
+    
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
       const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
