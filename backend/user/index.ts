@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-// import router from "./src/routes";
+import router from "./src/routes";
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.listen(PORT, () => {
 });
 
 // Initialize routes
-// app.use("/api", router);
+app.use("/api", router);
 app.get("/", function (req, res) {
   res.send("User Microservice is running");
 });
