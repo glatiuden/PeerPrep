@@ -1,29 +1,29 @@
 import _ from "lodash";
+
 import IUser from "../models/interfaces/user";
 import { userService } from "../services";
 
-
 /**
- * @description Create new user record in database
- * @function createUserController
+ * @description Update existing user record in database
+ * @function updateUserController
  */
-async function createUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
+async function updateUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
     const userDetails: IUser = _.get(httpRequest, "context.validated");
-    const created_user = await userService.insertUser(userDetails);
-    if (!created_user) {
-      throw new Error(`User was not created.`);
+    const updated_user = await userService.update(userDetails);
+    if (!updated_user) {
+      throw new Error(`Chat was not updated.`);
     }
 
     return {
       headers,
       statusCode: 200,
       body: {
-        data: created_user,
+        data: updated_user,
       },
     };
   } catch (err: any) {
@@ -37,4 +37,4 @@ async function createUserController(httpRequest: Request & { context: { validate
   }
 }
 
-export default createUserController;
+export default updateUserController;

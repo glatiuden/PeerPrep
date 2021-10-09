@@ -1,10 +1,21 @@
 import mongoose from "mongoose";
-import IUser from "../models/interfaces/user";
+import IUser, { UserRole } from "../models/interfaces/user";
 
 
 export default function makeUserService({ userDbModel }: { userDbModel: mongoose.Model<IUser & mongoose.Document> }) {
   return new (class MongooseChatDb {
-    async insert(insertPayload: Partial<IUser>): Promise<IUser | null> {
+    async insertUser(insertPayload: Partial<IUser>): Promise<IUser | null> {
+      insertPayload.role = UserRole.USER
+      const result = await userDbModel.create([insertPayload]);
+      const updated = await userDbModel.findOne({ _id: result[0]?._id });
+      if (updated) {
+        return updated;
+      }
+      return null;
+    }
+
+    async insertAdmin(insertPayload: Partial<IUser>): Promise<IUser | null> {
+      insertPayload.role = UserRole.ADMIN
       const result = await userDbModel.create([insertPayload]);
       const updated = await userDbModel.findOne({ _id: result[0]?._id });
       if (updated) {
@@ -50,6 +61,11 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
         return existing;
       }
       return null;
+    }
+
+    async reset(): Promise<boolean> {
+      const result = await userDbModel.deleteMany({})
+      return result.deletedCount > 0;
     }
   })();
 }

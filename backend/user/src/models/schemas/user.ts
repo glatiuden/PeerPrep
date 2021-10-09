@@ -1,10 +1,16 @@
 import { Schema } from "mongoose";
 
+enum UserRole {
+  USER = "USER",
+  ADMIN = "ADMIN"
+}
+
 const userSchema = new Schema(
   {
-    display_name: { type: String },
-    email: { type: String, unique: true },
-    password: { type: String, trim: true },
+    display_name: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
+    password: { type: String, trim: true, required: true },
+    role: { type: String, enum: UserRole },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },

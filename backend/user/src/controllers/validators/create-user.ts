@@ -1,5 +1,3 @@
-const creatUserRules = {
+const createUserRules = {};
 
-};
-
-export default creatUserRules;
+export default createUserRules;
