@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Request, Response, NextFunction } from "express";
-
 import Validator, { Rules } from "validatorjs";
 
 export default function makeValidator(rules: Rules) {
@@ -17,14 +16,15 @@ export default function makeValidator(rules: Rules) {
     const request_body = Object.assign({}, user, body, params, query);
     const validation = new Validator(request_body, rules);
     const passed = validation.passes();
-    if (passed) {
-      return next();
-    }
 
-    res.set({
-      "Content-Type": "application/json",
-    });
-    res.type("json");
-    return res.status(422).send(validation.errors);
+    if (!passed) {
+      res.set({
+        "Content-Type": "application/json",
+      });
+      res.type("json");
+      return res.status(422).send(validation.errors);
+    
+    }
+    return next();
   };
 }

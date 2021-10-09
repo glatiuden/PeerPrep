@@ -12,6 +12,8 @@ import {
   loginUserController
 } from "../controllers"
 
+import tokenValidator from "../middleware/token-validator";
+
 // import makeValidator from "../middleware/validator-middleware";
 // import { createUserRules } from "../controllers/validators";
 
@@ -19,7 +21,7 @@ const userRouter = express.Router();
 
 userRouter.post("/", makeExpressCallback(createUserController));
 userRouter.post("/admin", makeExpressCallback(createAdminController));
-userRouter.post('/login', makeExpressCallback(loginUserController))
+userRouter.post("/login", makeExpressCallback(loginUserController))
 
 userRouter.get("/", makeExpressCallback(getUsersController));
 userRouter.get("/:user_id", makeExpressCallback(getUserController));

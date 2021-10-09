@@ -1,5 +1,6 @@
 import _ from "lodash";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import IUser from "../models/interfaces/user";
 import { userService } from "../services";
@@ -27,11 +28,15 @@ async function loginUserController(httpRequest: Request & { context: { validated
       throw new Error(`Incorrect password`)
     }
 
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || "insecure-secret");
+    headers["auth-token"] = token;
+
     return {
       headers,
       statusCode: 200,
       body: {
         data: `Sucessfully logged in as user ${user.display_name}`,
+        login_token: token,
       },
     };
   } catch (err: any) {
