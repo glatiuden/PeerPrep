@@ -10,7 +10,7 @@ export default function makeMatchService({
   return new (class MongooseMatchDb {
     async insert(insertPayload: Partial<IMatch>): Promise<IMatch | null> {
       const result = await matchDbModel.create([insertPayload]);
-      const updated = await matchDbModel.findOne({ match_id: result[0]?.match_id });
+      const updated = await matchDbModel.findOne({ _id: result[0]?._id });
       if (updated) {
         return updated;
       }
@@ -35,8 +35,8 @@ export default function makeMatchService({
     }
 
     async update(payload: Partial<IMatch>): Promise<IMatch | null> {
-      await matchDbModel.findOneAndUpdate({ match_id: payload.match_id }, payload);
-      const updated = await matchDbModel.findById({ match_id: payload.match_id });
+      await matchDbModel.findOneAndUpdate({ _id: payload._id }, payload);
+      const updated = await matchDbModel.findById({ _id: payload._id });
       if (updated) {
         return updated;
       }
@@ -44,12 +44,12 @@ export default function makeMatchService({
     }
 
     async hardDelete({ id }: { id: string }): Promise<boolean> {
-      const result = await matchDbModel.deleteOne({ match_id: id });
+      const result = await matchDbModel.deleteOne({ _id: id });
       return result.deletedCount > 0;
     }
 
     async delete({ id }: { id: string }): Promise<IMatch | null> {
-      const existing = await matchDbModel.findOneAndUpdate({ match_id: id }, { deleted_at: new Date() });
+      const existing = await matchDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() });
       if (existing) {
         return existing;
       }

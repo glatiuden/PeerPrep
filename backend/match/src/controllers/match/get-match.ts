@@ -15,7 +15,7 @@ async function getMatchController(httpRequest: Request & { context: { validated:
     const { match_id }: { match_id: string } = _.get(httpRequest, "context.validated");
     const match = await matchService.findById({ id: match_id });
     if (!match) {
-      throw new Error(`Match by ${match_id} does not exists.`);
+      throw new Error(`Match ${match_id} does not exist.`);
     }
 
     return {
