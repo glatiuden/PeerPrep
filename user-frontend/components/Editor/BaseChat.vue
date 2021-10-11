@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import systemMixins from "@/mixins/system";
+import systemMixin from "@/mixins/system";
 
 export default {
   name: "BaseChat",
-  mixins: [systemMixins],
+  mixins: [systemMixin],
   data() {
     return {
       messages: [],

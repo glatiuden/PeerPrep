@@ -43,10 +43,10 @@
   </div>
 </template>
 <script>
-import editorMixins from "~/mixins/editor";
+import editorMixin from "~/mixins/editor";
 
 export default {
-  mixins: [editorMixins],
+  mixins: [editorMixin],
   data() {
     return {
       selected_language: "javascript",
