@@ -7,8 +7,9 @@ export default interface IMatch {
   partner_email: string;
   difficulty_level: string;
   topic_chosen: string;
-  // user_rating: int;
-  // partner_rating: int;
+  question: string;
+  // user_rating: number;
+  // partner_rating: number;
   deleted_at?: Date;
   created_at: Date;
   updated_at: Date;
