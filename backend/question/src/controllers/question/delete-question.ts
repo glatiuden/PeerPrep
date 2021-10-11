@@ -6,16 +6,16 @@ import { questionService } from "../../services";
  * @description Delete existing question in database by ID
  * @function deleteQuestionController
  */
-async function deleteQuestionController(httpRequest: Request & { context: { validated: { _id: string } } }) {
+async function deleteQuestionController(httpRequest: Request & { context: { validated: { question_id: string } } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const { _id }: { _id: string } = _.get(httpRequest, "context.validated");
-    const deleted_question = await questionService.delete({ id: _id });
+    const { question_id }: { question_id: string } = _.get(httpRequest, "context.validated");
+    const deleted_question = await questionService.delete({ id: question_id });
     if (!deleted_question) {
-      throw new Error(`Question ${_id} is unable to delete.`);
+      throw new Error(`Question ${question_id} is unable to delete.`);
     }
 
     return {

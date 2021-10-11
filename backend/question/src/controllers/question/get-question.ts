@@ -6,16 +6,16 @@ import { questionService } from "../../services";
  * @description Get question by ID
  * @function getQuestionController
  */
-async function getQuestionController(httpRequest: Request & { context: { validated: { _id: string } } }) {
+async function getQuestionController(httpRequest: Request & { context: { validated: { question_id: string } } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const { _id }: { _id: string } = _.get(httpRequest, "context.validated");
-    const question = await questionService.findById({ id: _id });
+    const { question_id }: { question_id: string } = _.get(httpRequest, "context.validated");
+    const question = await questionService.findById({ id: question_id });
     if (!question) {
-      throw new Error(`Question ${_id} does not exists.`);
+      throw new Error(`Question ${question_id} does not exists.`);
     }
 
     return {
