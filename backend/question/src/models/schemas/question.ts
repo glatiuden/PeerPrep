@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema(
   {
-    difficulty: { type: String, enum : ['easy','medium','hard'], default: "" },
-    topic: { type: String, enum : ['Data Structures','Algorithms','Database'], default: "" },
+    difficulty: { type: String, enum: ["easy", "medium", "hard"], default: "" },
+    topic: { type: String, enum: ["Data Structures", "Algorithms", "Database"], default: "" },
     question: { type: String, default: "" },
     hint: { type: String, default: "" },
     solution: { type: String, default: "" },

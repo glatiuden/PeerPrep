@@ -41,17 +41,20 @@ export default function makeQuestionService({
       return null;
     }
 
-    async findByDifficultyAndTopic({ difficulty }: { difficulty: string }, { topic }: { topic: string }): Promise<IQuestion | null> {
+    async findByDifficultyAndTopic(
+      { difficulty }: { difficulty: string },
+      { topic }: { topic: string },
+    ): Promise<IQuestion | null> {
       const resultArray = await questionDbModel.find({ difficulty: difficulty, topic: topic });
 
-      const resultArrayLength = resultArray.length; 
+      const resultArrayLength = resultArray.length;
 
       if (resultArrayLength <= 0) {
-            return null;
+        return null;
       }
-      var random = Math.floor(Math.random() * resultArrayLength);
+      const random = Math.floor(Math.random() * resultArrayLength);
       const result = resultArray[random];
-      
+
       return result;
     }
 

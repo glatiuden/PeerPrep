@@ -23,7 +23,11 @@ questionRouter.post("/", makeValidator(createQuestionRules), makeExpressCallback
 questionRouter.get("/", makeExpressCallback(getQuestionsController));
 questionRouter.get("/:question_id", makeValidator(getQuestionRules), makeExpressCallback(getQuestionController));
 questionRouter.put("/", makeValidator(updateQuestionRules), makeExpressCallback(updateQuestionController));
-questionRouter.delete("/:question_id", makeValidator(deleteQuestionRules), makeExpressCallback(deleteQuestionController));
+questionRouter.delete(
+  "/:question_id",
+  makeValidator(deleteQuestionRules),
+  makeExpressCallback(deleteQuestionController),
+);
 questionRouter.delete(
   "/hard-delete/:question_id",
   makeValidator(deleteQuestionRules),
