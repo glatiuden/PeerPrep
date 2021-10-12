@@ -32,7 +32,7 @@ const server = app.listen(PORT, () => {
 // Initialize sockets & routes
 makeSockets(server, corsOptions);
 app.use("/api", userRouter);
-app.use("/api", adminRouter);
+app.use("/admin", adminRouter);
 app.get("/", function (req, res) {
   res.send("Editor microservice is running");
 });

@@ -7,12 +7,14 @@ import {
   deleteEditorController,
   getEditorController,
   getEditorsController,
+  getEditorsPaginatedController,
   hardDeleteEditorController,
 } from "../../controllers/editor";
 
 const editorRouter = express.Router();
 
 editorRouter.get("/", makeExpressCallback(getEditorsController));
+editorRouter.get("/paginated", makeExpressCallback(getEditorsPaginatedController));
 editorRouter.get("/:editor_id", makeValidator(getEditorRules), makeExpressCallback(getEditorController));
 editorRouter.delete("/:editor_id", makeValidator(deleteEditorRules), makeExpressCallback(deleteEditorController));
 editorRouter.delete(
