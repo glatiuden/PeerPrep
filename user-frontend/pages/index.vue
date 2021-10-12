@@ -135,9 +135,7 @@
           </v-icon>
 
           <div class="text-h6 text-sm-h4 white--text mb-4">
-            <span class="kinobi-title">
-              Time is Ticking! Start Practicing Now!
-            </span>
+            Time is Ticking! Start Practicing Now!
           </div>
 
           <v-btn
