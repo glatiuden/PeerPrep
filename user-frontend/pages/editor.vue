@@ -17,7 +17,7 @@
     <v-col cols="12" lg="8">
       <BaseCodeEditor />
     </v-col>
-    <v-col> <BaseChat /> </v-col>
+    <v-col> <BaseChat /></v-col>
   </v-row>
 </template>
 <script>
