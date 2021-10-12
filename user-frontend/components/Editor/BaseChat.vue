@@ -1,6 +1,26 @@
 <template>
   <div>
     <h2>Chat with Your Partner</h2>
+    <v-btn
+      v-if="!is_video_on"
+      color="primary"
+      block
+      depressed
+      @click="clickVideoChat({ join: true })"
+    >
+      Start Video Chat
+    </v-btn>
+    <v-btn
+      v-else
+      color="primary"
+      block
+      depressed
+      @click="clickVideoChat({ join: false })"
+    >
+      Stop Video Chat
+    </v-btn>
+    <vue-webrtc ref="webrtc" width="100%" :room-id="match_id" />
+
     <v-sheet class="my-4" outlined>
       <div class="message-group">
         <!-- TODO: Need to check whether is receiver/sender and show the style accordingly. -->
@@ -16,7 +36,7 @@
         <div v-for="(message, index) in messages" :key="index" class="mx-2">
           <div class="float-right rounded-lg pa-3 my-2 send" style="width: 60%">
             <small>
-              <b>{{ message.name }}</b> @ {{ message.time }}
+              <b>{{ message.username }}</b> @ {{ message.time }}
             </small>
             <br />
             <span class="text-body-2">{{ message.text }}</span>
@@ -50,17 +70,44 @@ export default {
     return {
       messages: [],
       chat_message: "",
+      match_id: "abc123", // Temporarily hardcoded
+      is_video_on: false,
     };
+  },
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      name: "chat",
+    });
+
+    this.socket.on("connect", () => {
+      this.socket.emit("room", this.match_id);
+    });
+
+    this.socket.on("message", (data) => {
+      console.log("Incoming message: ", data);
+      this.messages.push(data);
+    });
   },
   methods: {
     sendMessage() {
-      this.messages.push({
-        name: "Max",
+      const message = {
+        username: "Max",
         text: this.chat_message,
         time: this.$moment().format("hh:mm A"),
-        username: "Max",
+      };
+      this.socket.emit("message", {
+        match_id: this.match_id,
+        payload: message,
       });
       this.chat_message = "";
+    },
+    clickVideoChat({ join }) {
+      if (join) {
+        this.$refs.webrtc.join();
+      } else {
+        this.$refs.webrtc.leave();
+      }
+      this.is_video_on = join;
     },
   },
 };

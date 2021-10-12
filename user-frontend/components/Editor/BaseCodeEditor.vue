@@ -65,18 +65,38 @@ export default {
           value: "javascript",
         },
       ],
+      match_id: "abc123", // Temporarily hardcoded
     };
+  },
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      name: "editor",
+    });
+
+    this.socket.on("connect", () => {
+      this.socket.emit("room", this.match_id);
+    });
+
+    this.socket.on("message", (data) => {
+      console.log("Incoming message: ", data);
+      this.content = data;
+    });
   },
   methods: {
     async save() {
-      const mock_data = {
-        match_id: "6159df98a525e1a46872718d", // Hardcoded temporarily
-        programming_language: this.selected_language,
-        content: this.content,
-      };
+      this.socket.emit("message", {
+        match_id: this.match_id,
+        payload: this.content,
+      });
 
+      // Save to DB for persistent storage, for later usage.
+      // const editor_data = {
+      //   match_id,
+      //   programming_language: this.selected_language,
+      //   content: this.content,
+      // };
       // await this.CREATE_EDITOR({
-      //   editor: mock_data,
+      //   editor: editor_data,
       // });
     },
     editorInit: function () {
