@@ -2,7 +2,6 @@
   <v-navigation-drawer
     v-model="drawer"
     class="soft-box-shadow"
-    :mini-variant="miniVariant"
     :clipped="false"
     fixed
     app

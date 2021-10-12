@@ -15,3 +15,9 @@
 .clickable {
   cursor: pointer;
 }
+
+.data-table-heading {
+  font-size: 14px !important;
+  color: rgb(87, 89, 91, 0.7) !important;
+  font-weight: 600;
+}

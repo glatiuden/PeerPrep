@@ -29,7 +29,6 @@ const actions: ActionTree<EditorState, RootState> = {
     const { data: editors, pagination } = await this.$axios.$get(
       `/admin/editor/paginated${url_query}`,
     );
-    console.log(editors);
 
     commit(MutationTypes.SET_EDITORS, { data: editors });
     commit(MutationTypes.SET_EDITORS_PAGINATION, {

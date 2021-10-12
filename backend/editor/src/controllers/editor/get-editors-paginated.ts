@@ -27,6 +27,7 @@ async function getEditorsPaginatedController(httpRequest: Request) {
       },
     };
   } catch (err: any) {
+    logger.error(err.message);
     return {
       headers,
       statusCode: 404,

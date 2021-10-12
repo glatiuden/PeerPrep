@@ -49,7 +49,7 @@ export default function makeEditorService({
       if (query) {
         query_conditions["$or"] = [
           { content: { $regex: ".*" + query + ".*", $options: "si" } },
-          { match_id: { $regex: ".*" + query + ".*", $options: "si" } },
+          { programming_language: { $regex: ".*" + query + ".*", $options: "si" } },
         ];
       }
 

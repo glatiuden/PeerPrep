@@ -19,7 +19,7 @@
         style="width: 350px"
         clearable
         @input="performSearch"
-      ></v-text-field>
+      />
       <v-spacer></v-spacer>
       <v-dialog v-model="dialog" max-width="500px">
         <template #activator="{ on, attrs }">
@@ -32,7 +32,7 @@
             v-bind="attrs"
             v-on="on"
           >
-            <v-icon small left>mdi-account-plus-outline</v-icon>New Editor
+            <v-icon small left>mdi-plus</v-icon>New Editor
           </v-btn>
         </template>
         <BaseEditorDialog @close="() => (dialog = false)" />
@@ -56,6 +56,19 @@
         </td>
       </template>
 
+      <template #item.created_at="{ item }">
+        <div class="d-flex">
+          Created on
+          {{ formatDate(item.created_at, "DD MMMM YYYY, hh:mm A") }}
+        </div>
+      </template>
+
+      <template #item.content="{ item }">
+        <code>
+          {{ item.content }}
+        </code>
+      </template>
+
       <template #item.actions="{ item }">
         <v-icon
           class="mr-2"
@@ -75,7 +88,7 @@
           v-model="page"
           :length="editors_pagination.total_pages"
           @input="
-            GET_SYSTEM_CONFIGURATIONS_PAGINATED({
+            GET_EDITORS_PAGINATED({
               query: search,
               page: $event,
             })
@@ -101,20 +114,33 @@ export default {
           text: "Match ID",
           value: "match_id",
           sortable: true,
-          class: "background data-table-heading",
+          class: "data-table-heading",
           width: 250,
         },
         {
-          text: "programming_language",
+          text: "Programming Language",
           value: "programming_language",
           sortable: true,
-          class: "background data-table-heading",
+          class: "data-table-heading",
+        },
+        {
+          text: "Content",
+          value: "content",
+          sortable: true,
+          class: "data-table-heading",
         },
         {
           text: "Created At",
           value: "created_at",
           sortable: false,
+          class: "data-table-heading",
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
           class: "background data-table-heading",
+          width: 100,
         },
       ],
       search: "",
@@ -141,7 +167,7 @@ export default {
     performSearch: _.throttle(
       async function () {
         this.page = 1;
-        this.GET_RESUMES_GROUP_BY_USER({
+        this.GET_EDITORS_PAGINATED({
           query: this.search,
         });
       },
@@ -155,5 +181,10 @@ export default {
 <style scoped>
 /deep/ .v-toolbar__content {
   padding: 0px !important;
+}
+
+.pre-formatted {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>
