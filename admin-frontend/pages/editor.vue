@@ -1,5 +1,10 @@
 <template>
-  <div class="mx-2">
+  <v-skeleton-loader
+    v-if="loading"
+    type="table-heading, table-tbody, table-tfoot"
+  >
+  </v-skeleton-loader>
+  <div v-else class="mx-2">
     <v-toolbar flat class="transparent">
       <v-toolbar-title>
         <h2 class="font-weight-medium">Editor Records</h2>
@@ -45,8 +50,8 @@
       :loading="loading"
       loading-text="Loading... Please wait"
       item-key="_id"
-      :sort-by="['updated_at', 'client_id']"
-      :sort-desc="[true, false]"
+      :sort-by="['created_at']"
+      :sort-desc="[true]"
       hide-default-footer
       :items-per-page="15"
     >
@@ -70,12 +75,10 @@
       </template>
 
       <template #item.actions="{ item }">
-        <v-icon
-          class="mr-2"
-          @click="$router.push(`/system-configurations/${item._id}/update`)"
+        <v-icon class="mr-2" @click="editEditor(item._id)"
           >mdi-pencil-outline</v-icon
         >
-        <v-icon @click="clickDelete(item)">mdi-delete-forever-outline</v-icon>
+        <v-icon @click="deleteEditor(item)">mdi-delete-forever-outline</v-icon>
       </template>
 
       <template #no-data>No editor records found</template>
@@ -103,8 +106,11 @@
 import editorMixin from "@/mixins/editor";
 import systemMixin from "@/mixins/system";
 
+import BaseEditorDialog from "@/components/Editor/BaseEditorDialog";
+
 export default {
   name: "Editor",
+  components: { BaseEditorDialog },
   mixins: [editorMixin, systemMixin],
   data() {
     return {
@@ -122,6 +128,7 @@ export default {
           value: "programming_language",
           sortable: true,
           class: "data-table-heading",
+          width: 250,
         },
         {
           text: "Content",
@@ -134,6 +141,7 @@ export default {
           value: "created_at",
           sortable: false,
           class: "data-table-heading",
+          width: 300,
         },
         {
           text: "Actions",
@@ -164,6 +172,42 @@ export default {
     },
   },
   methods: {
+    async editEditor(id) {
+      try {
+        await this.GET_EDITOR({ editor_id: id });
+        this.dialog = true;
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(`Encountered error updating editor: ${err}.`);
+      }
+    },
+    async deleteEditor(item) {
+      const is_confirmed = confirm(
+        "Are you sure you want to delete this editor? It is an irreversible action.",
+      );
+
+      if (!is_confirmed) {
+        return;
+      }
+
+      try {
+        this.SET_LOADING({ data: true });
+        await this.DELETE_EDITOR({
+          editor_id: item._id,
+        });
+        this.$notification.success(`Editor has been deleted successfully.`);
+        await this.GET_EDITORS_PAGINATED({
+          page: this.page,
+          query: this.search,
+        });
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(`Encountered error deleting editor: ${err}.`);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
+    },
+
     performSearch: _.throttle(
       async function () {
         this.page = 1;

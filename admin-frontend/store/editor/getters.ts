@@ -8,6 +8,7 @@ export const getters: GetterTree<EditorState, RootState> = {
   editors: (state) => state.editors,
   editors_pagination: (state) => state.editors_pagination,
   loading: (state) => state.loading,
+  editor_id: (state) => state.editor_id,
 };
 
 export default getters;

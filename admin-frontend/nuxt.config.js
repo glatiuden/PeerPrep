@@ -28,6 +28,7 @@ export default {
     "~/plugins/lodash",
     "~/plugins/axios",
     "~/plugins/vuetify",
+    { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
   ],
 

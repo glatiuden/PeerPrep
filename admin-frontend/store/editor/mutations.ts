@@ -49,6 +49,14 @@ const mutations: MutationTree<EditorState> = {
   ) {
     state.editors_pagination = data;
   },
+  /**
+   * @description to set editor ID
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_EDITOR_ID](state, { data }: { data: string }) {
+    state.editor_id = data;
+  },
 };
 
 export default mutations;

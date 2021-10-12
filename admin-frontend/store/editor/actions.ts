@@ -49,6 +49,20 @@ const actions: ActionTree<EditorState, RootState> = {
     commit(MutationTypes.SET_EDITOR, { data: editor });
     return editor;
   },
+
+  /**
+   * @description to create editor
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.CREATE_EDITOR]({ commit }, { editor }) {
+    const { data: created_editor } = await this.$axios.$post(
+      `/api/editor`,
+      editor,
+    );
+    return created_editor;
+  },
+
   /**
    * @description to delete editor
    * @param param0
@@ -60,18 +74,19 @@ const actions: ActionTree<EditorState, RootState> = {
     );
     return deleted_editor;
   },
-  // /**
-  //  * @description to update editor
-  //  * @param param0
-  //  * @param param1
-  //  */
-  // async [ActionTypes.UPDATE_EDITOR]({ commit }, { editor }) {
-  //   const { data: updated_editor } = await this.$axios.$put(
-  //     `/admin/editor`,
-  //     editor,
-  //   );
-  //   return updated_editor;
-  // },
+
+  /**
+   * @description to update editor
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.UPDATE_EDITOR]({ commit }, { editor }) {
+    const { data: updated_editor } = await this.$axios.$put(
+      `/admin/editor`,
+      editor,
+    );
+    return updated_editor;
+  },
 };
 
 export default actions;

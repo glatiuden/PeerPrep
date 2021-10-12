@@ -7,6 +7,7 @@ export const state = () => ({
     total: 0,
   },
   loading: false,
+  editor_id: "" as string,
 });
 
 export type EditorState = ReturnType<typeof state>;
