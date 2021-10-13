@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import IUser from "../models/interfaces/user";
-import { userService } from "../services";
+import IUser from "../../models/interfaces/user";
+import { userService } from "../../services";
 
 /**
  * @description Update existing user record in database

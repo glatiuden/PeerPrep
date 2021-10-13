@@ -2,24 +2,24 @@ import _ from "lodash";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import IUser from "../models/interfaces/user";
-import { userService } from "../services";
+import IUser, { UserRole } from "../../models/interfaces/user";
+import { userService } from "../../services";
 
 /**
- * @description Check user's email and password and return login message if successful
- * @function loginUserController
+ * @description Check admin's email and password and return login message if successful
+ * @function loginAdminController
  */
-async function loginUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
+async function loginAdminController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
     const userDetails: IUser = _.get(httpRequest, "context.validated");
-    const user = await userService.findByEmail({ email: userDetails.email });
+    const user = await userService.findByEmail({ email: userDetails.email }, { role: UserRole.ADMIN });
 
     if (!user) {
-      throw new Error(`User does not exist`);
+      throw new Error(`Admin does not exist`);
     }
 
     const valid = await bcrypt.compare(userDetails.password, user.password_hash);
@@ -35,7 +35,7 @@ async function loginUserController(httpRequest: Request & { context: { validated
       headers,
       statusCode: 200,
       body: {
-        data: `Sucessfully logged in as user ${user.display_name}`,
+        data: `Sucessfully logged in as admin ${user.display_name}`,
         login_token: token,
       },
     };
@@ -50,4 +50,4 @@ async function loginUserController(httpRequest: Request & { context: { validated
   }
 }
 
-export default loginUserController;
+export default loginAdminController;

@@ -3,7 +3,7 @@ import IUser, { UserRole } from "../models/interfaces/user";
 
 
 export default function makeUserService({ userDbModel }: { userDbModel: mongoose.Model<IUser & mongoose.Document> }) {
-  return new (class MongooseChatDb {
+  return new (class MongooseUserDb {
     async insertUser(insertPayload: Partial<IUser>): Promise<IUser | null> {
       insertPayload.role = UserRole.USER
       const result = await userDbModel.create([insertPayload]);
@@ -32,14 +32,14 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
       return null;
     }
 
-    async findByEmail({ email }: { email: string }): Promise<IUser | null> {
+    async findByEmail({ email }: { email: string }, { role }: { role: UserRole }): Promise<IUser | null> {
       const existing = await userDbModel.findOne({ email: email });
-      if (existing) {
+      if (existing && existing.role == role) {
         return existing;
       }
       return null;
     }
-    
+
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
       const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });

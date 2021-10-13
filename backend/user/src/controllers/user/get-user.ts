@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { userService } from "../services";
+import { userService } from "../../services";
 
 /**
  * @description Get user by ID

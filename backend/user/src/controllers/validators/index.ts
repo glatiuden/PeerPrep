@@ -1,10 +1,8 @@
 // import getChatRules from "./get-chat";
 // import updateChatRules from "./update-chat";
-import createUserRules from "./create-user";
+// import createUserRules from "./create-user";
 // import deleteChatRules from "./delete-chat";
 
-export default Object.freeze({
-  createUserRules
-});
+export default Object.freeze({});
 
-export { createUserRules };
+export {  };

@@ -1,6 +1,7 @@
+
 import _ from "lodash";
 
-import { userService } from "../services";
+import { userService } from "../../services";
 
 /**
  * @description Delete existing user record in database by ID
@@ -13,9 +14,9 @@ async function deleteUserController(httpRequest: Request & { context: { validate
 
   try {
     const { user_id }: { user_id: string } = _.get(httpRequest, "context.validated");
-    const deleted_user = await userService.hardDelete({ id: user_id });
+    const deleted_user = await userService.delete({ id: user_id });
     if (!deleted_user) {
-      throw new Error(`User by ${user_id} is unable to hard delete.`);
+      throw new Error(`User by ${user_id} is unable to delete.`);
     }
 
     return {

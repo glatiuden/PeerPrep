@@ -1,7 +1,6 @@
 import express from "express";
 import makeExpressCallback from "../express-callback";
 import {
-  createAdminController,
   createUserController,
   getUserController,
   getUsersController,
@@ -10,17 +9,13 @@ import {
   deleteAllUsersController,
   updateUserController,
   loginUserController
-} from "../controllers"
+} from "../controllers/user"
 
 import tokenValidator from "../middleware/token-validator";
-
-// import makeValidator from "../middleware/validator-middleware";
-// import { createUserRules } from "../controllers/validators";
 
 const userRouter = express.Router();
 
 userRouter.post("/", makeExpressCallback(createUserController));
-userRouter.post("/admin", makeExpressCallback(createAdminController));
 userRouter.post("/login", makeExpressCallback(loginUserController))
 
 userRouter.get("/", makeExpressCallback(getUsersController));

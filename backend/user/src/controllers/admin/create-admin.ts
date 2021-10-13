@@ -1,14 +1,14 @@
 import _ from "lodash";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
-import IUser from "../models/interfaces/user";
-import { userService } from "../services";
+import IUser from "../../models/interfaces/user";
+import { userService } from "../../services";
 
 /**
  * @description Create new user record in database
  * @function createUserController
  */
-async function createUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
+async function createAdminController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
   const headers = {
     "Content-Type": "application/json",
   };
@@ -16,12 +16,10 @@ async function createUserController(httpRequest: Request & { context: { validate
   try {
     const userDetails: IUser = _.get(httpRequest, "context.validated");
     userDetails.password_hash = await bcrypt.hash(userDetails.password, 1);
-    const created_user = await userService.insertUser(userDetails);
-
+    const created_user = await userService.insertAdmin(userDetails);
     if (!created_user) {
       throw new Error(`User was not created.`);
     }
-
     return {
       headers,
       statusCode: 200,
@@ -40,4 +38,4 @@ async function createUserController(httpRequest: Request & { context: { validate
   }
 }
 
-export default createUserController;
+export default createAdminController;
