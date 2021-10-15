@@ -1,12 +1,8 @@
 const createMatchRules = {
-  // match_id: ["required", "regex:/^[0-9a-fA-F]{24}$/i"],
-  user_name: "required|string",
-  partner_name: "required|string",
-  user_email: "required|string",
-  partner_email: "required|string",
-  difficulty_level: "required|string",
-  topic_chosen: "required|string",
-  question: "required|string"
+  partner1_id: ["required", "regex:/^[0-9a-fA-F]{24}$/i"],
+  // partner2_id: ["required", "regex:/^[0-9a-fA-F]{24}$/i"],
+  question_id: ["required", "regex:/^[0-9a-fA-F]{24}$/i"],
+  status: ["required", "in:waiting,in-progress,completed,cancelled"],
 };
 
 export default createMatchRules;

@@ -6,7 +6,8 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-import router from "./src/routes";
+import apiRouter from "./src/routes/api";
+import adminRouter from "./src/routes/admin";
 
 const app = express();
 const corsOptions = {
@@ -26,9 +27,11 @@ app.listen(PORT, () => {
 });
 
 // Initialize routes
-app.use("/api", router);
+app.use("/api", apiRouter);
+app.use("/admin", adminRouter);
+
 app.get("/", function (req, res) {
-  res.send("App is running");
+  res.send("Match service is running");
 });
 
 export default app;

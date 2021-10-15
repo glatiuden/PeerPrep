@@ -6,9 +6,7 @@ import { matchService } from "../../services";
  * @description Hard delete existing match record in database by ID
  * @function hardDeleteMatchController
  */
-async function hardDeleteMatchController(  
-  httpRequest: Request & { context: { validated: { match_id: string } } }
-) {
+async function hardDeleteMatchController(httpRequest: Request & { context: { validated: { match_id: string } } }) {
   const headers = {
     "Content-Type": "application/json",
   };

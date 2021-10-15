@@ -1,6 +1,5 @@
 import winston from "winston";
 import expressWinston from "express-winston";
-import _ from "lodash";
 
 export default function makeErrorLogger() {
   return expressWinston.errorLogger({

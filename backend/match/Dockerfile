@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-WORKDIR /usr/src/editor
+WORKDIR /usr/src/match
 
 COPY package.json .
 COPY yarn.lock .

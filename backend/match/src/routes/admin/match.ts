@@ -1,13 +1,13 @@
 import express from "express";
-import makeExpressCallback from "../express-callback";
-import makeValidator from "../middlewares/validator-middleware";
+import makeExpressCallback from "../../express-callback";
+import makeValidator from "../../middlewares/validator-middleware";
 
 import {
   createMatchRules,
   deleteMatchRules,
   getMatchRules,
   updateMatchRules,
-} from "../controllers/match/validators";
+} from "../../controllers/match/validators";
 import {
   createMatchController,
   deleteMatchController,
@@ -15,7 +15,7 @@ import {
   getMatchesController,
   hardDeleteMatchController,
   updateMatchController,
-} from "../controllers/match";
+} from "../../controllers/match";
 
 const matchRouter = express.Router();
 

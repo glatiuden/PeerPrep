@@ -1,15 +1,17 @@
-import mongoose from "mongoose";
+import { Schema } from "mongoose";
 
-const matchSchema = new mongoose.Schema(
+const matchSchema = new Schema(
   {
-    match_id: { type: String, trim: true, unique: true },
-    user_name: {type: String, required: true},
-    partner_name: {type: String, required: true},
-    user_email: {type: String, required: true, unique: true},
-    partner_email: {type: String, required: true, unique: true},
-    difficulty_level: {type: String, enum: ["easy", "medium", "hard"], required: true},
-    topic_chosen: {type: String, required: true},
-    question: {type: String, required: true},
+    partner1_id: { type: Schema.Types.ObjectId, required: true },
+    partner2_id: { type: Schema.Types.ObjectId, required: true },
+    question_id: { type: Schema.Types.ObjectId, required: true },
+    status: {
+      type: String,
+      required: true,
+      enum: ["waiting", "in-progress", "completed", "cancelled"],
+      default: "waiting",
+    },
+    completed_at: { type: Date },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
