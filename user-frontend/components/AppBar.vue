@@ -65,9 +65,7 @@
                   v-if="nav_child.description"
                   class="text-none text-caption mt-1"
                 >
-                  <span class="kinobi-body">
-                    {{ nav_child.description }}
-                  </span>
+                  {{ nav_child.description }}
                 </v-list-item-subtitle>
               </v-list-item-content>
 
@@ -98,8 +96,11 @@
 </template>
 
 <script>
+import systemMixins from "@/mixins/system";
+
 export default {
   name: "AppBar",
+  mixins: [systemMixins],
   data() {
     return {
       tab: 0,

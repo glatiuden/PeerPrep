@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "allowJs": true,
     "sourceMap": true,
+    "noImplicitAny": false,
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
@@ -23,9 +24,13 @@
         "./*"
       ]
     },
+    "typeRoots": ["./node_modules/@types", "./node_modules/vuetify/types"],
     "types": [
+      "@types/node",
       "@nuxt/types",
-      "@types/node"
+      "@nuxtjs/axios",
+      "@nuxtjs/moment",
+      "@nuxtjs/vuetify"
     ]
   },
   "exclude": [

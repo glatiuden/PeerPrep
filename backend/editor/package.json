@@ -39,6 +39,7 @@
   "dependencies": {
     "@types/chai": "^4.2.21",
     "@types/cors": "^2.8.12",
+    "@types/redis": "^2.8.32",
     "body-parser": "^1.19.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
@@ -51,6 +52,9 @@
     "lodash": "^4.17.21",
     "mocha": "^9.1.1",
     "mongoose": "^6.0.3",
+    "redis": "^3.1.2",
+    "socket.io": "^4.2.0",
+    "socket.io-redis": "^6.1.1",
     "validatorjs": "^3.22.1",
     "winston": "^3.3.3"
   },

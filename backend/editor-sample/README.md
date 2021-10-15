@@ -16,7 +16,15 @@ yarn dev
 
 ## Database Setup
 
-Please login to the [MongoDB Atlas](https://account.mongodb.com/account/login) and create a project/database for your service.
+Please login to the [MongoDB Atlas](https://account.mongodb.com/account/login) 
+
+Create a **project** for your service 
+![Project](images/MongoDB-Project.jpg)
+* Click top right -> New Project
+* Name it e.g. `editor-service`, `chat-service`, `question-service`).
+* Leave the configuration as default
+
+Next, there should be a button that says **"Build your database"**.
 
 Configuration
 - Cloud Provider: AWS
@@ -26,7 +34,12 @@ Configuration
 You should see your cluster being created
 ![Overview](images/MongoDB-Overview.png)
 
-Press `Connect` button beside your cluster name, you should be asked to create a user for your database. You can decide the username and randomly generate the password (but please backup the password somewhere).
+Press `Connect` button beside your cluster name, you should be asked to create a user for your database. 
+
+![CreateUser](images/MongoDB-CreateUser.jpg)
+
+* Click `Allow Access from Anywhere`
+* You can decide the username and randomly generate the password (but please backup the username and password! Send it to the Telegram group if possible as well). You need this in your `.env` file.
 
 ![Credentials](images/MongoDB-Connect.png)
 
@@ -37,6 +50,7 @@ Press `Connect your application`
 Take note of the cluster name, e.g. `@cluster0.l5ldk`. 
 
 Create a `.env` file in your folder directory with the credentials and configurations of your database.
+* Do not modify the `make-db.ts`, as it will read the credentials from the `.env` file first.
 
 Example of `.env`
 ```

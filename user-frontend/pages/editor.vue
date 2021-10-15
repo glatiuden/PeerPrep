@@ -17,11 +17,11 @@
     <v-col cols="12" lg="8">
       <BaseCodeEditor />
     </v-col>
-    <v-col> <BaseChat /> </v-col>
+    <v-col> <BaseChat /></v-col>
   </v-row>
 </template>
 <script>
-import editorMixins from "~/mixins/editor";
+import editorMixin from "~/mixins/editor";
 
 import BaseChat from "@/components/Editor/BaseChat";
 import BaseCodeEditor from "@/components/Editor/BaseCodeEditor";
@@ -31,6 +31,6 @@ export default {
     BaseChat,
     BaseCodeEditor,
   },
-  mixins: [editorMixins],
+  mixins: [editorMixin],
 };
 </script>
