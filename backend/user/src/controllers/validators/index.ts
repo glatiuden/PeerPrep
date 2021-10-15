@@ -5,4 +5,4 @@
 
 export default Object.freeze({});
 
-export {  };
+export {};

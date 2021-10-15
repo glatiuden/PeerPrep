@@ -1,9 +1,9 @@
 import express from "express";
-import makeExpressCallback from "../express-callback";
+import makeExpressCallback from "../../express-callback";
 import {
   createAdminController,
-  loginAdminController
-} from "../controllers/admin"
+  loginAdminController,
+} from "../../controllers/admin";
 
 const adminRouter = express.Router();
 

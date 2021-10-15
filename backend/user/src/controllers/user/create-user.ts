@@ -1,23 +1,43 @@
 import _ from "lodash";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
-import IUser from "../../models/interfaces/user";
+import IUser, { UserRole } from "../../models/interfaces/user";
 import { userService } from "../../services";
+import { hashPassword } from "../../configs/bcrypt";
 
 /**
  * @description Create new user record in database
  * @function createUserController
  */
-async function createUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
+async function createUserController(
+  httpRequest: Request & { context: { validated: Partial<IUser> } }
+) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const userDetails: IUser = _.get(httpRequest, "context.validated");
-    userDetails.password_hash = await bcrypt.hash(userDetails.password, 1);
-    const created_user = await userService.insertUser(userDetails);
+    const userDetails: Omit<IUser, "_id"> & { password: string } = _.get(
+      httpRequest,
+      "context.validated"
+    );
+    const user_exist = await userService.findByEmail({
+      email: userDetails.email,
+      role: UserRole.USER,
+    });
+    if (user_exist) {
+      throw Error("User already existed. Please login instead.");
+    }
 
+    const password_hash = await hashPassword({
+      password: userDetails.password,
+    });
+    Object.assign(userDetails, {
+      password_hash,
+      role: UserRole.USER,
+    });
+
+    const created_user = await userService.insertUser(userDetails);
     if (!created_user) {
       throw new Error(`User was not created.`);
     }

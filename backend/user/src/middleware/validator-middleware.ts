@@ -23,7 +23,6 @@ export default function makeValidator(rules: Rules) {
       });
       res.type("json");
       return res.status(422).send(validation.errors);
-    
     }
     return next();
   };

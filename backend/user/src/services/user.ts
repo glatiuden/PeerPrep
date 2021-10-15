@@ -1,21 +1,13 @@
 import mongoose from "mongoose";
 import IUser, { UserRole } from "../models/interfaces/user";
 
-
-export default function makeUserService({ userDbModel }: { userDbModel: mongoose.Model<IUser & mongoose.Document> }) {
+export default function makeUserService({
+  userDbModel,
+}: {
+  userDbModel: mongoose.Model<IUser & mongoose.Document>;
+}) {
   return new (class MongooseUserDb {
     async insertUser(insertPayload: Partial<IUser>): Promise<IUser | null> {
-      insertPayload.role = UserRole.USER
-      const result = await userDbModel.create([insertPayload]);
-      const updated = await userDbModel.findOne({ _id: result[0]?._id });
-      if (updated) {
-        return updated;
-      }
-      return null;
-    }
-
-    async insertAdmin(insertPayload: Partial<IUser>): Promise<IUser | null> {
-      insertPayload.role = UserRole.ADMIN
       const result = await userDbModel.create([insertPayload]);
       const updated = await userDbModel.findOne({ _id: result[0]?._id });
       if (updated) {
@@ -32,9 +24,15 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
       return null;
     }
 
-    async findByEmail({ email }: { email: string }, { role }: { role: UserRole }): Promise<IUser | null> {
-      const existing = await userDbModel.findOne({ email: email });
-      if (existing && existing.role == role) {
+    async findByEmail({
+      email,
+      role,
+    }: {
+      email: string;
+      role: UserRole;
+    }): Promise<IUser | null> {
+      const existing = await userDbModel.findOne({ email, role });
+      if (existing) {
         return existing;
       }
       return null;
@@ -42,7 +40,9 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
 
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
-      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
+      const existing = await userDbModel
+        .find(query_conditions)
+        .sort({ updated_at: "desc" });
       if (existing) {
         return existing;
       }
@@ -64,15 +64,19 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     }
 
     async delete({ id }: { id: string }): Promise<IUser | null> {
-      const existing = await userDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() });
+      const existing = await userDbModel.findOneAndUpdate(
+        { _id: id },
+        { deleted_at: new Date() }
+      );
       if (existing) {
         return existing;
       }
       return null;
     }
 
+    // TODO: Check if this is necessary.
     async reset(): Promise<boolean> {
-      const result = await userDbModel.deleteMany({})
+      const result = await userDbModel.deleteMany({});
       return result.deletedCount > 0;
     }
   })();

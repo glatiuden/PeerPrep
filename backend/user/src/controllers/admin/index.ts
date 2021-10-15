@@ -1,14 +1,11 @@
 import createAdminController from "./create-admin";
 import loginAdminController from "./login-admin";
 
-const userController = Object.freeze({
+const adminController = Object.freeze({
   createAdminController,
-  loginAdminController
+  loginAdminController,
 });
 
-export default userController;
+export default adminController;
 
-export {
-  createAdminController,
-  loginAdminController
-};
+export { createAdminController, loginAdminController };

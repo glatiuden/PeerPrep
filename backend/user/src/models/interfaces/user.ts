@@ -1,13 +1,12 @@
 export enum UserRole {
-  USER = "USER",
-  ADMIN = "ADMIN"
+  USER = "user",
+  ADMIN = "admin",
 }
 
 export default interface IUser {
   _id: string;
   display_name: string;
   email: string;
-  password: string;
   password_hash: string;
   role: UserRole;
   deleted_at?: Date;
