@@ -24,7 +24,7 @@ app.use(makeLogger());
 makeDb();
 
 // Initialize routes & sockets
-const PORT = process.env.port || 3001;
+const PORT = process.env.port || 3004;
 const server = app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });

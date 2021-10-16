@@ -1,6 +1,0 @@
-{
-  "ignore": ["*.spec.js", "README", "src/**/*.spec.ts"],
-  "watch": ["./**/*"],
-  "ext": "js,ts,json,html",
-  "exec": "ts-node --log-error index.ts"
-}
