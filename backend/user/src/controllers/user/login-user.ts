@@ -8,18 +8,13 @@ import { userService } from "../../services";
  * @description Check user's email and password and return login message if successful
  * @function loginUserController
  */
-async function loginUserController(
-  httpRequest: Request & { context: { validated: Partial<IUser> } }
-) {
+async function loginUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const { email, password }: { email: string; password: string } = _.get(
-      httpRequest,
-      "context.validated"
-    );
+    const { email, password }: { email: string; password: string } = _.get(httpRequest, "context.validated");
     const user_exists = await userService.findByEmail({
       email,
       role: UserRole.USER,

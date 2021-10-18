@@ -1,7 +1,4 @@
 import _ from "lodash";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-
 import IUser, { UserRole } from "../../models/interfaces/user";
 import { userService } from "../../services";
 import { verifyPassword } from "../../configs/bcrypt";
@@ -11,18 +8,13 @@ import { generateJWTToken } from "../../configs/jwt";
  * @description Check admin's email and password and return login message if successful
  * @function loginAdminController
  */
-async function loginAdminController(
-  httpRequest: Request & { context: { validated: Partial<IUser> } }
-) {
+async function loginAdminController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const { email, password }: { email: string; password: string } = _.get(
-      httpRequest,
-      "context.validated"
-    );
+    const { email, password }: { email: string; password: string } = _.get(httpRequest, "context.validated");
     const admin_exists = await userService.findByEmail({
       email,
       role: UserRole.ADMIN,
