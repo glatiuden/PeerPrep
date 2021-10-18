@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: match
+  labels:
+    app: match
+  namespace: peerprep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: match
+  template:
+    metadata:
+      labels:
+        app: match
+    spec:
+      containers:
+        - name: match
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: match-env
+          ports:
+            - containerPort: 3003
+              protocol: TCP
+      imagePullSecrets:
+          - name: regcred

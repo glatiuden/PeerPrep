@@ -27,10 +27,10 @@ app.listen(PORT, () => {
 });
 
 // Initialize routes
-app.use("/api", apiRouter);
-app.use("/admin", adminRouter);
+app.use("/match/api", apiRouter);
+app.use("/match/admin", adminRouter);
 
-app.get("/", function (req, res) {
+app.get("/match", function (req, res) {
   res.send("Match service is running");
 });
 

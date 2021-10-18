@@ -22,16 +22,16 @@ app.use(bodyParser.json());
 app.use(makeLogger());
 
 makeDb();
-const PORT = process.env.port || 3000;
+const PORT = process.env.port || 3001;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });
 
 // Initialize routes
-app.use("/api", apiRouter);
-app.use("/admin", adminRouter);
+app.use("/user/api", apiRouter);
+app.use("/user/admin", adminRouter);
 
-app.get("/", function (req, res) {
+app.get("/user", function (req, res) {
   res.send("User Microservice is running");
 });
 

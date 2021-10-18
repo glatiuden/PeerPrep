@@ -20,14 +20,14 @@ app.use(bodyParser.json());
 app.use(makeLogger());
 
 makeDb();
-const PORT = process.env.port || 3001;
+const PORT = process.env.port || 3002;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });
 
 // Initialize routes
-app.use("/api", router);
-app.get("/", function (req, res) {
+app.use("/question/api", router);
+app.get("/question", function (req, res) {
   res.send("Question microservice is running");
 });
 

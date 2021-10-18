@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-import router from "./src/routes";
+import router from "./src/routes/chat";
 import makeSockets from "./src/configs/make-sockets";
 
 const app = express();
@@ -29,8 +29,8 @@ const server = app.listen(PORT, () => {
 });
 
 makeSockets(server, corsOptions);
-app.use("/api", router);
-app.get("/", function (req, res) {
+app.use("/chat/api", router);
+app.get("/chat", function (req, res) {
   res.send("Chat microservice is running");
 });
 
