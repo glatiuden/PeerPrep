@@ -29,8 +29,8 @@ const server = app.listen(PORT, () => {
 });
 
 makeSockets(server, corsOptions);
-app.use("/api", router);
-app.get("/", function (req, res) {
+app.use("/chat/api", router);
+app.get("/chat", function (req, res) {
   res.send("Chat microservice is running");
 });
 

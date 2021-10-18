@@ -28,10 +28,10 @@ app.listen(PORT, () => {
 });
 
 // Initialize routes
-app.use("/api", apiRouter);
-app.use("/admin", adminRouter);
+app.use("/user/api", apiRouter);
+app.use("/user/admin", adminRouter);
 
-app.get("/", function (req, res) {
+app.get("/user", function (req, res) {
   res.send("User Microservice is running");
 });
 
