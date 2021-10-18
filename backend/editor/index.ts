@@ -6,8 +6,8 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-import userRouter from "./src/routes/api";
-import adminRouter from "./src/routes/admin";
+import apiRouter from "./src/routes/api/editor";
+import adminRouter from "./src/routes/admin/editor";
 import makeSockets from "./src/configs/make-sockets";
 
 const app = express();
@@ -31,7 +31,7 @@ const server = app.listen(PORT, () => {
 
 // Initialize sockets & routes
 makeSockets(server, corsOptions);
-app.use("/api", userRouter);
+app.use("/api", apiRouter);
 app.use("/admin", adminRouter);
 app.get("/", function (req, res) {
   res.send("Editor microservice is running");

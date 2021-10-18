@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-import router from "./src/routes";
+import router from "./src/routes/chat";
 import makeSockets from "./src/configs/make-sockets";
 
 const app = express();

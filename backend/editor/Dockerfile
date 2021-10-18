@@ -8,4 +8,4 @@ RUN yarn --frozen-lockfile
 COPY . .
 
 EXPOSE 3004
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "serve" ]
