@@ -1,3 +1,4 @@
+import _ from "lodash";
 import mongoose from "mongoose";
 
 import IQuestion, { PaginatedEditorResult } from "../models/interfaces/question";
@@ -71,32 +72,33 @@ export default function makeQuestionService({
     }
 
     async findAllPaginated({
-      difficulty = "",
-      topic = "",
+      difficulty_levels = [],
+      topics = [],
       query = "",
       page = 1,
       entries_per_page = 15,
     }: {
-      difficulty?: string;
-      topic?: string;
+      difficulty_levels?: string[];
+      topics?: string[];
       query: string;
       page: number;
       entries_per_page?: number;
     }): Promise<PaginatedEditorResult | null> {
       const number_of_entries_to_skip = (page - 1) * entries_per_page;
       const query_conditions = { deleted_at: undefined };
-      if (difficulty) {
-        query_conditions["difficulty"] = difficulty;
+
+      if (!_.isEmpty(difficulty_levels)) {
+        query_conditions["difficulty"] = { $in: difficulty_levels };
       }
 
-      if (topic) {
-        query_conditions["topic"] = topic;
+      if (!_.isEmpty(topics)) {
+        query_conditions["topic"] = { $in: topics };
       }
 
       if (query) {
         query_conditions["$or"] = [
-          { content: { $regex: ".*" + query + ".*", $options: "si" } },
-          { programming_language: { $regex: ".*" + query + ".*", $options: "si" } },
+          { title: { $regex: ".*" + query + ".*", $options: "si" } },
+          { description: { $regex: ".*" + query + ".*", $options: "si" } },
         ];
       }
 

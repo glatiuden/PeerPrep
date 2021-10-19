@@ -11,6 +11,7 @@
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "dependencies": {
+    "@kugatsu/vuenotification": "^1.1.4",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/moment": "^1.6.1",
@@ -20,6 +21,8 @@
     "lodash": "^4.17.21",
     "nuxt": "^2.15.7",
     "nuxt-socket-io": "^1.1.24",
+    "swiper": "5.x",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-chat-scroll": "^1.4.0",
     "vue-lottie": "^0.2.1",
     "vue-webrtc": "^2.0.0",

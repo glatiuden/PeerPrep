@@ -28,6 +28,35 @@ const mutations: MutationTree<QuestionState> = {
   [MutationTypes.SET_QUESTIONS](state, { data }: { data: any[] }) {
     state.questions = data;
   },
+  /**
+   * @description to set questions pagination
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_QUESTIONS_PAGINATION](
+    state,
+    {
+      data,
+    }: {
+      data: {
+        current_page: number;
+        from: null | number;
+        to: null | number;
+        per_page: number;
+        total: number;
+      };
+    },
+  ) {
+    state.questions_pagination = data;
+  },
+  /**
+   * @description to set question topics
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_QUESTION_TOPICS](state, { data }: { data: any[] }) {
+    state.question_topics = data;
+  },
 };
 
 export default mutations;

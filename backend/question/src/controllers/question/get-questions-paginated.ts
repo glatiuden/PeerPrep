@@ -12,12 +12,19 @@ async function getQuestionsPaginatedController(httpRequest: Request) {
   };
 
   try {
-    const { difficulty, topic, query, page }: { difficulty: string; topic: string; query: string; page: number } =
-      _.get(httpRequest, "context.validated");
+    const {
+      difficulty_levels,
+      topics,
+      query,
+      page,
+    }: { difficulty_levels: string[]; topics: string[]; query: string; page: number } = _.get(
+      httpRequest,
+      "context.validated",
+    );
 
     const questions_paginated = await questionService.findAllPaginated({
-      difficulty,
-      topic,
+      difficulty_levels,
+      topics,
       query,
       page,
     });

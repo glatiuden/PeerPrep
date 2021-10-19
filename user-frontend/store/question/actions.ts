@@ -7,24 +7,40 @@ import { RootState } from "../index";
 
 const actions: ActionTree<QuestionState, RootState> = {
   /**
-   * @description to get editors
+   * @description to get questions
    * @param param0
    * @param param1
    */
-  async [ActionTypes.GET_QUESTIONS]({ commit }) {
-    const { data: editors } = await this.$axios.$get(`/editor/api`);
-    commit(MutationTypes.SET_QUESTIONS, { data: editors });
-    return editors;
+  async [ActionTypes.GET_QUESTIONS_PAGINATED]({ commit }, params = {}) {
+    const { pagination, data: questions } = await this.$axios.$get(
+      `/question/api`,
+      { params },
+    );
+    commit(MutationTypes.SET_QUESTIONS, { data: questions });
+    commit(MutationTypes.SET_QUESTIONS_PAGINATION, { data: pagination });
+    return questions;
   },
   /**
-   * @description to get editor by id
+   * @description to get question by id
    * @param param0
    * @param param1
    */
-  async [ActionTypes.GET_QUESTION]({ commit }, { editor_id }) {
-    const { data: editor } = await this.$axios.$get(`/editor/api/${editor_id}`);
-    commit(MutationTypes.SET_QUESTION, { data: editor });
-    return editor;
+  async [ActionTypes.GET_QUESTION]({ commit }, { question_id }) {
+    const { data: question } = await this.$axios.$get(
+      `/question/api/${question_id}`,
+    );
+    commit(MutationTypes.SET_QUESTION, { data: question });
+    return question;
+  },
+  /**
+   * @description to get question by id
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.GET_QUESTION_TOPICS]({ commit }) {
+    const { data: topics } = await this.$axios.$get(`/question/api/topic`);
+    commit(MutationTypes.SET_QUESTION_TOPICS, { data: topics });
+    return topics;
   },
 };
 
