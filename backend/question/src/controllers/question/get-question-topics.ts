@@ -1,21 +1,21 @@
 import { questionService } from "../../services";
 
 /**
- * @description Get all questions
- * @function getQuestionsController
+ * @description Get all question topics
+ * @function getQuestionTopicsController
  */
-async function getQuestionsController() {
+async function getQuestionTopicsController() {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const questions = await questionService.findAll();
+    const topics = await questionService.findAllTopics();
     return {
       headers,
       statusCode: 200,
       body: {
-        data: questions,
+        data: topics,
       },
     };
   } catch (err: any) {
@@ -29,4 +29,4 @@ async function getQuestionsController() {
   }
 }
 
-export default getQuestionsController;
+export default getQuestionTopicsController;

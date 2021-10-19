@@ -1,7 +1,8 @@
 const createQuestionRules = {
   difficulty: "required|string",
   topic: "required|string",
-  question: "required|string",
+  title: "required|string",
+  description: "required|string",
   hint: "required|string",
   solution: "required|string",
 };

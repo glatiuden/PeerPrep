@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const questionSchema = new mongoose.Schema(
   {
+    title: { type: String, default: "" }, // Title of the question
+    description: { type: String, default: "" }, // Description of the question
     difficulty: { type: String, enum: ["easy", "medium", "hard"], default: "" },
     topic: { type: String, enum: ["Data Structures", "Algorithms", "Database"], default: "" },
-    question: { type: String, default: "" },
     hint: { type: String, default: "" },
     solution: { type: String, default: "" },
     deleted_at: { type: Date },

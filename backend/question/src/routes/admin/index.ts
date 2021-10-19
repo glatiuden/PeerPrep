@@ -1,13 +1,13 @@
 import express from "express";
-import makeExpressCallback from "../express-callback";
-import makeValidator from "../middlewares/validator-middleware";
+import makeExpressCallback from "../../express-callback";
+import makeValidator from "../../middlewares/validator-middleware";
 
 import {
   createQuestionRules,
   deleteQuestionRules,
   getQuestionRules,
   updateQuestionRules,
-} from "../controllers/question/validators";
+} from "../../controllers/question/validators";
 import {
   createQuestionController,
   deleteQuestionController,
@@ -15,7 +15,7 @@ import {
   getQuestionsController,
   hardDeleteQuestionController,
   updateQuestionController,
-} from "../controllers/question";
+} from "../../controllers/question";
 
 const questionRouter = express.Router();
 
