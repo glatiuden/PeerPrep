@@ -1,0 +1,5 @@
+export enum MutationTypes {
+  SET_LOADING = "SET_LOADING",
+  SET_QUESTION = "SET_QUESTION",
+  SET_QUESTIONS = "SET_QUESTIONS",
+}

@@ -12,7 +12,7 @@ const actions: ActionTree<EditorState, RootState> = {
    * @param param1
    */
   async [ActionTypes.GET_EDITORS]({ commit }) {
-    const { data: editors } = await this.$axios.$get(`/api/editor`);
+    const { data: editors } = await this.$axios.$get(`/editor/api`);
     commit(MutationTypes.SET_EDITORS, { data: editors });
     return editors;
   },
@@ -22,7 +22,7 @@ const actions: ActionTree<EditorState, RootState> = {
    * @param param1
    */
   async [ActionTypes.GET_EDITOR]({ commit }, { editor_id }) {
-    const { data: editor } = await this.$axios.$get(`/api/editor/${editor_id}`);
+    const { data: editor } = await this.$axios.$get(`/editor/api/${editor_id}`);
     commit(MutationTypes.SET_EDITOR, { data: editor });
     return editor;
   },
