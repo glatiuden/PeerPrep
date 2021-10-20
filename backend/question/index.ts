@@ -8,6 +8,7 @@ import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
+import makeRabbit from "./src/configs/make-rpc-consumer";
 
 const app = express();
 const corsOptions = {
@@ -19,7 +20,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(makeLogger());
-
+makeRabbit();
 makeDb();
 const PORT = process.env.port || 3002;
 app.listen(PORT, () => {

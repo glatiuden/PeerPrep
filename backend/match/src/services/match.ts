@@ -18,7 +18,7 @@ export default function makeMatchService({
     }
 
     async findById({ id }: { id: string }): Promise<IMatch | null> {
-      const existing = await matchDbModel.findById(id);
+      const existing = await matchDbModel.findById(id).lean();
       if (existing) {
         return existing;
       }
