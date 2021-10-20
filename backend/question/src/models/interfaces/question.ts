@@ -1,15 +1,22 @@
 export default interface IQuestion {
   _id: string;
-  difficulty: string;
-  topic: string;
   title: string;
   description: string;
+  difficulty: string;
+  topic: string;
   hint: string;
+  examples: Example[];
+  constraints: string[];
   solution: string;
   deleted_at?: Date;
   created_at: Date;
   updated_at: Date;
 }
+
+type Example = {
+  input: string;
+  output: string;
+};
 
 export interface PaginatedEditorResult {
   data: IQuestion[];

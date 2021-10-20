@@ -18,9 +18,10 @@
           v-model="selected_difficulty_levels"
           :items="difficulty_levels"
           :loading="loading"
-          label="Filter by difficulty level"
+          label="Difficulty Level"
           item-value="value"
           item-text="text"
+          class="rounded-0"
           multiple
           outlined
           dense
@@ -41,7 +42,8 @@
           v-model="selected_topics"
           :items="question_topics"
           :loading="loading"
-          label="Filter by topics"
+          label="Topic"
+          class="rounded-0"
           multiple
           outlined
           dense
@@ -63,6 +65,7 @@
           v-model="search"
           prepend-inner-icon="mdi-magnify"
           label="Search"
+          class="rounded-0"
           single-line
           outlined
           dense
@@ -90,7 +93,7 @@
           class="mr-4"
           close
           color="primary"
-          @click:close="closeChip(level, 'difficulty_level')"
+          @click:close="closeChip('difficulty_level', level)"
         >
           Difficulty:&nbsp;<b>{{ level | capitalize }}</b>
         </v-chip>
@@ -103,12 +106,16 @@
           close
           class="mr-4"
           color="primary"
-          @click:close="closeChip(topic, 'topic')"
+          @click:close="closeChip('topic', topic)"
         >
           Topic: {{ topic }}
         </v-chip>
       </template>
     </div>
+
+    <v-dialog v-model="open_dialog" max-width="950px">
+      <BaseQuestionDialog @close="open_dialog = false" />
+    </v-dialog>
 
     <v-data-table
       :headers="headers"
@@ -118,13 +125,15 @@
       item-key="_id"
       :sort-by="['created_at']"
       :sort-desc="[true]"
+      :page.sync="page"
       hide-default-footer
       :items-per-page="15"
+      class="elevation-2"
     >
-      <template #body.prepend="{ headers }">
-        <td :colspan="headers.length">
-          <v-divider></v-divider>
-        </td>
+      <template #item.title="{ item }">
+        <span class="clickable" @click="openQuestionDialog(item._id)">
+          {{ item.difficulty }}
+        </span>
       </template>
 
       <template #item.difficulty="{ item }">
@@ -168,10 +177,11 @@ import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
+import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
 
 export default {
   name: "Question",
-  components: { BaseQuestionCategoryCard },
+  components: { BaseQuestionCategoryCard, BaseQuestionDialog },
   mixins: [systemMixin, questionMixin],
   data() {
     return {
@@ -214,6 +224,7 @@ export default {
         medium: "yellow",
         hard: "red",
       },
+      open_dialog: false,
     };
   },
   async fetch() {
@@ -290,6 +301,18 @@ export default {
           break;
       }
       this.performFilter();
+    },
+
+    async openQuestionDialog(question_id) {
+      try {
+        this.SET_LOADING({ data: true });
+        await this.GET_QUESTION({ question_id });
+        this.open_dialog = true;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
     },
   },
 };
