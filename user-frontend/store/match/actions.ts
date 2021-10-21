@@ -33,7 +33,7 @@ const actions: ActionTree<MatchState, RootState> = {
    */
   async [ActionTypes.CREATE_MATCH]({ commit }, { match }) {
     const { data: created_match } = await this.$axios.$post(
-      `/api/match`,
+      `/match/api`,
       match,
     );
     return created_match;
@@ -45,7 +45,7 @@ const actions: ActionTree<MatchState, RootState> = {
    * @param param1
    */
   async [ActionTypes.UPDATE_MATCH]({ commit }, { match }) {
-    const { data: updated_match } = await this.$axios.$put(`/api/match`, match);
+    const { data: updated_match } = await this.$axios.$put(`/match/api`, match);
     return updated_match;
   },
 };

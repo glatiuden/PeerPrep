@@ -2,6 +2,16 @@ import _ from "lodash";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
+  data() {
+    return {
+      chip_colors: {
+        easy: "green",
+        medium: "yellow",
+        hard: "red",
+      },
+    };
+  },
+
   computed: {
     ...mapGetters({
       loading: "question/loading",

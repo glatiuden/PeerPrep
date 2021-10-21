@@ -4,6 +4,8 @@ export default interface IMatch {
   partner2_id: string; // Used to fetch user info
   question_id: string; // Used to fetch question info
   status: MatchStatus; // Waiting | In-Progress | Completed -> Status to enqueue the match
+  programming_languages: string[];
+  mode: MatchMode;
   completed_at?: Date;
   deleted_at?: Date;
   created_at: Date;
@@ -15,4 +17,9 @@ export enum MatchStatus {
   IN_PROGRESS = "in-progress", // Match in Progress
   COMPLETED = "completed", // Match completed
   CANCELLED = "cancelled", // Match cancelled
+}
+
+export enum MatchMode {
+  TIMED = "timed",
+  OTOT = "otot",
 }

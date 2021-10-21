@@ -132,12 +132,12 @@
     >
       <template #item.title="{ item }">
         <span class="clickable" @click="openQuestionDialog(item._id)">
-          {{ item.difficulty }}
+          {{ item.title }}
         </span>
       </template>
 
       <template #item.difficulty="{ item }">
-        <v-chip class="white--text" :color="chips_colors[item.difficulty]">
+        <v-chip class="white--text" :color="chip_colors[item.difficulty]">
           {{ item.difficulty }}
         </v-chip>
       </template>
@@ -170,18 +170,27 @@
         ></v-pagination>
       </v-col>
     </v-row>
+    <v-dialog v-model="open_matching_dialog" max-width="550px">
+      <BaseMatchingDialog />
+    </v-dialog>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
+import BaseMatchingDialog from "@/components/Match/BaseMatchingDialog";
 
 export default {
   name: "Question",
-  components: { BaseQuestionCategoryCard, BaseQuestionDialog },
+  components: {
+    BaseQuestionCategoryCard,
+    BaseQuestionDialog,
+    BaseMatchingDialog,
+  },
   mixins: [systemMixin, questionMixin],
   data() {
     return {
@@ -219,11 +228,6 @@ export default {
       page: 1,
       selected_difficulty_levels: [],
       selected_topics: [],
-      chips_colors: {
-        easy: "green",
-        medium: "yellow",
-        hard: "red",
-      },
       open_dialog: false,
     };
   },
@@ -238,6 +242,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      open_matching_dialog: "match/open_matching_dialog",
+    }),
     /**
      * @description pages_exists will return true
      * @returns boolean
@@ -303,6 +310,9 @@ export default {
       this.performFilter();
     },
 
+    /**
+     * @description Load the question from server and opens the dialog
+     */
     async openQuestionDialog(question_id) {
       try {
         this.SET_LOADING({ data: true });
