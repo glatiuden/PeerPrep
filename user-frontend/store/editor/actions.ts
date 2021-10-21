@@ -4,6 +4,7 @@ import { ActionTypes } from "./action-type";
 import { MutationTypes } from "./mutation-type";
 import { EditorState } from "./index";
 import { RootState } from "../index";
+import axios from "axios";
 
 const actions: ActionTree<EditorState, RootState> = {
   /**
@@ -38,31 +39,39 @@ const actions: ActionTree<EditorState, RootState> = {
     );
     return created_editor;
   },
+  /**
+   * @description execute user's code
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.EXECUTE_CODE]({ commit }, params = {}) {
+    try {
+      const URL = "https://codexweb.netlify.app/.netlify/functions/enforceCode";
+      const programming_language = _.get(params, "programming_language");
+      const data = _.get(params, "content");
 
-  // These methods are not used, only used for reference. If your service needs such method, copy and uncomment in your own file.
-  // /**
-  //  * @description to update editor
-  //  * @param param0
-  //  * @param param1
-  //  */
-  // async [ActionTypes.UPDATE_EDITOR]({ commit }, { editor }) {
-  //   const { data: updated_editor } = await this.$axios.$put(
-  //     `/api/editor`,
-  //     editor,
-  //   );
-  //   return updated_editor;
-  // },
-  // /**
-  //  * @description to delete editor
-  //  * @param param0
-  //  * @param param1
-  //  */
-  // async [ActionTypes.DELETE_EDITOR]({ commit }, { editor_id }) {
-  //   const { data: deleted_editor } = await this.$axios.$delete(
-  //     `/api/editor/${editor_id}`,
-  //   );
-  //   return deleted_editor;
-  // },
+      let language;
+      switch (programming_language) {
+        case "cpp":
+          language = "cpp";
+          break;
+        case "python":
+          language = "py";
+          break;
+        case "java":
+          language = "java";
+          break;
+      }
+      const result = await axios.post(URL, {
+        data,
+        language,
+      });
+      console.log(data);
+      return result;
+    } catch (err) {
+      console.error(err);
+    }
+  },
 };
 
 export default actions;
