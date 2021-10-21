@@ -1,4 +1,4 @@
-import { matchService } from "../../services";
+import { matchService } from "../../../services";
 
 /**
  * @description Get all match records

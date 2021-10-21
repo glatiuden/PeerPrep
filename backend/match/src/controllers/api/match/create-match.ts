@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import IMatch from "../../models/interfaces/match";
-import { matchService } from "../../services";
+import IMatch from "../../../models/interfaces/match";
+import { matchService } from "../../../services";
 
 /**
  * @description Create new match record in database

@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { matchService, questionService } from "../../services";
+import { matchService } from "../../../services";
 
 /**
  * @description Get match by ID
@@ -18,16 +18,11 @@ async function getMatchController(httpRequest: Request & { context: { validated:
       throw new Error(`Match ${match_id} does not exist.`);
     }
 
-    const question = await questionService.findById({ id: match.question_id });
-
     return {
       headers,
       statusCode: 200,
       body: {
-        data: {
-          ...match,
-          question,
-        },
+        data: match,
       },
     };
   } catch (err: any) {

@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { matchService } from "../../services";
+import { matchService } from "../../../services";
 
 /**
  * @description Delete existing match record in database by ID

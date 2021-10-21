@@ -34,6 +34,15 @@ export default function makeMatchService({
       return [];
     }
 
+    async findAllByUserId({ user_id }: { user_id: string }): Promise<IMatch[]> {
+      const query_conditions = { user_id, deleted_at: undefined };
+      const existing = await matchDbModel.find(query_conditions).sort({ updated_at: "desc" });
+      if (existing) {
+        return existing;
+      }
+      return [];
+    }
+
     async update(payload: Partial<IMatch>): Promise<IMatch | null> {
       await matchDbModel.findOneAndUpdate({ _id: payload._id }, payload);
       const updated = await matchDbModel.findById({ _id: payload._id });
