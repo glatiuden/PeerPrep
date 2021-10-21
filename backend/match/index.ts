@@ -8,7 +8,7 @@ import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
-import makeRabbit from "./src/configs/make-rpc-producer";
+import makeRabbit from "./src/configs/make-rabbitmq-rpc";
 
 const app = express();
 const corsOptions = {
@@ -20,9 +20,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(makeLogger());
-new makeRabbit();
 
 makeDb();
+const rabbit = new makeRabbit();
+rabbit.createRPCQueue("question");
+rabbit.createRPCQueue("user");
+
 const PORT = process.env.port || 3003;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);

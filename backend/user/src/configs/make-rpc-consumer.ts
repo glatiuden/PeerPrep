@@ -1,7 +1,7 @@
 import _ from "lodash";
 import jackrabbit from "@pager/jackrabbit";
 
-import { questionService } from "../services";
+import { userService } from "../services";
 import { logger } from "./logs";
 
 export default function makeRPCConsumer() {
@@ -9,7 +9,7 @@ export default function makeRPCConsumer() {
 
   const rabbit = jackrabbit(rabbit_url);
   const exchange = rabbit.default();
-  const rpc = exchange.queue({ name: "question", prefetch: 1, durable: false });
+  const rpc = exchange.queue({ name: "user", prefetch: 1, durable: false });
 
   const onRequest = async (data, reply) => {
     const requestor = _.get(data, "requestor");
@@ -20,7 +20,7 @@ export default function makeRPCConsumer() {
     let result;
     switch (request_type) {
       case "getById":
-        result = await questionService.findById({ id: question_id });
+        result = await userService.findById({ id: question_id });
         break;
     }
 
