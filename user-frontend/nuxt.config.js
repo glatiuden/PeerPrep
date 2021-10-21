@@ -88,7 +88,7 @@ export default {
       process.env.NODE_ENV === "production" ||
         process.env.NODE_ENV === "staging"
         ? process.env.BASE_URL
-        : "http://localhost:3002", // Used as fallback if no runtime config is provided
+        : "http://localhost:3006", // Used as fallback if no runtime config is provided
     prefix: "/api",
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
