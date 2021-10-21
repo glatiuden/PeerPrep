@@ -13,8 +13,8 @@ import {
 const matchRouter = express.Router();
 
 matchRouter.post("/", makeValidator(createMatchRules), makeExpressCallback(createMatchController));
-matchRouter.get("/:user_id", makeExpressCallback(getMatchesByUserIdController));
 matchRouter.get("/:match_id", makeValidator(getMatchRules), makeExpressCallback(getMatchController));
+matchRouter.get("/user/:user_id", makeExpressCallback(getMatchesByUserIdController));
 matchRouter.put("/", makeValidator(updateMatchRules), makeExpressCallback(updateMatchController));
 
 export default matchRouter;

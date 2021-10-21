@@ -29,4 +29,5 @@ export default function makeRPCConsumer() {
   };
 
   rpc.consume(onRequest);
+  rpc.on("error", () => makeRPCConsumer());
 }

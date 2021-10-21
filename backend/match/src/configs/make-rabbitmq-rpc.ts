@@ -25,7 +25,7 @@ export default class RabbitMQRPC {
   }
 
   static getExchange(): Exchange {
-    if (!RabbitMQRPC.exchange) {
+    if (!_.isNil(RabbitMQRPC.exchange)) {
       return RabbitMQRPC.exchange;
     }
 

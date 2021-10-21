@@ -2,9 +2,10 @@ export default interface IQuestion {
   _id: string;
   title: string;
   description: string;
-  difficulty: string;
-  topic: string;
-  hint: string;
+  recommended_duration: number; // Minutes
+  difficulty: string; // easy, medium, hard
+  topic: string; // Data Structures, Algorithms, Database
+  hints: string[];
   examples: Example[];
   constraints: string[];
   solution: string;
