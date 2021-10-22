@@ -1,8 +1,9 @@
 import _ from "lodash";
-import { verifyPassword } from "../../configs/bcrypt";
-import { generateJWTToken } from "../../configs/jwt";
-import IUser, { UserRole } from "../../models/interfaces/user";
-import { userService } from "../../services";
+import { verifyPassword } from "../../../configs/bcrypt";
+import { generateJWTToken } from "../../../configs/jwt";
+
+import IUser, { UserRole } from "../../../models/interfaces/user";
+import { userService } from "../../../services";
 
 /**
  * @description Check user's email and password and return login message if successful
@@ -28,6 +29,7 @@ async function loginUserController(httpRequest: Request & { context: { validated
       password: password,
       hash_password: user_exists.password_hash,
     });
+
     if (!is_valid_password) {
       throw new Error(`Incorrect password`);
     }

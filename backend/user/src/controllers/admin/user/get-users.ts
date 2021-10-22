@@ -1,9 +1,9 @@
-import { userService } from "../../services";
+import { userService } from "../../../services";
 /**
  * @description Get all users records
  * @function getUsersController
  */
-async function getUsersController(httpRequest: Request) {
+async function getUsersController() {
   const headers = {
     "Content-Type": "application/json",
   };

@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import IUser from "../../models/interfaces/user";
-import { userService } from "../../services";
+import IUser from "../../../models/interfaces/user";
+import { userService } from "../../../services";
 
 /**
  * @description Update existing user record in database
@@ -16,7 +16,7 @@ async function updateUserController(httpRequest: Request & { context: { validate
     const userDetails: IUser = _.get(httpRequest, "context.validated");
     const updated_user = await userService.update(userDetails);
     if (!updated_user) {
-      throw new Error(`Chat was not updated.`);
+      throw new Error(`User was not updated.`);
     }
 
     return {

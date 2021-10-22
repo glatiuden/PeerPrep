@@ -1,11 +1,10 @@
 import createUserController from "./create-user";
-import loginUserController from "./login-user";
 import getUsersController from "./get-users";
 import getUserController from "./get-user";
 import updateUserController from "./update-user";
 import deleteUserController from "./delete-user";
 import hardDeleteUserController from "./hard-delete-user";
-import deleteAllUsersController from "./reset-users";
+import resetUsersController from "./reset-users";
 
 const userController = Object.freeze({
   createUserController,
@@ -13,9 +12,8 @@ const userController = Object.freeze({
   getUserController,
   deleteUserController,
   hardDeleteUserController,
-  deleteAllUsersController,
+  resetUsersController,
   updateUserController,
-  loginUserController,
 });
 
 export default userController;
@@ -26,7 +24,6 @@ export {
   getUserController,
   deleteUserController,
   hardDeleteUserController,
-  deleteAllUsersController,
+  resetUsersController,
   updateUserController,
-  loginUserController,
 };

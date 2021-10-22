@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 import IUser, { UserRole } from "../models/interfaces/user";
 
-export default function makeUserService({
-  userDbModel,
-}: {
-  userDbModel: mongoose.Model<IUser & mongoose.Document>;
-}) {
+export default function makeUserService({ userDbModel }: { userDbModel: mongoose.Model<IUser & mongoose.Document> }) {
   return new (class MongooseUserDb {
     async insertUser(insertPayload: Partial<IUser>): Promise<IUser | null> {
       const result = await userDbModel.create([insertPayload]);
@@ -24,13 +20,7 @@ export default function makeUserService({
       return null;
     }
 
-    async findByEmail({
-      email,
-      role,
-    }: {
-      email: string;
-      role: UserRole;
-    }): Promise<IUser | null> {
+    async findByEmail({ email, role = UserRole.USER }: { email: string; role?: UserRole }): Promise<IUser | null> {
       const existing = await userDbModel.findOne({ email, role });
       if (existing) {
         return existing;
@@ -40,9 +30,7 @@ export default function makeUserService({
 
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
-      const existing = await userDbModel
-        .find(query_conditions)
-        .sort({ updated_at: "desc" });
+      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
       if (existing) {
         return existing;
       }
@@ -64,10 +52,7 @@ export default function makeUserService({
     }
 
     async delete({ id }: { id: string }): Promise<IUser | null> {
-      const existing = await userDbModel.findOneAndUpdate(
-        { _id: id },
-        { deleted_at: new Date() }
-      );
+      const existing = await userDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() });
       if (existing) {
         return existing;
       }

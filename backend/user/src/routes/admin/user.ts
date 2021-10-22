@@ -6,27 +6,22 @@ import {
   getUsersController,
   deleteUserController,
   hardDeleteUserController,
-  deleteAllUsersController,
+  resetUsersController,
   updateUserController,
-  loginUserController,
-} from "../../controllers/user";
+} from "../../controllers/admin/user";
 
 import tokenValidator from "../../middleware/token-validator";
 
 const userRouter = express.Router();
 
 userRouter.post("/", makeExpressCallback(createUserController));
-userRouter.post("/login", makeExpressCallback(loginUserController));
 
 userRouter.get("/", makeExpressCallback(getUsersController));
 userRouter.get("/:user_id", makeExpressCallback(getUserController));
 
-userRouter.delete("/reset", makeExpressCallback(deleteAllUsersController));
+userRouter.delete("/reset", makeExpressCallback(resetUsersController));
 userRouter.delete("/:user_id", makeExpressCallback(deleteUserController));
-userRouter.delete(
-  "/hard-delete/:user_id",
-  makeExpressCallback(hardDeleteUserController)
-);
+userRouter.delete("/hard-delete/:user_id", makeExpressCallback(hardDeleteUserController));
 
 userRouter.put("/:user_id", makeExpressCallback(updateUserController));
 

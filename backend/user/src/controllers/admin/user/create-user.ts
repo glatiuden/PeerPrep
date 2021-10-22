@@ -1,7 +1,7 @@
 import _ from "lodash";
-import IUser, { UserRole } from "../../models/interfaces/user";
-import { userService } from "../../services";
-import { hashPassword } from "../../configs/bcrypt";
+import IUser, { UserRole } from "../../../models/interfaces/user";
+import { userService } from "../../../services";
+import { hashPassword } from "../../../configs/bcrypt";
 
 /**
  * @description Create new user record in database

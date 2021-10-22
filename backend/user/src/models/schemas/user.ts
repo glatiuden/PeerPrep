@@ -16,7 +16,7 @@ const userSchema = new Schema(
       updatedAt: "updated_at",
     },
     autoCreate: true,
-  }
+  },
 );
 
 export default userSchema;

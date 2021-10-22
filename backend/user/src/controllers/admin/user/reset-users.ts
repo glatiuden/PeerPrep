@@ -1,12 +1,12 @@
 import _ from "lodash";
 
-import { userService } from "../../services";
+import { userService } from "../../../services";
 
 /**
  * @description Delete all users in the database
- * @function deleteAllUsersController
+ * @function resetUsersController
  */
-async function deleteAllUsersController(httpRequest: Request) {
+async function resetUsersController() {
   const headers = {
     "Content-Type": "application/json",
   };
@@ -36,4 +36,4 @@ async function deleteAllUsersController(httpRequest: Request) {
   }
 }
 
-export default deleteAllUsersController;
+export default resetUsersController;

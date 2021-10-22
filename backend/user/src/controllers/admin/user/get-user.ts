@@ -1,23 +1,18 @@
 import _ from "lodash";
 
-import { userService } from "../../services";
+import { userService } from "../../../services";
 
 /**
  * @description Get user by ID
  * @function getUserController
  */
-async function getUserController(
-  httpRequest: Request & { context: { validated: { user_id: string } } }
-) {
+async function getUserController(httpRequest: Request & { context: { validated: { user_id: string } } }) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const { user_id }: { user_id: string } = _.get(
-      httpRequest,
-      "context.validated"
-    );
+    const { user_id }: { user_id: string } = _.get(httpRequest, "context.validated");
     const user = await userService.findById({ id: user_id });
     if (!user) {
       throw new Error(`User with ${user_id} does not exist.`);

@@ -6,10 +6,15 @@ import { logger } from "./logs";
 
 export default function makeRPCConsumer() {
   const rabbit_url = process.env.RABBIT_URL || "invalid URL";
+  if (!rabbit_url) {
+    console.warn("RabbitMQ URL not found. RPC is not established");
+    return;
+  }
 
   const rabbit = jackrabbit(rabbit_url);
   const exchange = rabbit.default();
   const rpc = exchange.queue({ name: "user", prefetch: 1, durable: false });
+  console.log(`Succesfully connected to RabbitMQ (RPC User)`);
 
   const onRequest = async (data, reply) => {
     const requestor = _.get(data, "requestor");

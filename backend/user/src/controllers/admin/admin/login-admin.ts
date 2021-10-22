@@ -1,8 +1,9 @@
 import _ from "lodash";
-import IUser, { UserRole } from "../../models/interfaces/user";
-import { userService } from "../../services";
-import { verifyPassword } from "../../configs/bcrypt";
-import { generateJWTToken } from "../../configs/jwt";
+import { verifyPassword } from "../../../configs/bcrypt";
+import { generateJWTToken } from "../../../configs/jwt";
+
+import IUser, { UserRole } from "../../../models/interfaces/user";
+import { userService } from "../../../services";
 
 /**
  * @description Check admin's email and password and return login message if successful
@@ -19,6 +20,7 @@ async function loginAdminController(httpRequest: Request & { context: { validate
       email,
       role: UserRole.ADMIN,
     });
+
     if (!admin_exists) {
       throw new Error(`Admin does not exist.`);
     }
