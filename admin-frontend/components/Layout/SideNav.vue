@@ -121,10 +121,10 @@
 </template>
 
 <script>
-import systemMixins from "@/mixins/system";
+import systemMixin from "@/mixins/system";
 
 export default {
-  mixins: [systemMixins],
+  mixins: [systemMixin],
   data() {
     return {
       drawer: true,

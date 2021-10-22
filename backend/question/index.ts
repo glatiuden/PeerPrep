@@ -6,7 +6,9 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-import router from "./src/routes";
+import apiRouter from "./src/routes/api";
+import adminRouter from "./src/routes/admin";
+import makeRabbit from "./src/configs/make-rpc-consumer";
 
 const app = express();
 const corsOptions = {
@@ -18,7 +20,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(makeLogger());
-
+makeRabbit();
 makeDb();
 const PORT = process.env.port || 3002;
 app.listen(PORT, () => {
@@ -26,7 +28,8 @@ app.listen(PORT, () => {
 });
 
 // Initialize routes
-app.use("/question/api", router);
+app.use("/question/api", apiRouter);
+app.use("/question/admin", adminRouter);
 app.get("/question", function (req, res) {
   res.send("Question microservice is running");
 });

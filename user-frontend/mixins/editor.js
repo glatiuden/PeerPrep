@@ -15,6 +15,7 @@ export default {
       GET_EDITORS: "editor/GET_EDITORS",
       GET_EDITOR: "editor/GET_EDITOR",
       CREATE_EDITOR: "editor/CREATE_EDITOR",
+      EXECUTE_CODE: "editor/EXECUTE_CODE",
     }),
 
     ...mapMutations({

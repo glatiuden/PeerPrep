@@ -32,6 +32,10 @@ export default {
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
     { src: "@/plugins/vue-chat-scroll", mode: "client", ssr: false },
     { src: "@/plugins/vue-webrtc", mode: "client", ssr: false },
+    { src: "@/plugins/vue-awesome-swiper", mode: "client", ssr: false },
+    { src: "@/plugins/vue-notification", mode: "client", ssr: false },
+    { src: "@/plugins/vue-awesome-countdown", mode: "client", ssr: false },
+    { src: "@/plugins/avatar", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -54,11 +58,11 @@ export default {
       {
         name: "editor",
         default: true,
-        url: "http://localhost:3001",
+        url: "http://localhost:3004",
       },
       {
         name: "chat",
-        url: "http://localhost:3002",
+        url: "http://localhost:3005",
       },
     ],
   },
@@ -82,8 +86,11 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "http://localhost:3001", // Temporary Hardcoded until ELB is implemented
-    prefix: "/api",
+    baseURL:
+      process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "staging"
+        ? process.env.BASE_URL
+        : "http://localhost:3006", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries
