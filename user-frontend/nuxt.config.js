@@ -35,6 +35,7 @@ export default {
     { src: "@/plugins/vue-awesome-swiper", mode: "client", ssr: false },
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-awesome-countdown", mode: "client", ssr: false },
+    { src: "@/plugins/avatar", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

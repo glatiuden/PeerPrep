@@ -24,15 +24,13 @@
                   text-center
                 "
               >
-                <span class="kinobi-title">Welcome to <b>PeerPrep</b></span>
+                >Welcome to <b>PeerPrep</b>
               </div>
 
               <span
                 class="text-body-2 d-flex justify-center text-center mt-1 mb-5"
               >
-                <span class="kinobi-body">
-                  Sign in now to explore our technical interview resources
-                </span>
+                Sign in now to explore our technical interview resources
               </span>
             </div>
             <v-form v-model="valid">
@@ -93,7 +91,7 @@
                       float-right
                     "
                   >
-                    <span class="kinobi-body">Forget password</span>
+                    Forget password
                   </span>
                 </v-col>
 
@@ -112,7 +110,7 @@
                   </v-btn>
 
                   <span class="pt-5 text-caption tnc-text">
-                    <span class="kinobi-body">Don't have an account?</span>
+                    Don't have an account?
                     <v-btn
                       class="pa-2 mb-1"
                       depressed
