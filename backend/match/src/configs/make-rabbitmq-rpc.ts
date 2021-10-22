@@ -7,6 +7,11 @@ export default class RabbitMQRPC {
 
   constructor() {
     const rabbit_url = process.env.RABBIT_URL || "invalid URL";
+    if (!rabbit_url) {
+      console.warn("RabbitMQ URL not found. RPC is not established");
+      return;
+    }
+
     const rabbit = jackrabbit(rabbit_url);
     console.log("Setup RabbitMQ RPC...");
     RabbitMQRPC.exchange = rabbit.default();
