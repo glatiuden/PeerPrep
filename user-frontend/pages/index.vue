@@ -127,7 +127,7 @@
       </v-row>
     </div>
 
-    <div class="primary white--text d-flex justify-center py-4">
+    <div class="primary white--text d-flex justify-center py-8">
       <v-row justify="center" align="center">
         <v-col cols="10" sm="8" class="fill-height" align="center">
           <v-icon class="my-2" x-large color="white">

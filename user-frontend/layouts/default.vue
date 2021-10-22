@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <AppBar />
-    <v-main class="mt-6">
+    <v-main>
       <Nuxt />
     </v-main>
     <v-footer :absolute="!fixed" app>

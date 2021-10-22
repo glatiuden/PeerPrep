@@ -16,13 +16,16 @@ const actions: ActionTree<UserState, RootState> = {
     { commit },
     { email, password }: { email: string; password: string },
   ) {
-    const { login_token, user } = await this.$axios.$post("/user/api/", {
-      email,
-      password,
-    });
+    const { login_token, data: user } = await this.$axios.$post(
+      "/user/api/login",
+      {
+        email,
+        password,
+      },
+    );
 
     localStorage.setItem("login_token", login_token);
-    commit(MutationTypes.SET_USER, { user });
+    commit(MutationTypes.SET_USER, { data: user });
     if (user && login_token) {
       commit(MutationTypes.SET_HAS_USER, { data: true });
     }
