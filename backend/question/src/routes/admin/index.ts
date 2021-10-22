@@ -7,7 +7,7 @@ import {
   deleteQuestionRules,
   getQuestionRules,
   updateQuestionRules,
-} from "../../controllers/question/validators";
+} from "../../controllers/admin/question/validators";
 import {
   createQuestionController,
   deleteQuestionController,
@@ -15,7 +15,7 @@ import {
   getQuestionsController,
   hardDeleteQuestionController,
   updateQuestionController,
-} from "../../controllers/question";
+} from "../../controllers/admin/question";
 
 const questionRouter = express.Router();
 

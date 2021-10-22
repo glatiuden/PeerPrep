@@ -1,4 +1,4 @@
-import { questionService } from "../../services";
+import { questionService } from "../../../services";
 
 /**
  * @description Get all questions

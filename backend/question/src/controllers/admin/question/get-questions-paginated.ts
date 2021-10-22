@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { logger } from "../../configs/logs";
-import { questionService } from "../../services";
+import { logger } from "../../../configs/logs";
+import { questionService } from "../../../services";
 
 /**
  * @description Get all question records paginated

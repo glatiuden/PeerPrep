@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { questionService } from "../../services";
+import { questionService } from "../../../services";
 
 /**
  * @description Get question by ID

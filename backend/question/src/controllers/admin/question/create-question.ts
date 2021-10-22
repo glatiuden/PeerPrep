@@ -1,7 +1,7 @@
 import _ from "lodash";
 
-import IQuestion from "../../models/interfaces/question";
-import { questionService } from "../../services";
+import IQuestion from "../../../models/interfaces/question";
+import { questionService } from "../../../services";
 
 /**
  * @description Create new question in database

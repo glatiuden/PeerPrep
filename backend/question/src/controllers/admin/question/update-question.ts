@@ -1,8 +1,8 @@
 import _ from "lodash";
 
-import IQuestion from "../../models/interfaces/question";
+import IQuestion from "../../../models/interfaces/question";
 
-import { questionService } from "../../services";
+import { questionService } from "../../../services";
 
 /**
  * @description Update existing question in database

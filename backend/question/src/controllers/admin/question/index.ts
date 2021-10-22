@@ -5,7 +5,6 @@ import updateQuestionController from "./update-question";
 import deleteQuestionController from "./delete-question";
 import hardDeleteQuestionController from "./hard-delete-question";
 import getQuestionsPaginatedController from "./get-questions-paginated";
-import getQuestionTopicsController from "./get-question-topics";
 
 const questionController = Object.freeze({
   createQuestionController,
@@ -15,7 +14,6 @@ const questionController = Object.freeze({
   deleteQuestionController,
   hardDeleteQuestionController,
   getQuestionsPaginatedController,
-  getQuestionTopicsController,
 });
 
 export default questionController;
@@ -28,5 +26,4 @@ export {
   deleteQuestionController,
   hardDeleteQuestionController,
   getQuestionsPaginatedController,
-  getQuestionTopicsController,
 };
