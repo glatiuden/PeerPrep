@@ -15,10 +15,16 @@ export default {
       GET_USER: "user/GET_USER",
       CREATE_USER: "user/CREATE_USER",
       LOGIN_USER: "user/LOGIN_USER",
+      AUTH_USER: "user/AUTH_USER",
+      LOGOUT_USER: "user/LOGOUT_USER",
     }),
 
     ...mapMutations({
       SET_LOADING: "user/SET_LOADING",
     }),
+
+    getAvatarName({ display_name = "", email = "" } = {}) {
+      return `${display_name}`.trim() || email;
+    },
   },
 };

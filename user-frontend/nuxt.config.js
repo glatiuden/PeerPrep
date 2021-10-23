@@ -77,6 +77,7 @@ export default {
           accent: "#F5E663",
           error: "#9C3848",
           warning: "#FFAD69",
+          light_primary: "#F2F6FA",
         },
       },
     },

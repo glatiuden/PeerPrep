@@ -24,7 +24,7 @@
                   text-center
                 "
               >
-                >Welcome to <b>PeerPrep</b>
+                Welcome to&nbsp;<b>PeerPrep</b>
               </div>
 
               <span

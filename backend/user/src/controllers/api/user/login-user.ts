@@ -1,9 +1,10 @@
 import _ from "lodash";
 import { verifyPassword } from "../../../configs/bcrypt";
 import { generateJWTToken } from "../../../configs/jwt";
+import { logger } from "../../../configs/logs";
 
 import IUser, { UserRole } from "../../../models/interfaces/user";
-import { userService } from "../../../services";
+import { userService, accessTokenService } from "../../../services";
 
 /**
  * @description Check user's email and password and return login message if successful
@@ -34,7 +35,20 @@ async function loginUserController(httpRequest: Request & { context: { validated
       throw new Error(`Incorrect password`);
     }
 
-    const token = generateJWTToken({ user_id: user_exists._id });
+    let login_token = await accessTokenService.findValidToken({
+      user_id: user_exists._id,
+      user_role: user_exists.role,
+    });
+
+    if (!login_token) {
+      logger.verbose(`User has no valid token, creating one now...`);
+      login_token = generateJWTToken({ user_id: user_exists._id, user_role: user_exists.role }, { expiresIn: "1y" });
+      await accessTokenService.insert({
+        user_id: user_exists._id,
+        user_role: user_exists.role,
+        token: login_token,
+      });
+    }
     // headers["auth-token"] = token;
 
     return {
@@ -42,7 +56,7 @@ async function loginUserController(httpRequest: Request & { context: { validated
       statusCode: 200,
       body: {
         data: user_exists,
-        login_token: token,
+        login_token,
       },
     };
   } catch (err: any) {
