@@ -1,0 +1,8 @@
+export enum MutationTypes {
+    SET_LOADING = "SET_LOADING",
+    SET_MATCH = "SET_MATCH",
+    SET_MATCHES = "SET_MATCHES",
+    SET_MATCHES_PAGINATION = "SET_MATCHES_PAGINATION",
+    SET_MATCH_ID = "SET_MATCH_ID",
+  }
+  
