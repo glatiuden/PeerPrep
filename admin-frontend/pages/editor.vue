@@ -26,7 +26,7 @@
         @input="performSearch"
       />
       <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
+      <v-dialog v-model="open_dialog" max-width="500px">
         <template #activator="{ on, attrs }">
           <v-btn
             color="primary"
@@ -40,7 +40,7 @@
             <v-icon small left>mdi-plus</v-icon>New Editor
           </v-btn>
         </template>
-        <BaseEditorDialog @close="() => (dialog = false)" />
+        <BaseEditorDialog v-if="open_dialog" @close-dialog="closeDialog" />
       </v-dialog>
     </v-toolbar>
 
@@ -114,7 +114,7 @@ export default {
   mixins: [editorMixin, systemMixin],
   data() {
     return {
-      dialog: false,
+      open_dialog: false,
       headers: [
         {
           text: "Match ID",
@@ -160,6 +160,7 @@ export default {
       await this.GET_EDITORS_PAGINATED();
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching editors: ${err}.`);
     }
   },
   computed: {
@@ -175,12 +176,14 @@ export default {
     async editEditor(id) {
       try {
         await this.GET_EDITOR({ editor_id: id });
-        this.dialog = true;
+        this.SET_EDITOR_ID({ data: id });
+        this.open_dialog = true;
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error updating editor: ${err}.`);
       }
     },
+
     async deleteEditor(item) {
       const is_confirmed = confirm(
         "Are you sure you want to delete this editor? It is an irreversible action.",
@@ -206,6 +209,13 @@ export default {
       } finally {
         this.SET_LOADING({ data: false });
       }
+    },
+
+    /**
+     * @description close dialog
+     */
+    closeDialog() {
+      this.open_dialog = false;
     },
 
     performSearch: _.throttle(
