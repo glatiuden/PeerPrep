@@ -1,10 +1,5 @@
 <template>
-  <v-container
-    fill-height
-    :style="{
-      backgroundImage: `url(${require('@/assets/background.png')}`,
-    }"
-  >
+  <v-container fill-height class="background-url">
     <v-layout fill-height>
       <v-row align="stretch">
         <v-spacer></v-spacer>
@@ -24,7 +19,7 @@
                   text-center
                 "
               >
-                >Welcome to <b>PeerPrep</b>
+                Welcome to&nbsp;<b>PeerPrep</b>
               </div>
 
               <span
@@ -166,7 +161,8 @@ export default {
 };
 </script>
 <style scoped>
-.background_image {
-  background: url("assets/background.png");
+.background-url {
+  background: url("../assets/background.png") no-repeat center center fixed !important;
+  background-size: cover;
 }
 </style>

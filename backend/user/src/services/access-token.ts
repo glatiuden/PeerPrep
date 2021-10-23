@@ -23,14 +23,14 @@ export default function makeAccessTokenDb({
 
     async findOne({
       user_id,
-      user_type,
+      user_role,
       revoked,
     }: {
       user_id: string;
-      user_type?: string;
+      user_role?: string;
       revoked: boolean;
     }): Promise<IAccessToken | null> {
-      const existing = await accessTokenDbModel.findOne({ user_id, user_type, revoked }).lean();
+      const existing = await accessTokenDbModel.findOne({ user_id, user_role, revoked }).lean();
       if (existing) {
         return {
           token: existing.token,
@@ -49,29 +49,45 @@ export default function makeAccessTokenDb({
       return null;
     }
 
-    async revoke(
+    async revokeByToken(
       {
-        user_id,
-        user_type,
+        token,
       }: {
-        user_id: string;
-        user_type?: string;
+        token: string;
       },
       options = { session: null },
     ): Promise<string | null> {
       const result = await accessTokenDbModel
-        .findOneAndUpdate({ user_id, user_type, revoked: false }, { revoked: true, updated_at: new Date() })
+        .findOneAndUpdate({ token, revoked: false }, { revoked: true, updated_at: new Date() })
         .session(options.session)
         .lean();
       return result && result.token;
     }
 
-    async revokeByUserId({ user_id }: { user_id: string }, options = { session: null }): Promise<string | null> {
+    async revoke(
+      {
+        user_id,
+        user_role,
+      }: {
+        user_id: string;
+        user_role?: string;
+      },
+      options = { session: null },
+    ): Promise<string | null> {
       const result = await accessTokenDbModel
-        .findOneAndUpdate({ user_id, revoked: false }, { revoked: true, updated_at: new Date() })
+        .findOneAndUpdate({ user_id, user_role, revoked: false }, { revoked: true, updated_at: new Date() })
         .session(options.session)
         .lean();
       return result && result.token;
+    }
+
+    async revokeAllByUserId({ user_id }: { user_id: string }, options = { session: null }): Promise<boolean> {
+      const query_conditions = { user_id, revoked: false };
+      const updated = await accessTokenDbModel
+        .updateMany(query_conditions, { revoked: true })
+        .session(options.session)
+        .lean();
+      return updated.acknowledged;
     }
   })();
 }

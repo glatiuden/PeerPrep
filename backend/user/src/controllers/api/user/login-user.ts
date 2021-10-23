@@ -3,7 +3,7 @@ import { verifyPassword } from "../../../configs/bcrypt";
 import { generateJWTToken } from "../../../configs/jwt";
 
 import IUser, { UserRole } from "../../../models/interfaces/user";
-import { userService } from "../../../services";
+import { userService, accessTokenService } from "../../../services";
 
 /**
  * @description Check user's email and password and return login message if successful
@@ -34,7 +34,12 @@ async function loginUserController(httpRequest: Request & { context: { validated
       throw new Error(`Incorrect password`);
     }
 
-    const token = generateJWTToken({ user_id: user_exists._id });
+    const token = generateJWTToken({ user_id: user_exists._id, user_role: user_exists.role }, { expiresIn: "1y" });
+    await accessTokenService.insert({
+      user_id: user_exists._id,
+      user_role: user_exists.role,
+      token,
+    });
     // headers["auth-token"] = token;
 
     return {

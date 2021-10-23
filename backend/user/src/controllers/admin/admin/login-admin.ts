@@ -33,7 +33,12 @@ async function loginAdminController(httpRequest: Request & { context: { validate
       throw new Error(`Incorrect password`);
     }
 
-    const token = generateJWTToken({ user_id: admin_exists._id });
+    const token = generateJWTToken(
+      { user_id: admin_exists._id, user_role: admin_exists.role },
+      {
+        expiresIn: "24h",
+      },
+    );
     // headers["auth-token"] = token;
 
     return {
