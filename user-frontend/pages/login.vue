@@ -147,6 +147,12 @@ export default {
       password_rules: [(v) => !!v || "Required"],
     };
   },
+  fetch() {
+    if (this.has_user) {
+      console.log("hello");
+      this.$router.push("/");
+    }
+  },
   methods: {
     async login() {
       try {

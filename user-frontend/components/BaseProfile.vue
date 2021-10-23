@@ -120,10 +120,6 @@ export default {
         "Let us know by using the chat widget on the bottom left if you found a bug or you have any suggestions for features that might be helpful for you.  (: ",
       );
     },
-
-    getAvatarName({ display_name = "", email = "" } = {}) {
-      return `${display_name}`.trim() || email;
-    },
   },
 };
 </script>

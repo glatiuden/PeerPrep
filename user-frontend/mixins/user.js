@@ -22,5 +22,9 @@ export default {
     ...mapMutations({
       SET_LOADING: "user/SET_LOADING",
     }),
+
+    getAvatarName({ display_name = "", email = "" } = {}) {
+      return `${display_name}`.trim() || email;
+    },
   },
 };
