@@ -68,7 +68,7 @@ export default {
           value: "javascript",
         },
       ],
-      match_id: "abc123", // Temporarily hardcoded
+      match_id: localStorage.getItem("match_id"), // Temporarily hardcoded
       output: undefined,
     };
   },

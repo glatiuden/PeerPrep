@@ -8,7 +8,7 @@ import { matchService } from "../index";
  * @description If there is a match that meets the requirement -> update. Else create new record.
  * @function findMatch
  */
-export async function findMatch(payload: Partial<IMatch> & { user_id: string }) {
+export default async function findMatch(payload: Partial<IMatch> & { user_id: string }) {
   try {
     const {
       user_id,
@@ -34,12 +34,13 @@ export async function findMatch(payload: Partial<IMatch> & { user_id: string }) 
       });
       return { status: "waiting", match_id: match_details._id };
     } else {
-      match_details = matchService.update({
-        _id: ideal_match._id,
+      const match_id = _.get(ideal_match, "_id");
+      match_details = await matchService.update({
+        _id: match_id,
         partner2_id: user_id,
         status: MatchStatus.IN_PROGRESS,
       });
-      return { status: "matched", match_id: match_details._id };
+      return { status: "matched", match_id };
     }
   } catch (err) {
     logger.error(err);

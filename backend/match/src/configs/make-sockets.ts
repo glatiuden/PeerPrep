@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
 import { createClient } from "redis";
 import { logger } from "./logs";
-import { findMatch } from "../services/use-cases/find-match";
+import { findMatch, cancelMatch } from "../services/use-cases";
 import _ from "lodash";
 
 export default function makeSockets(server, cors) {
@@ -22,29 +22,24 @@ export default function makeSockets(server, cors) {
     logger.verbose("User enqueued");
 
     socket.on("matching", async (payload) => {
-      console.log(payload);
       const match = await findMatch(payload);
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");
-      console.log(status);
-      switch (status) {
-        case "waiting": {
-          socket.join(match_id);
-          logger.verbose("User has connected to the socket");
-          break;
-        }
-        case "matched": {
-          logger.verbose("Match found! Redirect user to their room now...");
-          socket.join(match_id);
-          io.sockets.in(match_id).emit("matched", true);
-        }
+      socket.join(match_id);
+      if (status === "matched") {
+        logger.verbose("Match found! Redirect user to their room now...");
+        io.sockets.in(match_id).emit("matched", match_id);
+      } else {
+        io.sockets.in(match_id).emit("waiting", match_id);
       }
     });
 
-    socket.on("message", (content) => {
-      const { match_id, payload } = content;
-      logger.verbose("Code change detected", { match_id });
-      io.sockets.in(match_id).emit("message", payload);
+    socket.on("cancel", async (match_id) => {
+      logger.verbose("User requested cancelling", { match_id });
+      const is_cancelled = await cancelMatch(match_id);
+      if (is_cancelled) {
+        io.sockets.in(match_id).socketsLeave(match_id);
+      }
     });
   });
 }

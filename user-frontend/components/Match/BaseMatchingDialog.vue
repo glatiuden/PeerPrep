@@ -9,10 +9,11 @@
         :height="200"
       />
       <h2 class="my-3 loading">Looking for a match</h2>
-      <v-countdown :end-time="new Date().getTime() + 3000000">
+      <v-countdown :end-time="new Date().getTime() + 30000">
         <h1 slot="process" slot-scope="{ timeObj }">{{ `${timeObj.s}` }}s</h1>
         <p slot="finish">30s!</p>
       </v-countdown>
+      {{ socketStatus }}
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions>
@@ -36,27 +37,42 @@ export default {
   data() {
     return {
       defaultOptions: { animationData, loop: true },
+      socketStatus: {},
+      match_id: undefined,
     };
   },
   mounted() {
     this.socket = this.$nuxtSocket({
       name: "match",
+      reconnection: true,
+      statusProp: "socketStatus",
     });
 
     this.socket.on("connect", () => {
       this.$notification.success(
         `Successfully created a match! We will notify and start the session once there is a match!`,
       );
-      console.log(this.match);
       this.socket.emit("matching", this.match);
+    });
+
+    this.socket.on("waiting", (data) => {
+      console.log("Incoming message: ", data);
+      if (!!data) {
+        this.match_id = data;
+      }
     });
 
     this.socket.on("matched", (data) => {
       console.log("Incoming message: ", data);
+      if (!!data) {
+        localStorage.setItem("match_id", data);
+        this.$router.push("/editor");
+      }
     });
   },
   methods: {
     closeDialog() {
+      this.socket.emit("cancel", this.match_id);
       this.SET_OPEN_MATCHING_DIALOG({ data: false });
     },
   },

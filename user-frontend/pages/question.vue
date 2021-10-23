@@ -174,7 +174,12 @@
           ></v-pagination>
         </v-col>
       </v-row>
-      <v-dialog v-model="open_matching_dialog" max-width="550px">
+      {{ open_matching_dialog }}
+      <v-dialog
+        v-if="open_matching_dialog"
+        v-model="open_matching_dialog"
+        max-width="550px"
+      >
         <BaseMatchingDialog />
       </v-dialog>
     </div>
