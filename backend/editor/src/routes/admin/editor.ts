@@ -2,17 +2,19 @@ import express from "express";
 import makeExpressCallback from "../../express-callback";
 import makeValidator from "../../middlewares/validator-middleware";
 
-import { deleteEditorRules, getEditorRules } from "../../controllers/editor/validators";
+import { deleteEditorRules, getEditorRules, createEditorRules } from "../../controllers/editor/validators";
 import {
   deleteEditorController,
   getEditorController,
   getEditorsController,
   getEditorsPaginatedController,
   hardDeleteEditorController,
+  createEditorController,
 } from "../../controllers/editor";
 
 const editorRouter = express.Router();
 
+editorRouter.post("/", makeValidator(createEditorRules), makeExpressCallback(createEditorController)); // TODO: Change to get all by user_id only
 editorRouter.get("/", makeExpressCallback(getEditorsController));
 editorRouter.get("/paginated", makeExpressCallback(getEditorsPaginatedController));
 editorRouter.get("/:editor_id", makeValidator(getEditorRules), makeExpressCallback(getEditorController));
