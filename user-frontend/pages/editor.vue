@@ -1,5 +1,5 @@
 <template>
-  <v-row class="app-max-width mx-auto">
+  <v-row class="app-max-width mx-auto my-4">
     <v-col cols="12">
       <v-card outlined>
         <v-card-title
@@ -17,11 +17,13 @@
     <v-col cols="12" lg="8">
       <BaseCodeEditor />
     </v-col>
-    <v-col> <BaseChat /></v-col>
+    <v-col>
+      <BaseChat />
+    </v-col>
   </v-row>
 </template>
 <script>
-import editorMixin from "~/mixins/editor";
+import editorMixin from "@/mixins/editor";
 
 import BaseChat from "@/components/Editor/BaseChat";
 import BaseCodeEditor from "@/components/Editor/BaseCodeEditor";

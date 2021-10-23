@@ -40,9 +40,10 @@
       ]"
       @init="editorInit"
     />
-    <p>Output</p>
-    <v-btn @click="executeCode">Run</v-btn>
-    <code> {{ output }} </code>
+    <v-btn color="primary" depressed :loading="loading" @click="executeCode"
+      >Run Your Code (Beta)
+    </v-btn>
+    <pre v-if="output" class="pre mt-6"><samp>{{ output }}</samp></pre>
   </div>
 </template>
 <script>
@@ -56,19 +57,32 @@ export default {
       content: "",
       programming_languages: [
         {
+          text: "C",
+          value: "c_cpp",
+          language: "c",
+        },
+        {
           text: "C++",
           value: "c_cpp",
+          language: "cpp",
         },
         {
           text: "Java",
           value: "java",
+          language: "java",
         },
         {
           text: "JavaScript",
           value: "javascript",
+          language: "js",
+        },
+        {
+          text: "Python",
+          value: "python",
+          language: "py",
         },
       ],
-      match_id: localStorage.getItem("match_id"), // Temporarily hardcoded
+      match_id: localStorage.getItem("match_id"),
       output: undefined,
     };
   },
@@ -120,16 +134,47 @@ export default {
           require("brace/mode/c_cpp");
           require("brace/snippets/c_cpp"); //snippet
           break;
+        case "python":
+          require("brace/mode/python");
+          require("brace/snippets/python"); //snippet
+          break;
       }
       require("brace/theme/monokai");
     },
 
     async executeCode() {
-      const result = await this.EXECUTE_CODE({
-        content: this.content,
-        programming_language: this.selected_language,
-      });
+      try {
+        this.SET_LOADING({ data: true });
+        const language_object = _.find(
+          this.programming_languages,
+          ({ value }) => value === this.selected_language,
+        );
+
+        const result = await this.EXECUTE_CODE({
+          code: this.content,
+          language: language_object.language,
+        });
+        this.output = _.get(result, "output");
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(`Encountered error creating a match: ${err}`);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
     },
   },
 };
 </script>
+<style scoped>
+.pre {
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #383b40;
+  overflow: auto;
+  font-family: droid sans mono, inconsolata, menlo, consolas,
+    bitstream vera sans mono, courier, monospace;
+  font-size: 14px;
+  line-height: 20px;
+  color: #d5d5d5;
+}
+</style>
