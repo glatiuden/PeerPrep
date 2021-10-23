@@ -174,7 +174,7 @@
           ></v-pagination>
         </v-col>
       </v-row>
-      {{ open_matching_dialog }}
+
       <v-dialog
         v-if="open_matching_dialog"
         v-model="open_matching_dialog"
@@ -321,7 +321,7 @@ export default {
     },
 
     /**
-     * @description Load the question from server and opens the dialog
+     * @description Loads the question from server and opens the dialog
      */
     async openQuestionDialog(question_id) {
       try {
