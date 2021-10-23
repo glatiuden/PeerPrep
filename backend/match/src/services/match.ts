@@ -18,7 +18,7 @@ export default function makeMatchService({
     }
 
     async findById({ id }: { id: string }): Promise<IMatch | null> {
-      const existing = await matchDbModel.findById(id);
+      const existing = await matchDbModel.findById(id).lean();
       if (existing) {
         return existing;
       }
@@ -27,6 +27,15 @@ export default function makeMatchService({
 
     async findAll(): Promise<IMatch[]> {
       const query_conditions = { deleted_at: undefined };
+      const existing = await matchDbModel.find(query_conditions).sort({ updated_at: "desc" });
+      if (existing) {
+        return existing;
+      }
+      return [];
+    }
+
+    async findAllByUserId({ user_id }: { user_id: string }): Promise<IMatch[]> {
+      const query_conditions = { user_id, deleted_at: undefined };
       const existing = await matchDbModel.find(query_conditions).sort({ updated_at: "desc" });
       if (existing) {
         return existing;

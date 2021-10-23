@@ -7,7 +7,7 @@ import { RootState } from "../index";
 
 const actions: ActionTree<EditorState, RootState> = {
   async [ActionTypes.GET_EDITORS]({ commit }) {
-    const { data: editors } = await this.$axios.$get(`/admin/editor/`);
+    const { data: editors } = await this.$axios.$get(`/editor/admin/`);
     commit(MutationTypes.SET_EDITORS, { data: editors });
     return editors;
   },
@@ -27,7 +27,7 @@ const actions: ActionTree<EditorState, RootState> = {
     }
 
     const { data: editors, pagination } = await this.$axios.$get(
-      `/admin/editor/paginated${url_query}`,
+      `/editor/admin/paginated${url_query}`,
     );
 
     commit(MutationTypes.SET_EDITORS, { data: editors });
@@ -44,7 +44,7 @@ const actions: ActionTree<EditorState, RootState> = {
    */
   async [ActionTypes.GET_EDITOR]({ commit }, { editor_id }) {
     const { data: editor } = await this.$axios.$get(
-      `/admin/editor/${editor_id}`,
+      `/editor/admin/${editor_id}`,
     );
     commit(MutationTypes.SET_EDITOR, { data: editor });
     return editor;
@@ -57,7 +57,7 @@ const actions: ActionTree<EditorState, RootState> = {
    */
   async [ActionTypes.CREATE_EDITOR]({ commit }, { editor }) {
     const { data: created_editor } = await this.$axios.$post(
-      `/api/editor`,
+      `/editor/admin`,
       editor,
     );
     return created_editor;
@@ -70,7 +70,7 @@ const actions: ActionTree<EditorState, RootState> = {
    */
   async [ActionTypes.DELETE_EDITOR]({ commit }, { editor_id }) {
     const { data: deleted_editor } = await this.$axios.$delete(
-      `/admin/editor/${editor_id}`,
+      `/editor/admin/${editor_id}`,
     );
     return deleted_editor;
   },
@@ -82,7 +82,7 @@ const actions: ActionTree<EditorState, RootState> = {
    */
   async [ActionTypes.UPDATE_EDITOR]({ commit }, { editor }) {
     const { data: updated_editor } = await this.$axios.$put(
-      `/admin/editor`,
+      `/editor/admin`,
       editor,
     );
     return updated_editor;

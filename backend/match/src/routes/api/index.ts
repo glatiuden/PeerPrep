@@ -1,8 +1,20 @@
 import express from "express";
-import matchRouter from "./match";
+import makeExpressCallback from "../../express-callback";
+import makeValidator from "../../middlewares/validator-middleware";
 
-const router = express.Router();
+import { createMatchRules, updateMatchRules, getMatchRules } from "../../controllers/api/match/validators";
+import {
+  createMatchController,
+  getMatchController,
+  updateMatchController,
+  getMatchesByUserIdController,
+} from "../../controllers/api/match";
 
-router.use("/match", matchRouter);
+const matchRouter = express.Router();
 
-export default router;
+matchRouter.post("/", makeValidator(createMatchRules), makeExpressCallback(createMatchController));
+matchRouter.get("/:match_id", makeValidator(getMatchRules), makeExpressCallback(getMatchController));
+matchRouter.get("/user/:user_id", makeExpressCallback(getMatchesByUserIdController));
+matchRouter.put("/", makeValidator(updateMatchRules), makeExpressCallback(updateMatchController));
+
+export default matchRouter;

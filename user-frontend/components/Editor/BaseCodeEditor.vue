@@ -40,6 +40,9 @@
       ]"
       @init="editorInit"
     />
+    <p>Output</p>
+    <v-btn @click="executeCode">Run</v-btn>
+    <code> {{ output }} </code>
   </div>
 </template>
 <script>
@@ -66,6 +69,7 @@ export default {
         },
       ],
       match_id: "abc123", // Temporarily hardcoded
+      output: undefined,
     };
   },
   mounted() {
@@ -118,6 +122,13 @@ export default {
           break;
       }
       require("brace/theme/monokai");
+    },
+
+    async executeCode() {
+      const result = await this.EXECUTE_CODE({
+        content: this.content,
+        programming_language: this.selected_language,
+      });
     },
   },
 };

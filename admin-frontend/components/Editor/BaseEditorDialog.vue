@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title> New Editor </v-card-title>
+    <v-card-title> {{ type }} </v-card-title>
     <v-divider></v-divider>
     <v-form v-model="valid">
       <v-card-text>
@@ -49,7 +49,10 @@
           :loading="loading"
           text
           :disabled="!valid"
-          @click="addEditor"
+          @click="
+            clickSave();
+            $emit('close-dialog');
+          "
         >
           Save
         </v-btn>
@@ -66,6 +69,7 @@ export default {
   mixins: [editorMixin],
   data() {
     return {
+      type: "Add Editor",
       valid: false,
       new_editor: {
         match_id: "",
@@ -95,10 +99,28 @@ export default {
       ],
     };
   },
+  computed: {
+    is_edit() {
+      return this.editor && this.editor_id;
+    },
+  },
   mounted() {
     this.resetEditor();
   },
+  mounted() {
+    if (this.is_edit) {
+      this.type = `Edit Editor ${this.editor_id}`;
+      this.new_editor = _.cloneDeep(this.editor);
+    }
+  },
   methods: {
+    async clickSave() {
+      if (this.is_edit) {
+        await this.updateEditor();
+      } else {
+        await this.addEditor();
+      }
+    },
     /**
      * @description: add a new editor to server + store
      */
@@ -110,13 +132,12 @@ export default {
         });
         await this.GET_EDITORS_PAGINATED();
         this.$notification.success(`Editor has been created successfully.`);
+        this.$emit("close-dialog");
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error adding editor: ${err}.`);
       } finally {
-        this.SET_LOADING({ data: false });
-        this.resetEditor();
-        this.$emit("close");
+        this.closeDialog();
       }
     },
     /**
@@ -152,8 +173,8 @@ export default {
     closeDialog() {
       this.SET_LOADING({ data: false });
       this.resetEditor();
-      this.SET_EDITOR_ID({ data: "" });
-      this.$emit("close");
+      this.SET_EDITOR_ID({ data: null });
+      this.$emit("close-dialog");
     },
   },
 };

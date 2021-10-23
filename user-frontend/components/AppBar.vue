@@ -84,11 +84,25 @@
     </v-tabs>
 
     <v-spacer></v-spacer>
-    <div class="d-flex">
-      <v-btn outlined small :large="!is_mobile" color="primary" class="mr-2">
+    <BaseProfile v-if="has_user" />
+    <div v-else class="d-flex">
+      <v-btn
+        outlined
+        small
+        :large="!is_mobile"
+        color="primary"
+        class="mr-2"
+        @click="$router.push('/login')"
+      >
         Login
       </v-btn>
-      <v-btn depressed small :large="!is_mobile" color="primary">
+      <v-btn
+        depressed
+        small
+        :large="!is_mobile"
+        color="primary"
+        @click="$router.push('/register')"
+      >
         Sign up
       </v-btn>
     </div>
@@ -96,11 +110,12 @@
 </template>
 
 <script>
-import systemMixins from "@/mixins/system";
+import systemMixin from "@/mixins/system";
+import userMixin from "@/mixins/user";
 
 export default {
   name: "AppBar",
-  mixins: [systemMixins],
+  mixins: [systemMixin, userMixin],
   data() {
     return {
       tab: 0,

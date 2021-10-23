@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <AppBar />
-    <v-main class="mt-6">
+    <v-main>
       <Nuxt />
     </v-main>
     <v-footer :absolute="!fixed" app>
@@ -15,11 +15,14 @@
 </template>
 <script>
 import AppBar from "@/components/AppBar";
+import userMixin from "@/mixins/user";
 
 export default {
   components: {
     AppBar,
   },
+  mixins: [userMixin],
+  middleware: ["authenticated"],
   data() {
     return {
       clipped: false,

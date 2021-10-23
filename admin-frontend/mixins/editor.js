@@ -8,6 +8,7 @@ export default {
       editor: "editor/editor",
       editors: "editor/editors",
       editors_pagination: "editor/editors_pagination",
+      editor_id: "editor/editor_id",
     }),
   },
 
@@ -18,6 +19,7 @@ export default {
       GET_EDITOR: "editor/GET_EDITOR",
       CREATE_EDITOR: "editor/CREATE_EDITOR",
       DELETE_EDITOR: "editor/DELETE_EDITOR",
+      UPDATE_EDITOR: "editor/UPDATE_EDITOR",
     }),
 
     ...mapMutations({

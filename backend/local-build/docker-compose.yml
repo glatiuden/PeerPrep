@@ -6,43 +6,43 @@ services:
         context: ./reverse_proxy
     ports:
       - 3006:80
-  user:
-    container_name: user-ms
-    build:
-      context: ../../backend/user
-    environment:
-      DATABASE_URL: mongodb+srv://admin:CfP5yievMjLAncX4@cluster0.mhmgq.mongodb.net/user-service?retryWrites=true&w=majority
-    ports:
-      - "3001:3001"
-  question:
-    container_name: question-ms
-    build:
-      context: ../../backend/question
-    environment:
-      DATABASE_URL: "mongodb+srv://cs3219g22:WYrXKg3eHA0MJGM0@cluster0.sylvh.mongodb.net/question-service?retryWrites=true&w=majority"
-    ports:
-      - "3002:3002"
-  match:
-    container_name: match-ms
-    build:
-      context: ../../backend/match
-    environment:
-      DATABASE_URL: "mongodb+srv://thuta:BXXKgxh64u62OfOi@cluster0.9m1cc.mongodb.net/editor-service?retryWrites=true&w=majority"
-    ports:
-      - "3003:3003"
-  editor:
-    container_name: editor-ms
-    build:
-      context: ../../backend/editor
-    environment:
-      DATABASE_URL: "mongodb+srv://admin:VMx7kGHQx02xtgl6@cluster0.l5ldk.mongodb.net/editor-service?retryWrites=true&w=majority"
-    ports:
-      - "3004:3004"
-  chat:
-    container_name: chat-ms
-    build:
-      context: ../../backend/chat
-    environment:
-      DATABASE_URL: "mongodb+srv://admin:hWonJrMFEUecAp2F@cluster0.0u6on.mongodb.net/chat-service?retryWrites=true&w=majority"
-    ports:
-      - "3005:3005"
+  # user:
+  #   container_name: user-ms
+  #   build:
+  #     context: ../../backend/user
+  #   environment:
+  #     DATABASE_URL: mongodb+srv://admin:CfP5yievMjLAncX4@cluster0.mhmgq.mongodb.net/user-service?retryWrites=true&w=majority
+  #   ports:
+  #     - "3001:3001"
+  # question:
+  #   container_name: question-ms
+  #   build:
+  #     context: ../../backend/question
+  #   environment:
+  #     DATABASE_URL: "mongodb+srv://cs3219g22:WYrXKg3eHA0MJGM0@cluster0.sylvh.mongodb.net/question-service?retryWrites=true&w=majority"
+  #   ports:
+  #     - "3002:3002"
+  # match:
+  #   container_name: match-ms
+  #   build:
+  #     context: ../../backend/match
+  #   environment:
+  #     DATABASE_URL: "mongodb+srv://thuta:BXXKgxh64u62OfOi@cluster0.9m1cc.mongodb.net/editor-service?retryWrites=true&w=majority"
+  #   ports:
+  #     - "3003:3003"
+  # editor:
+  #   container_name: editor-ms
+  #   build:
+  #     context: ../../backend/editor
+  #   environment:
+  #     DATABASE_URL: "mongodb+srv://admin:VMx7kGHQx02xtgl6@cluster0.l5ldk.mongodb.net/editor-service?retryWrites=true&w=majority"
+  #   ports:
+  #     - "3004:3004"
+  # chat:
+  #   container_name: chat-ms
+  #   build:
+  #     context: ../../backend/chat
+  #   environment:
+  #     DATABASE_URL: "mongodb+srv://admin:hWonJrMFEUecAp2F@cluster0.0u6on.mongodb.net/chat-service?retryWrites=true&w=majority"
+  #   ports:
+  #     - "3005:3005"
