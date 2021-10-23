@@ -6,7 +6,7 @@ import { logger } from "./logs";
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["websocket", "polling"], cors });
   const pubClient = createClient({
-    host: "redis-cluster.m5lsme.0001.apse1.cache.amazonaws.com",
+    // host: "redis-cluster.m5lsme.0001.apse1.cache.amazonaws.com",
     port: 6379,
   });
 
