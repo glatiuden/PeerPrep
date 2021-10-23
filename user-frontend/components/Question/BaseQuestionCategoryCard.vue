@@ -1,5 +1,5 @@
 <template>
-  <v-card class="rounded-lg fill-height card-background">
+  <v-card class="rounded-lg fill-height card-background d-flex flex-column">
     <v-card-title class="white--text text-h5 font-weight-bold">
       {{ topic }}
     </v-card-title>
@@ -20,7 +20,7 @@
           <h3>10</h3>
           attempts
         </v-col>
-        <v-col cols="4">
+        <v-col cols="4" class="my-auto">
           <v-btn depressed text class="mx-0 px-0">
             Start
             <v-icon>mdi-chevron-right</v-icon>

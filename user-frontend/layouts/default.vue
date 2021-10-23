@@ -22,6 +22,7 @@ export default {
     AppBar,
   },
   mixins: [userMixin],
+  middleware: ["authenticated"],
   data() {
     return {
       clipped: false,
@@ -44,21 +45,6 @@ export default {
       rightDrawer: false,
       title: "Vuetify.js",
     };
-  },
-  async fetch() {
-    const login_token = localStorage.getItem("login_token");
-    const has_login_token =
-      login_token !== "undefined" && login_token !== "null" && !!login_token;
-
-    if (has_login_token) {
-      try {
-        await this.AUTH_USER();
-      } catch (err) {
-        localStorage.removeItem("login_token");
-      }
-    } else {
-      localStorage.removeItem("login_token");
-    }
   },
 };
 </script>
