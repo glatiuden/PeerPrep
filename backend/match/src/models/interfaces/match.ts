@@ -4,8 +4,9 @@ export default interface IMatch {
   partner2_id: string; // Used to fetch user info
   question_id: string; // Used to fetch question info
   status: MatchStatus; // Waiting | In-Progress | Completed -> Status to enqueue the match
-  programming_languages: string[];
+  programming_language: string;
   mode: MatchMode;
+  is_random: boolean;
   completed_at?: Date;
   deleted_at?: Date;
   created_at: Date;

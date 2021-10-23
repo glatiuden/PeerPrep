@@ -61,9 +61,8 @@
               outlined
               class="rounded-0"
               dense
-              multiple
               :items="['Java', 'JavaScript', 'C++', 'C', 'Python']"
-              hint="You may choose more than one language. Language chosen is not fixed, you may discuss with your partner to decide."
+              hint="Please choose a language that you wish to work on. You will not be able to change after the match starts."
               persistent-hint
               :rules="select_rules"
             >
@@ -118,12 +117,10 @@ export default {
   mixins: [questionMixin, matchMixin],
   data() {
     return {
-      selected_programming_language: [],
+      selected_programming_language: undefined,
       selected_mode: "timed",
       valid: false,
-      select_rules: [
-        (v) => v.length > 0 || "Please select at least one option",
-      ],
+      select_rules: [(v) => !!v || "Please select at least one option"],
     };
   },
   methods: {
@@ -132,10 +129,10 @@ export default {
         const match = {
           question_id: this.question._id,
           partner1_id: "6169b4eb03536ddcfd72e074",
-          programming_languages: this.selected_programming_language,
+          programming_language: this.selected_programming_language,
           mode: this.selected_mode,
         };
-        // await this.CREATE_MATCH({ match });
+        await this.CREATE_MATCH({ match });
         this.$notification.success(
           `Successfully created a match! We will notify and start the session once there is a match!`,
         );
