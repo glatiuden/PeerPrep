@@ -11,7 +11,7 @@ const accessTokenSchema = new Schema(
       default: "user",
       enum: ["user", "admin"],
     },
-    revoked: { type: Boolean, default: 0 },
+    revoked: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
   },

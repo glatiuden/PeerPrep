@@ -17,7 +17,7 @@ userRouter.post("/", makeExpressCallback(createUserController));
 userRouter.post("/login", makeExpressCallback(loginUserController));
 userRouter.post("/logout", makeExpressCallback(logoutUserController));
 
-userRouter.get("/auth/:user_id", tokenValidatorMiddleware, makeExpressCallback(getUserController)); // Used to check whether is user token valid
+userRouter.get("/auth", tokenValidatorMiddleware, makeExpressCallback(getUserController)); // Used to check whether is user token valid
 userRouter.get("/email/:email", makeExpressCallback(getUserByEmailController));
 userRouter.get("/:user_id", tokenValidatorMiddleware, makeExpressCallback(getUserController));
 

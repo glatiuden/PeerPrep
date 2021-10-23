@@ -9,9 +9,12 @@ export default async function (req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET || "insecure-secret");
-    req.body.user = verified;
-    next();
+    const verified = jwt.verify(token, process.env.JWT_SECRET || "AUTH_SECRET");
+    if (verified) {
+      const user_id = await accessTokenService.findUserId({ token });
+      req.body.user_id = user_id;
+      next();
+    }
   } catch (err) {
     await accessTokenService.revokeByToken({ token });
     res.status(400).send("Invalid Token");

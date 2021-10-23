@@ -50,6 +50,44 @@ const actions: ActionTree<UserState, RootState> = {
     const { data: created_user } = await this.$axios.$post(`/user/api/`, user);
     return created_user;
   },
+  /**
+   * @description check if user token is valid
+   * @param param0
+   */
+  async [ActionTypes.AUTH_USER]({ commit }) {
+    const { data: user } = await this.$axios.$get("/user/api/auth/");
+
+    if (!user) {
+      localStorage.removeItem("login_token");
+      commit(MutationTypes.SET_HAS_USER, { data: false });
+      throw new Error("User is not valid");
+    }
+
+    commit(MutationTypes.SET_USER, { data: user });
+    commit(MutationTypes.SET_HAS_USER, { data: true });
+    return user;
+  },
+
+  async [ActionTypes.LOGOUT_USER]({ commit, state }) {
+    try {
+      const login_token = localStorage.getItem("login_token");
+      if (!login_token) {
+        return;
+      }
+      await this.$axios.$post(`/user/api/logout`, { email: state.user.email });
+
+      localStorage.removeItem("login_token");
+      commit(MutationTypes.SET_USER, { data: null });
+      commit(MutationTypes.SET_HAS_USER, { data: false });
+
+      const origin = `${window.location.origin}/login`;
+      window.location.replace(origin);
+    } catch (err: any) {
+      const error = err && err.message ? `?errorMessage=${err.message}` : "";
+      const origin = `${window.location.origin}/login${error}`;
+      window.location.replace(origin);
+    }
+  },
 };
 
 export default actions;

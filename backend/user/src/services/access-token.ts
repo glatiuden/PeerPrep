@@ -40,6 +40,22 @@ export default function makeAccessTokenDb({
       return existing;
     }
 
+    async findUserId({ token }: { token: string }): Promise<string | undefined> {
+      const existing = await accessTokenDbModel.findOne({ token, revoked: false }).lean();
+      if (existing) {
+        return existing.user_id;
+      }
+      return undefined;
+    }
+
+    async findValidToken({ user_id, user_role }: { user_id: string; user_role?: string }): Promise<string | null> {
+      const existing = await accessTokenDbModel.findOne({ user_id, user_role, revoked: false }).lean();
+      if (existing) {
+        return existing.token;
+      }
+      return null;
+    }
+
     async insert(insertPayload: Partial<IAccessToken>): Promise<IAccessToken | null> {
       const result = await accessTokenDbModel.create([insertPayload]);
       const updated = await accessTokenDbModel.findOne({ _id: result[0]?._id });

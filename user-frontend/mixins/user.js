@@ -15,6 +15,8 @@ export default {
       GET_USER: "user/GET_USER",
       CREATE_USER: "user/CREATE_USER",
       LOGIN_USER: "user/LOGIN_USER",
+      AUTH_USER: "user/AUTH_USER",
+      LOGOUT_USER: "user/LOGOUT_USER",
     }),
 
     ...mapMutations({

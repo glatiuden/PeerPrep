@@ -85,15 +85,14 @@
 
     <v-spacer></v-spacer>
     <BaseProfile v-if="has_user" />
-
-    <div class="d-flex">
+    <div v-else class="d-flex">
       <v-btn
         outlined
         small
         :large="!is_mobile"
         color="primary"
         class="mr-2"
-        href="/login"
+        @click="$router.push('/login')"
       >
         Login
       </v-btn>
@@ -102,7 +101,7 @@
         small
         :large="!is_mobile"
         color="primary"
-        href="/register"
+        @click="$router.push('/register')"
       >
         Sign up
       </v-btn>

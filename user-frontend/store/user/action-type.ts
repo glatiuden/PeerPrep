@@ -3,4 +3,6 @@ export enum ActionTypes {
   GET_USER = "GET_USER",
   CREATE_USER = "CREATE_USER",
   UPDATE_USER = "UPDATE_USER",
+  AUTH_USER = "AUTH_USER",
+  LOGOUT_USER = "LOGOUT_USER",
 }

@@ -11,7 +11,7 @@ async function logoutUserController(httpRequest: { context: { validated: { email
     "Content-Type": "application/json",
   };
   try {
-    const { email }: IUser = _.get(httpRequest, "context.user");
+    const { email }: IUser = _.get(httpRequest, "context.validated");
     const user_exists = await userService.findByEmail({ email });
 
     if (!user_exists) {

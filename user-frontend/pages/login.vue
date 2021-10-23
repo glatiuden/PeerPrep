@@ -112,7 +112,7 @@
                       text
                       small
                       color="primary"
-                      href="/register"
+                      @click="$router.push(`/register`)"
                       >Sign up
                     </v-btn>
                   </span>
@@ -128,7 +128,6 @@
 <script>
 import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
-import animationData from "@/assets/searching-lottie.json";
 
 export default {
   name: "Login",
@@ -146,15 +145,19 @@ export default {
         (v) => /.+@.+\..+/.test(v) || "Email Address must be valid.",
       ],
       password_rules: [(v) => !!v || "Required"],
-      defaultOptions: { animationData, loop: true },
     };
   },
   methods: {
     async login() {
       try {
         await this.LOGIN_USER(this.login_user);
+        this.$notification.success(
+          `Welcome back to PeerPrep, ${this.user.display_name}!`,
+        );
+        this.$router.push("/");
       } catch (err) {
         console.error(err);
+        this.$notification.error(`Encountered error logging in: ${err}`);
       }
     },
   },
@@ -162,7 +165,8 @@ export default {
 </script>
 <style scoped>
 .background-url {
-  background: url("../assets/background.png") no-repeat center center fixed !important;
+  /* no-repeat center center fixed !important */
+  background: url("../assets/background.png");
   background-size: cover;
 }
 </style>
