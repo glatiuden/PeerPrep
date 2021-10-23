@@ -111,10 +111,11 @@
 <script>
 import questionMixin from "@/mixins/question";
 import matchMixin from "@/mixins/match";
+import userMixin from "@/mixins/user";
 
 export default {
   name: "BaseQuestionDialog",
-  mixins: [questionMixin, matchMixin],
+  mixins: [questionMixin, matchMixin, userMixin],
   data() {
     return {
       selected_programming_language: undefined,
@@ -128,14 +129,11 @@ export default {
       try {
         const match = {
           question_id: this.question._id,
-          partner1_id: "6169b4eb03536ddcfd72e074",
+          user_id: this.user._id,
           programming_language: this.selected_programming_language,
           mode: this.selected_mode,
         };
-        await this.CREATE_MATCH({ match });
-        this.$notification.success(
-          `Successfully created a match! We will notify and start the session once there is a match!`,
-        );
+        this.SET_MATCH({ data: match });
         this.closeDialog();
         this.SET_OPEN_MATCHING_DIALOG({ data: true });
       } catch (err) {

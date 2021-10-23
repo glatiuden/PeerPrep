@@ -38,6 +38,23 @@ export default {
       defaultOptions: { animationData, loop: true },
     };
   },
+  mounted() {
+    this.socket = this.$nuxtSocket({
+      name: "match",
+    });
+
+    this.socket.on("connect", () => {
+      this.$notification.success(
+        `Successfully created a match! We will notify and start the session once there is a match!`,
+      );
+      console.log(this.match);
+      this.socket.emit("matching", this.match);
+    });
+
+    this.socket.on("matched", (data) => {
+      console.log("Incoming message: ", data);
+    });
+  },
   methods: {
     closeDialog() {
       this.SET_OPEN_MATCHING_DIALOG({ data: false });

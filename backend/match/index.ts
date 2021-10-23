@@ -9,6 +9,7 @@ import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
 import makeRabbit from "./src/configs/make-rabbitmq-rpc";
+import makeSockets from "./src/configs/make-sockets";
 
 const app = express();
 const corsOptions = {
@@ -27,16 +28,17 @@ rabbit.createRPCQueue("question");
 rabbit.createRPCQueue("user");
 
 const PORT = process.env.port || 3003;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });
 
 // Initialize routes
+makeSockets(server, corsOptions);
 app.use("/match/api", apiRouter);
 app.use("/match/admin", adminRouter);
 
 app.get("/match", function (req, res) {
-  res.send("Match service is running");
+  res.send("Match microservice is running");
 });
 
 export default app;

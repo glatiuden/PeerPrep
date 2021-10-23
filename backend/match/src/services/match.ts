@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import IMatch from "../models/interfaces/match";
+import IMatch, { MatchStatus } from "../models/interfaces/match";
 
 export default function makeMatchService({
   matchDbModel,
@@ -13,6 +13,38 @@ export default function makeMatchService({
       const updated = await matchDbModel.findOne({ _id: result[0]?._id });
       if (updated) {
         return updated;
+      }
+      return null;
+    }
+
+    async findByCondition({
+      user_id,
+      question_id,
+      programming_language,
+      mode,
+    }: {
+      user_id: string;
+      question_id?: string;
+      programming_language?: string;
+      mode?: string;
+    }): Promise<IMatch | null> {
+      const query_conditions = {
+        deleted_at: undefined,
+        status: MatchStatus.WAITING,
+        $and: [{ partner1_id: { $ne: user_id } }, { partner2_id: { $ne: user_id } }],
+      };
+      if (question_id) {
+        query_conditions["question_id"] = question_id;
+      }
+      if (programming_language) {
+        query_conditions["programming_language"] = programming_language;
+      }
+      if (mode) {
+        query_conditions["mode"] = mode;
+      }
+      const existing = await matchDbModel.findOne(query_conditions).sort({ updated_at: "desc" });
+      if (existing) {
+        return existing;
       }
       return null;
     }
