@@ -158,7 +158,7 @@ export default {
           id: "match",
           icon: "mdi-file-document-multiple-outline",
           title: "Editors",
-          to: "/editors",
+          to: "/editor",
         },
       ],
     };
