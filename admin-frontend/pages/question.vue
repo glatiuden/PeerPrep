@@ -18,20 +18,18 @@
     <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
       <v-row class="my-3">
         <v-col cols="12" sm="3">
-          <v-autocomplete
-            v-model="selected_difficulty_levels"
-            :items="difficulty_levels"
-            :loading="loading"
-            label="Difficulty Level"
-            item-value="value"
-            item-text="text"
-            class="rounded-0"
-            multiple
-            outlined
-            dense
-            hide-details
-            @change="performFilter"
-          >
+          <v-autocomplete v-model="selected_difficulty_levels"
+                          :items="difficulty_levels"
+                          :loading="loading"
+                          label="Difficulty Level"
+                          item-value="value"
+                          item-text="text"
+                          class="rounded-0"
+                          multiple
+                          outlined
+                          dense
+                          hide-details
+                          @change="performFilter">
             <template #selection="{ index }">
               <span v-if="index === 0">
                 Selected:
@@ -42,19 +40,17 @@
         </v-col>
 
         <v-col cols="12" sm="3">
-          <v-autocomplete
-            v-model="selected_topics"
-            :items="question_topics"
-            :loading="loading"
-            label="Topic"
-            class="rounded-0"
-            multiple
-            outlined
-            dense
-            hide-details
-            clearable
-            @change="performFilter"
-          >
+          <v-autocomplete v-model="selected_topics"
+                          :items="question_topics"
+                          :loading="loading"
+                          label="Topic"
+                          class="rounded-0"
+                          multiple
+                          outlined
+                          dense
+                          hide-details
+                          clearable
+                          @change="performFilter">
             <template #selection="{ index }">
               <span v-if="index === 0">
                 Selected:
@@ -64,19 +60,29 @@
           </v-autocomplete>
         </v-col>
         <v-spacer></v-spacer>
+        <v-btn color="primary"
+               outlined
+               class="rounded-lg"
+               large
+               depressed
+               v-bind="attrs"
+               v-on="on"
+               onclick="createQuestion">
+          <v-icon small left>mdi-plus</v-icon>New Question
+        </v-btn>
+        <v-spacer></v-spacer>
+
         <v-col cols="12" sm="3">
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-            class="rounded-0"
-            single-line
-            outlined
-            dense
-            hide-details
-            clearable
-            @input="performSearch"
-          />
+          <v-text-field v-model="search"
+                        prepend-inner-icon="mdi-magnify"
+                        label="Search"
+                        class="rounded-0"
+                        single-line
+                        outlined
+                        dense
+                        hide-details
+                        clearable
+                        @input="performSearch" />
         </v-col>
       </v-row>
 
@@ -116,6 +122,10 @@
           </v-chip>
         </template>
       </div>
+
+      <v-dialog v-model="open_dialog" max-width="950px">
+        <BaseQuestionDialog @close="open_dialog = false" />
+      </v-dialog>
 
       <v-data-table
         :headers="headers"
@@ -170,20 +180,25 @@
           ></v-pagination>
         </v-col>
       </v-row>
+      <v-dialog v-model="open_matching_dialog" max-width="550px">
+        <BaseMatchingDialog />
+      </v-dialog>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
 import systemMixin from "@/mixins/system";
-  import questionMixin from "@/mixins/question";
+import questionMixin from "@/mixins/question";
 
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
+import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
 
 export default {
   name: "Question",
   components: {
     BaseQuestionCategoryCard,
+    BaseQuestionDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {
@@ -234,7 +249,33 @@ export default {
     } catch (err) {
       console.error(err);
     }
-  },
+    },
+
+    async createQuestion() {
+      try {
+        const testQuestion = {
+          title: "TEST",
+          description: "Test Question",
+          topic: "Data",
+          difficulty: "easy",
+          hints: "nil",
+          solution: "na",
+          recommended_duration: 30,
+          examples: "this is a test question",
+          constraints: "this is only a test question",
+        };
+        await this.CREATE_QUESTION({ testQuestion });
+        this.$notification.success(
+          `Successfully updated!`,
+        );
+        this.closeDialog();
+        this.GET_QUESTION();
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(`Encountered error creating a question: ${err}`);
+      }
+    },
+
   computed: {
     ...mapGetters({
       open_matching_dialog: "match/open_matching_dialog",
@@ -302,6 +343,21 @@ export default {
           break;
       }
       this.performFilter();
+    },
+
+    /**
+     * @description Load the question from server and opens the dialog
+     */
+    async openQuestionDialog(question_id) {
+      try {
+        this.SET_LOADING({ data: true });
+        await this.GET_QUESTION({ question_id });
+        this.open_dialog = true;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
     },
   },
 };

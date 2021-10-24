@@ -3,13 +3,14 @@
     <div class="light_primary rounded-lg pa-6">
       <div class="app-max-width mx-auto px-2">
         <h2 class="text-center mb-3">Featured Topics</h2>
+        <v-btn color="primary" text :loading="loading" @click="createQuestion" align="right">
+          Create Question
+        </v-btn>
         <v-row align-content="start" align="stretch">
-          <v-col
-            v-for="(topic, index) in question_topics"
-            :key="index"
-            cols="12"
-            md="3"
-          >
+          <v-col v-for="(topic, index) in question_topics"
+                 :key="index"
+                 cols="12"
+                 md="3">
             <BaseQuestionCategoryCard :topic="topic" />
           </v-col>
         </v-row>
