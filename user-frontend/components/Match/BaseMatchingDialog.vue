@@ -62,8 +62,11 @@ export default {
 
     this.socket.on("matched", (data) => {
       if (!!data) {
-        localStorage.setItem("match_id", data);
-        this.$router.push("/editor");
+        const match_id = _.get(data, "_id");
+        console.log(data);
+        this.SET_MATCH({ data });
+        localStorage.setItem("match_id", match_id);
+        this.$router.push(`/match/${match_id}`);
       }
     });
   },

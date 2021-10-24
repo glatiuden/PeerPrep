@@ -1,5 +1,26 @@
 <template>
   <div>
+    <h2>Chat with Your Partner</h2>
+    <v-btn
+      v-if="!is_video_on"
+      color="primary"
+      block
+      depressed
+      @click="clickVideoChat({ join: true })"
+    >
+      Start Video Chat
+    </v-btn>
+    <v-btn
+      v-else
+      color="primary"
+      block
+      depressed
+      @click="clickVideoChat({ join: false })"
+    >
+      Stop Video Chat
+    </v-btn>
+    <vue-webrtc ref="webrtc" width="100%" :room-id="match_id" />
+
     <v-sheet class="my-4" outlined>
       <div class="message-group">
         <!-- TODO: Need to check whether is receiver/sender and show the style accordingly. -->
@@ -49,7 +70,8 @@ export default {
     return {
       messages: [],
       chat_message: "",
-      match_id: localStorage.getItem("match_id"),
+      match_id: localStorage.getItem("match_id"), // Temporarily hardcoded
+      is_video_on: false,
     };
   },
   mounted() {
@@ -81,6 +103,17 @@ export default {
         payload: message,
       });
       this.chat_message = "";
+    },
+    /**
+     * @description Join video chat
+     */
+    clickVideoChat({ join }) {
+      if (join) {
+        this.$refs.webrtc.join();
+      } else {
+        this.$refs.webrtc.leave();
+      }
+      this.is_video_on = join;
     },
   },
 };

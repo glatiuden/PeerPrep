@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-select
+      v-if="false"
       v-model="selected_language"
       label="Programming Language"
       :items="programming_languages"
@@ -9,12 +10,12 @@
       hide-details="auto"
       item-text="text"
       item-value="value"
+      disabled
       @change="editorInit"
     >
     </v-select>
     <AceEditor
       v-model="content"
-      class="my-3"
       :lang="selected_language"
       theme="monokai"
       width="100%"
@@ -40,13 +41,16 @@
       ]"
       @init="editorInit"
     />
-    <v-btn color="primary" depressed :loading="loading" @click="executeCode"
-      >Run Your Code (Beta)
-    </v-btn>
-    <pre v-if="output" class="pre mt-6"><samp>{{ output }}</samp></pre>
+    <div class="my-3">
+      <v-btn color="primary" depressed :loading="loading" @click="executeCode"
+        >Run Your Code (Beta)
+      </v-btn>
+      <pre v-if="output" class="pre mt-6"><samp>{{ output }}</samp></pre>
+    </div>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import editorMixin from "~/mixins/editor";
 
 export default {
@@ -86,7 +90,14 @@ export default {
       output: undefined,
     };
   },
+  computed: {
+    ...mapGetters({
+      match: "match/match",
+    }),
+  },
   mounted() {
+    this.selected_language = this.match.programming_language;
+
     this.socket = this.$nuxtSocket({
       name: "editor",
     });
