@@ -63,8 +63,8 @@ import systemMixin from "@/mixins/system";
 import editorMixin from "@/mixins/editor";
 import matchMixin from "@/mixins/match";
 
-import BaseChat from "@/components/Editor/BaseChat";
-import BaseCodeEditor from "@/components/Editor/BaseCodeEditor";
+import BaseChat from "@/components/Match/BaseChat";
+import BaseCodeEditor from "@/components/Match/BaseCodeEditor";
 
 export default {
   components: {

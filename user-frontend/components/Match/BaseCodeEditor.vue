@@ -55,10 +55,18 @@ import editorMixin from "~/mixins/editor";
 
 export default {
   mixins: [editorMixin],
+  props: {
+    matchId: {
+      type: String,
+      required: true,
+      default: localStorage.getItem("match_id"),
+    },
+  },
   data() {
     return {
       selected_language: "javascript",
       content: "",
+      output: undefined,
       programming_languages: [
         {
           text: "C",
@@ -86,8 +94,6 @@ export default {
           language: "py",
         },
       ],
-      match_id: localStorage.getItem("match_id"),
-      output: undefined,
     };
   },
   computed: {
@@ -97,13 +103,13 @@ export default {
   },
   mounted() {
     this.selected_language = this.match.programming_language;
-
     this.socket = this.$nuxtSocket({
       name: "editor",
+      persist: "editor",
     });
 
     this.socket.on("connect", () => {
-      this.socket.emit("room", this.match_id);
+      this.socket.emit("room", this.matchId);
     });
 
     this.socket.on("message", (data) => {
@@ -114,21 +120,12 @@ export default {
   methods: {
     async save() {
       this.socket.emit("message", {
-        match_id: this.match_id,
+        match_id: this.matchId,
         payload: this.content,
       });
-
-      // Save to DB for persistent storage, for later usage.
-      // const editor_data = {
-      //   match_id,
-      //   programming_language: this.selected_language,
-      //   content: this.content,
-      // };
-      // await this.CREATE_EDITOR({
-      //   editor: editor_data,
-      // });
     },
     editorInit: function () {
+      require("brace/theme/monokai");
       require("brace/ext/language_tools"); //language extension prerequsite...
       switch (this.selected_language) {
         case "java":
@@ -150,7 +147,6 @@ export default {
           require("brace/snippets/python"); //snippet
           break;
       }
-      require("brace/theme/monokai");
     },
 
     async executeCode() {
@@ -168,7 +164,7 @@ export default {
         this.output = _.get(result, "output");
       } catch (err) {
         console.error(err);
-        this.$notification.error(`Encountered error creating a match: ${err}`);
+        this.$notification.error(`Encountered error executing code: ${err}`);
       } finally {
         this.SET_LOADING({ data: false });
       }

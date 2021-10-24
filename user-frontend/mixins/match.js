@@ -16,6 +16,7 @@ export default {
       GET_MATCHES_BY_USER_ID: "match/GET_MATCHES_BY_USER_ID",
       GET_MATCH: "match/GET_MATCH",
       CREATE_MATCH: "match/CREATE_MATCH",
+      END_MATCH: "match/END_MATCH",
     }),
 
     ...mapMutations({

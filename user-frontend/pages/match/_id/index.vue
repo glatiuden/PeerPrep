@@ -4,102 +4,57 @@
     type="table-heading, table-tbody, table-tfoot"
   >
   </v-skeleton-loader>
-  <v-row v-else class="mx-auto my-4">
-    <v-col cols="6">
-      <v-card outlined>
-        <v-card-title
-          >Question: {{ match_question.title }}
-          <v-spacer></v-spacer>
-          <v-countdown :left-time="match_question.recommended_duration * 60000">
-            <template #process="{ timeObj }">
-              <b>{{ `Time Left: ${timeObj.m}:${timeObj.s}` }}</b>
-            </template>
-          </v-countdown>
-        </v-card-title>
-        <v-card-text>
-          <p>
-            <v-icon class="mr-1">mdi-code-tags</v-icon>
-            <b>Difficulty:</b>
-            <v-chip
-              small
-              :color="difficulty_chip_colors[match_question.difficulty]"
-              text-color="white"
-            >
-              {{ match_question.difficulty }}
-            </v-chip>
-          </p>
-          <p>
-            <v-icon class="mr-1">mdi-book</v-icon>
-            <b>Topic:</b>
-            <v-chip small color="primary">{{ match_question.topic }}</v-chip>
-          </p>
-          <p class="font-weight-bold ma-0">
-            <v-icon class="mr-1">mdi-text-long</v-icon>
-            Description:
-          </p>
-          <div class="ml-8">{{ match_question.description }}</div>
-        </v-card-text>
-        <v-card-text>
-          <v-card-actions>
-            <v-btn text @click="show = !show"
-              >{{ show ? "Hide" : "Show" }} Examples</v-btn
-            >
-            <v-spacer></v-spacer>
-            <v-btn icon @click="show = !show">
-              <v-icon>
-                {{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}
-              </v-icon>
-            </v-btn>
-          </v-card-actions>
-          <v-expand-transition>
-            <div v-show="show">
-              <v-divider></v-divider>
-              <v-card-text>
-                <template v-if="match_question.examples.length > 0">
-                  <div
-                    v-for="(example, index) in match_question.examples"
-                    :key="index"
-                  >
-                    <code style="display: block">
-                      <b>Input: </b> {{ example.input }}
-                      <br />
-                      <b>Output: </b> {{ example.output }}
-                    </code>
-                    <br />
-                  </div>
+  <div v-else>
+    <BaseChat :match-id="match_id" />
+    <v-row class="mx-auto my-2">
+      <v-col cols="12" lg="3" style="position: relative">
+        <div class="scrollable-column">
+          <BaseQuestion :question="match_question" />
+          <v-card outlined class="mt-3">
+            <v-card-title> Match Details</v-card-title>
+            <v-card-text>
+              <v-countdown
+                :left-time="match_question.recommended_duration * 60000"
+              >
+                <template #process="{ timeObj }">
+                  <p>
+                    <b>{{ `Time Left: ${timeObj.m}:${timeObj.s}` }}</b>
+                  </p>
                 </template>
-                <p v-else>No examples available!</p>
-              </v-card-text>
-            </div>
-          </v-expand-transition>
-        </v-card-text>
-        <!-- <v-card-actions class="pb-3">
-          <v-spacer></v-spacer>
-          <v-btn color="primary" depressed>Hint</v-btn>
-        </v-card-actions> -->
-      </v-card>
-      <BaseChat />
-    </v-col>
-    <v-col cols="12" lg="6">
-      <BaseVideoChat />
-      <BaseCodeEditor />
-    </v-col>
-  </v-row>
+              </v-countdown>
+              Partner's Display Name: <b>{{ match.user.display_name }}</b>
+              <br />
+              Programming Language:
+              <b class="text-capitalize">{{ match.programming_language }}</b>
+            </v-card-text>
+            <v-card-actions class="mx-2">
+              <v-btn color="error" depressed @click="endMatch">End Match</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
+      </v-col>
+      <v-col cols="12" lg="5">
+        <BaseCodeEditor :match-id="match_id" />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 <script>
 import systemMixin from "@/mixins/system";
 import editorMixin from "@/mixins/editor";
 import matchMixin from "@/mixins/match";
 
-import BaseChat from "@/components/Editor/BaseChat";
-import BaseCodeEditor from "@/components/Editor/BaseCodeEditor";
-import BaseVideoChat from "@/components/Editor/BaseVideoChat";
+import BaseChat from "@/components/Match/BaseChat";
+import BaseCodeEditor from "@/components/Match/BaseCodeEditor";
+import BaseVideoChat from "@/components/Match/BaseVideoChat";
+import BaseQuestion from "@/components/Match/BaseQuestion";
 
 export default {
   components: {
     BaseChat,
     BaseCodeEditor,
     BaseVideoChat,
+    BaseQuestion,
   },
   mixins: [editorMixin, matchMixin, systemMixin],
   data() {
@@ -111,18 +66,33 @@ export default {
   },
   async fetch() {
     try {
-      this.match_id = localStorage.getItem("match_id") || this.$route.params.id; // Either from localStorage or URL params
       this.SET_LOADING({ data: true });
+      this.match_id = localStorage.getItem("match_id") || this.$route.params.id; // Either from localStorage or URL params
+      // If match is not in store, retrieve from server
       if (!this.match) {
         await this.GET_MATCH({ match_id: this.match_id });
       }
-      this.match_question = _.get(this.match, "question");
+      this.match_question = _.get(this.match, "question"); // Set it to data to be passed to question component
     } catch (err) {
       console.error(err);
       this.$notification.error(`Encountered error fetching match: ${err}`);
     } finally {
       this.SET_LOADING({ data: false });
     }
+  },
+  methods: {
+    async endMatch() {
+      try {
+        this.SET_LOADING({ data: true });
+        await this.END_MATCH({ match_id: this.match_id });
+        this.$router.push("/thank-you");
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(`Encountered error ending match: ${err}`);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
+    },
   },
 };
 </script>

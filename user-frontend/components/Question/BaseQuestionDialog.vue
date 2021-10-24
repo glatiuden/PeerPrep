@@ -109,13 +109,14 @@
 </template>
 
 <script>
+import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 import matchMixin from "@/mixins/match";
 import userMixin from "@/mixins/user";
 
 export default {
   name: "BaseQuestionDialog",
-  mixins: [questionMixin, matchMixin, userMixin],
+  mixins: [systemMixin, questionMixin, matchMixin, userMixin],
   data() {
     return {
       selected_programming_language: undefined,

@@ -3,4 +3,5 @@ export enum ActionTypes {
   GET_MATCH = "GET_MATCH",
   CREATE_MATCH = "CREATE_MATCH",
   UPDATE_MATCH = "UPDATE_MATCH",
+  END_MATCH = "END_MATCH",
 }

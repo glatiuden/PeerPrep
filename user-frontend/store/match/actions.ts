@@ -48,6 +48,39 @@ const actions: ActionTree<MatchState, RootState> = {
     const { data: updated_match } = await this.$axios.$put(`/match/api`, match);
     return updated_match;
   },
+
+  /**
+   * @description to end match
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.END_MATCH]({ commit, dispatch }, { match_id }) {
+    const { data: is_completed } = await this.$axios.$put(`/match/api/end`, {
+      match_id,
+    });
+
+    if (is_completed) {
+      dispatch(
+        "$nuxtSocket/emit",
+        {
+          label: "editor",
+          evt: "end_session",
+          msg: true,
+        },
+        { root: true },
+      );
+      dispatch(
+        "$nuxtSocket/emit",
+        {
+          label: "chat",
+          evt: "end_session",
+          msg: true,
+        },
+        { root: true },
+      );
+    }
+    return is_completed;
+  },
 };
 
 export default actions;

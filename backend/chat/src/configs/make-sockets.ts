@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
-import { createClient, RedisClient } from "redis";
+import { createClient } from "redis";
 import { logger } from "./logs";
 
 export default function makeSockets(server, cors) {
@@ -26,6 +26,11 @@ export default function makeSockets(server, cors) {
       const { match_id, payload } = content;
       logger.verbose("Code change detected", { match_id });
       io.sockets.in(match_id).emit("message", payload);
+    });
+
+    socket.on("end_session", (match_id) => {
+      logger.verbose("Ending session now...", { match_id });
+      io.sockets.in(match_id).socketsLeave(match_id);
     });
   });
 }

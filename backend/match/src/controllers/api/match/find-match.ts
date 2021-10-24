@@ -7,7 +7,9 @@ import { matchService } from "../../../services";
  * @description If there is a match that meets the requirement -> update. Else create new record
  * @function findMatchController
  */
-async function findMatchController(httpRequest: Request & { context: { validated: Partial<IMatch> } }) {
+async function findMatchController(
+  httpRequest: Request & { context: { validated: Partial<IMatch> & { user_id: string } } },
+) {
   const headers = {
     "Content-Type": "application/json",
   };
