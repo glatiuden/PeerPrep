@@ -5,7 +5,7 @@ import { userService } from "../services";
 import { logger } from "./logs";
 
 export default function makeRPCConsumer() {
-  const rabbit_url = process.env.RABBIT_URL || "invalid URL";
+  const rabbit_url = process.env.RABBIT_URL;
   if (!rabbit_url) {
     console.warn("RabbitMQ URL not found. RPC is not established");
     return;
