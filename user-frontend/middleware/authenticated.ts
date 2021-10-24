@@ -5,7 +5,7 @@ import _ from "lodash";
  * @description If the user is not authenticated, redirect back to login
  * @param param0
  */
-const authenticated: Middleware = async ({ store, redirect }) => {
+const authenticated: Middleware = async ({ store }) => {
   try {
     const user = store.getters["user/user"];
     const login_token = localStorage.getItem("login_token");

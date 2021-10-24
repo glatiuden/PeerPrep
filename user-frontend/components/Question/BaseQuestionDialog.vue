@@ -10,7 +10,7 @@
             <b>Difficulty:</b>
             <v-chip
               small
-              :color="chip_colors[question.difficulty]"
+              :color="difficulty_chip_colors[question.difficulty]"
               text-color="white"
             >
               {{ question.difficulty }}

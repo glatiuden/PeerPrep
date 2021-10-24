@@ -22,7 +22,7 @@
             <b>Difficulty:</b>
             <v-chip
               small
-              :color="chip_colors[match_question.difficulty]"
+              :color="difficulty_chip_colors[match_question.difficulty]"
               text-color="white"
             >
               {{ match_question.difficulty }}
@@ -87,7 +87,7 @@
   </v-row>
 </template>
 <script>
-import questionMixin from "@/mixins/question";
+import systemMixin from "@/mixins/system";
 import editorMixin from "@/mixins/editor";
 import matchMixin from "@/mixins/match";
 
@@ -101,22 +101,25 @@ export default {
     BaseCodeEditor,
     BaseVideoChat,
   },
-  mixins: [editorMixin, matchMixin, questionMixin],
+  mixins: [editorMixin, matchMixin, systemMixin],
   data() {
     return {
+      match_id: undefined,
       match_question: undefined,
       show: false,
     };
   },
   async fetch() {
     try {
+      this.match_id = localStorage.getItem("match_id") || this.$route.params.id; // Either from localStorage or URL params
       this.SET_LOADING({ data: true });
       if (!this.match) {
-        await this.GET_MATCH({ match_id: localStorage.getItem("match_id") });
+        await this.GET_MATCH({ match_id: this.match_id });
       }
       this.match_question = _.get(this.match, "question");
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching match: ${err}`);
     } finally {
       this.SET_LOADING({ data: false });
     }

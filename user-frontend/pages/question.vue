@@ -141,7 +141,10 @@
         </template>
 
         <template #item.difficulty="{ item }">
-          <v-chip class="white--text" :color="chip_colors[item.difficulty]">
+          <v-chip
+            class="white--text"
+            :color="difficulty_chip_colors[item.difficulty]"
+          >
             {{ item.difficulty }}
           </v-chip>
         </template>
