@@ -1,16 +1,17 @@
+import _ from "lodash";
 import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
-import { createClient } from "redis";
 import { logger } from "./logs";
-import { findMatch, cancelMatch } from "../services/use-cases";
-import _ from "lodash";
+import { redisClient } from "./make-redis";
+import { findMatch, cancelMatch, getMatch } from "../services/use-cases";
 
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["websocket", "polling"], cors });
-  const pubClient = createClient({
-    port: 6379,
-  });
+  // const pubClient = createClient({
+  //   port: 6379,
+  // });
 
+  const pubClient = redisClient.redis_client;
   const subClient = pubClient.duplicate();
   io.adapter(createAdapter({ pubClient, subClient }));
 
@@ -28,14 +29,15 @@ export default function makeSockets(server, cors) {
       socket.join(match_id);
       if (status === "matched") {
         logger.verbose("Match found! Redirect user to their room now...");
-        io.sockets.in(match_id).emit("matched", match_id);
+        const match_details = await getMatch(match_id);
+        io.sockets.in(match_id).emit("matched", match_details);
       } else {
         io.sockets.in(match_id).emit("waiting", match_id);
       }
     });
 
     socket.on("cancel", async (match_id) => {
-      logger.verbose("User requested cancelling", { match_id });
+      logger.verbose("Match is cancelling...", { match_id });
       const is_cancelled = await cancelMatch(match_id);
       if (is_cancelled) {
         io.sockets.in(match_id).socketsLeave(match_id);

@@ -39,6 +39,7 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
         _id: match_id,
         partner2_id: user_id,
         status: MatchStatus.IN_PROGRESS,
+        updated_at: new Date(),
       });
       return { status: "matched", match_id };
     }

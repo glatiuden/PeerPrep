@@ -5,9 +5,12 @@ import { logger } from "./logs";
 
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["websocket", "polling"], cors });
-  const pubClient = createClient({
-    // host: "redis-cluster.m5lsme.0001.apse1.cache.amazonaws.com",
-    port: 6379,
+  // const pubClient = createClient({
+  //   host: "redis-cluster.m5lsme.0001.apse1.cache.amazonaws.com",
+  //   port: 6379,
+  // });
+  const pubClient = createClient("//redis-12661.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:12661", {
+    auth_pass: "N4llYIJfuTY48DLszrrow9JGPdWRX19B",
   });
 
   const subClient = pubClient.duplicate();

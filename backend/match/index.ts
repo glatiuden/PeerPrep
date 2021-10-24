@@ -10,6 +10,7 @@ import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
 import makeRabbit from "./src/configs/make-rabbitmq-rpc";
 import makeSockets from "./src/configs/make-sockets";
+import makeRedis from "./src/configs/make-redis";
 
 const app = express();
 const corsOptions = {
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(makeLogger());
 
 makeDb();
+new makeRedis();
 const rabbit = new makeRabbit();
 rabbit.createRPCQueue("question");
 rabbit.createRPCQueue("user");
