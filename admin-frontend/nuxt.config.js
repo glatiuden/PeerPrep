@@ -67,7 +67,7 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "http://localhost:3006", // Temporary Hardcoded until ELB is implemented
+    baseURL: "http://localhost:3001", // Temporary Hardcoded until ELB is implemented
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries

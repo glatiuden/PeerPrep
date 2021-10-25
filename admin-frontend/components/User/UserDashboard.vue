@@ -123,7 +123,6 @@
         </v-card-text>
       </v-card>
     </div>
-    <v-btn @click="showSnackbar('hello', 'red')">snackbar</v-btn>
     <v-snackbar :color="snackbar.color" v-model="snackbar.show">
       {{ snackbar.message }}
       <template v-slot:action="{ attrs }">
