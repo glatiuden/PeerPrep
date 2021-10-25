@@ -16,69 +16,100 @@
       </div>
     </div>
     <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
-      <v-row class="my-3">
-        <v-col cols="12" sm="3">
-          <v-autocomplete
-            v-model="selected_difficulty_levels"
-            :items="difficulty_levels"
-            :loading="loading"
-            label="Difficulty Level"
-            item-value="value"
-            item-text="text"
-            class="rounded-0"
-            multiple
-            outlined
-            dense
-            hide-details
-            @change="performFilter"
+      <v-card class="my-9 my-sm-4 rounded-lg" outlined>
+        <v-card-title class="justify-center text-body-1">
+          <h2>Questions</h2>
+          <v-btn
+            icon
+            class="text--secondary"
+            color="#0560AD"
+            @click="open_info_dialog = !open_info_dialog"
           >
-            <template #selection="{ index }">
-              <span v-if="index === 0">
-                Selected:
-                {{ selected_difficulty_levels.length }}
-              </span>
-            </template>
-          </v-autocomplete>
-        </v-col>
+            <v-icon color="#0560AD">mdi-information</v-icon>
+          </v-btn>
+          <v-dialog v-model="open_info_dialog" max-width="600" max-height="400">
+            <v-card>
+              <v-card-title class="justify-center">
+                Questions on PeerPrep
+              </v-card-title>
+              <v-card-text>
+                <ul>
+                  <li>
+                    Questions on PeerPrep are curated from popular online
+                    competitive programming platforms such as Leetcode and
+                    Hackerrank.
+                  </li>
+                  <li>We do not own any of the questions and solutions.</li>
+                </ul>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+        </v-card-title>
+        <v-card-text class="d-flex">
+          <v-row>
+            <v-col cols="12" sm="3">
+              <v-autocomplete
+                v-model="selected_difficulty_levels"
+                :items="difficulty_levels"
+                :loading="loading"
+                label="Difficulty Level"
+                item-value="value"
+                item-text="text"
+                class="rounded-0"
+                multiple
+                outlined
+                dense
+                hide-details
+                @change="performFilter"
+              >
+                <template #selection="{ index }">
+                  <span v-if="index === 0">
+                    Selected:
+                    {{ selected_difficulty_levels.length }}
+                  </span>
+                </template>
+              </v-autocomplete>
+            </v-col>
 
-        <v-col cols="12" sm="3">
-          <v-autocomplete
-            v-model="selected_topics"
-            :items="question_topics"
-            :loading="loading"
-            label="Topic"
-            class="rounded-0"
-            multiple
-            outlined
-            dense
-            hide-details
-            clearable
-            @change="performFilter"
-          >
-            <template #selection="{ index }">
-              <span v-if="index === 0">
-                Selected:
-                {{ selected_topics.length }}
-              </span>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="12" sm="3">
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-            class="rounded-0"
-            single-line
-            outlined
-            dense
-            hide-details
-            clearable
-            @input="performSearch"
-          />
-        </v-col>
-      </v-row>
+            <v-col cols="12" sm="3">
+              <v-autocomplete
+                v-model="selected_topics"
+                :items="question_topics"
+                :loading="loading"
+                label="Topic"
+                class="rounded-0"
+                multiple
+                outlined
+                dense
+                hide-details
+                clearable
+                @change="performFilter"
+              >
+                <template #selection="{ index }">
+                  <span v-if="index === 0">
+                    Selected:
+                    {{ selected_topics.length }}
+                  </span>
+                </template>
+              </v-autocomplete>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                v-model="search"
+                prepend-inner-icon="mdi-magnify"
+                label="Search"
+                class="rounded-0"
+                single-line
+                outlined
+                dense
+                hide-details
+                clearable
+                @input="performSearch"
+              />
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
 
       <div class="d-flex my-3">
         <v-chip
@@ -232,6 +263,7 @@ export default {
       selected_difficulty_levels: [],
       selected_topics: [],
       open_dialog: false,
+      open_info_dialog: false,
     };
   },
   async fetch() {

@@ -3,9 +3,17 @@
     <v-card-title> Match Up </v-card-title>
     <v-divider></v-divider>
     <v-card-subtitle class="py-2">
-      This is a match up, where questions are randomly picked according to the
-      level of difficulty you have chosen. Upon completion, your partner will
-      rate your performance and you will gain ELO points.
+      <Lottie
+        class="my-auto"
+        :options="lottie_options"
+        :width="200"
+        :height="200"
+      />
+      <p class="text-center">
+        Questions are randomly assigned according to the level of difficulty you
+        have selected. Upon completion, your partner will rate your performance
+        and you will gain points.
+      </p>
     </v-card-subtitle>
     <v-divider></v-divider>
     <v-form v-model="valid">
@@ -37,12 +45,30 @@
               </v-btn>
             </v-btn-toggle>
           </v-col>
-          <v-col cols="12" align="center">
+          <v-col cols="6" align="center">
+            <b>Topic</b><br />
+            <small
+              >Optionally, you may chose a topic. However, it may result in
+              longer waiting time.</small
+            >
+            <v-select
+              v-model="selected_topic"
+              outlined
+              class="rounded-0"
+              dense
+              :items="question_topics"
+              persistent-hint
+              :rules="select_rules"
+              hide-details="auto"
+            >
+            </v-select>
+          </v-col>
+
+          <v-col cols="6" align="center">
             <b>Programming Language</b><br />
             <small
-              >To ensure a fair match, we will match users who have chosen the
-              same programming language preference. You will not be able to
-              change the language after the match starts.</small
+              >You will not be able to change the language after the match
+              starts.</small
             >
             <v-select
               v-model="selected_programming_language"
@@ -80,6 +106,8 @@
 </template>
 
 <script>
+import matchLottie from "@/assets/match.json";
+
 import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 import matchMixin from "@/mixins/match";
@@ -90,11 +118,22 @@ export default {
   mixins: [systemMixin, questionMixin, matchMixin, userMixin],
   data() {
     return {
+      lottie_options: { animationData: matchLottie, loop: true },
       selected_programming_language: undefined,
+      selected_topic: undefined,
       selected_difficulty: undefined,
       valid: false,
       select_rules: [(v) => !!v || "Please select at least one option"],
     };
+  },
+  async fetch() {
+    try {
+      if (!this.question_topics) {
+        await this.GET_QUESTION_TOPICS();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   },
   methods: {
     async startMatch() {
