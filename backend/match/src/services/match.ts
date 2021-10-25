@@ -1,7 +1,7 @@
 import _ from "lodash";
 import mongoose from "mongoose";
 
-import IMatch, { MatchStatus, PaginatedMatchResult } from "../models/interfaces/match";
+import IMatch, { MatchMode, MatchStatus, PaginatedMatchResult } from "../models/interfaces/match";
 
 export default function makeMatchService({
   matchDbModel,
@@ -20,33 +20,46 @@ export default function makeMatchService({
 
     async findByCondition({
       user_id,
-      is_elo_match = false,
-      question_id,
+      mode = MatchMode.QUESTION,
       programming_language,
-      mode,
+      question_id,
+      question_mode,
+      topic,
+      difficulty,
     }: {
       user_id: string;
-      is_elo_match: boolean;
-      question_id?: string;
+      mode: MatchMode;
       programming_language?: string;
-      mode?: string;
+      // Question Match
+      question_id?: string;
+      question_mode?: string;
+      // Elo Match
+      topic?: string;
+      difficulty?: string;
     }): Promise<IMatch | null> {
       const query_conditions = {
         deleted_at: undefined,
         status: MatchStatus.WAITING,
         $and: [{ partner1_id: { $ne: user_id } }, { partner2_id: { $ne: user_id } }],
-        is_elo_match,
+        mode,
       };
 
       if (question_id) {
         query_conditions["question_id"] = question_id;
       }
       if (programming_language) {
-        query_conditions["programming_language"] = programming_language;
+        query_conditions["match_requirements.programming_language"] = programming_language;
       }
-      if (mode) {
-        query_conditions["mode"] = mode;
+      if (question_mode) {
+        query_conditions["match_requirements.question_mode"] = question_mode;
       }
+      if (topic) {
+        query_conditions["match_requirements.topic"] = topic;
+      }
+      if (difficulty) {
+        query_conditions["match_requirements.difficulty"] = difficulty;
+      }
+
       const existing = await matchDbModel.findOne(query_conditions).sort({ updated_at: "desc" });
       if (existing) {
         return existing;

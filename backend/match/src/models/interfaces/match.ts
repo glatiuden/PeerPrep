@@ -4,12 +4,18 @@ export default interface IMatch {
   partner2_id: string; // Used to fetch user info
   question_id: string; // Used to fetch question info
   status: MatchStatus; // Waiting | In-Progress | Completed -> Status to enqueue the match
-  is_elo_match: boolean;
+  mode: MatchMode;
   match_requirements: {
+    programming_language?: string;
+    question_mode?: QuestionMode;
     topic?: string;
     difficulty?: string;
-    programming_language?: string;
-    mode?: MatchMode;
+  };
+  // A small data snapshot to aid the ease of displaying meaningful data on frontend
+  meta: {
+    partner1_display_name: string;
+    partner2_display_name: string;
+    question_title: string;
   };
   completed_at?: Date;
   deleted_at?: Date;
@@ -25,6 +31,11 @@ export enum MatchStatus {
 }
 
 export enum MatchMode {
+  ELO = "elo",
+  QUESTION = "question",
+}
+
+export enum QuestionMode {
   TIMED = "timed",
   OTOT = "otot",
 }
