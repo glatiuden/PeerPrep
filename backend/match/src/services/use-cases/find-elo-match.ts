@@ -34,6 +34,7 @@ export default async function findEloMatch(payload: Partial<IMatch> & { user_id:
         match_requirements: {
           programming_language,
           question_mode: QuestionMode.TIMED,
+          difficulty,
           topic,
         },
       });

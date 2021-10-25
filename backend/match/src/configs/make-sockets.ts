@@ -20,9 +20,8 @@ export default function makeSockets(server, cors) {
   }
 
   io.on("connection", (socket: Socket) => {
-    logger.verbose("User enqueued");
-
     socket.on("elo_matching", async (payload) => {
+      logger.verbose("User started an Elo Match!");
       const match = await findEloMatch(payload);
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");
@@ -30,20 +29,23 @@ export default function makeSockets(server, cors) {
       if (status === "matched") {
         logger.verbose("Match found! Redirect user to their room now...");
         const match_details = await getMatch(match_id);
-        io.sockets.in(match_id).emit("matched", match_details);
+        // FIXME: Need to emit in the room instead
+        io.sockets.emit("matched", match_details);
       } else {
         io.sockets.in(match_id).emit("waiting", match_id);
       }
     });
 
     socket.on("question_matching", async (payload) => {
+      logger.verbose("User started a Question Match!");
       const match = await findMatch(payload);
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");
-      socket.join(match_id);
+      socket.join(String(match_id));
       if (status === "matched") {
         logger.verbose("Match found! Redirect user to their room now...");
         const match_details = await getMatch(match_id);
+        // FIXME: Need to emit in the room instead
         io.sockets.in(match_id).emit("matched", match_details);
       } else {
         io.sockets.in(match_id).emit("waiting", match_id);

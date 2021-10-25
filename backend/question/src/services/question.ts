@@ -54,7 +54,7 @@ export default function makeQuestionService({
         query_conditions["topic"] = topic;
       }
 
-      const resultArray = await questionDbModel.find({ difficulty, topic });
+      const resultArray = await questionDbModel.find(query_conditions);
 
       const resultArrayLength = resultArray.length;
 

@@ -82,7 +82,7 @@
         </v-tab>
       </template>
       <v-tab @click="SET_OPEN_ELO_MATCH_DIALOG({ data: true })">
-        <v-icon small class="mr-1">mdi-pencil</v-icon>
+        <v-icon small class="mr-1">mdi-handshake</v-icon>
         <span class="black--text font-weight-bold">Start Match</span>
       </v-tab>
     </v-tabs>
@@ -137,12 +137,6 @@ export default {
           id: "question",
           title: "Questions",
           to: "/question",
-        },
-        // Temporarily for Testing
-        {
-          id: "editor",
-          title: "Editor",
-          to: "/editor",
         },
       ],
     };

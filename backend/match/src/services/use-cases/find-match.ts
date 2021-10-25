@@ -39,16 +39,16 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
         },
       });
       return { status: "waiting", match_id: match_details._id };
+    } else {
+      const match_id = _.get(ideal_match, "_id");
+      match_details = await matchService.update({
+        _id: match_id,
+        partner2_id: user_id,
+        status: MatchStatus.IN_PROGRESS,
+        updated_at: new Date(),
+      });
+      return { status: "matched", match_id };
     }
-
-    const match_id = _.get(ideal_match, "_id");
-    match_details = await matchService.update({
-      _id: match_id,
-      partner2_id: user_id,
-      status: MatchStatus.IN_PROGRESS,
-      updated_at: new Date(),
-    });
-    return { status: "matched", match_id };
   } catch (err) {
     logger.error(err);
   }

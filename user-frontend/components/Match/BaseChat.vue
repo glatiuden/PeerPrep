@@ -78,7 +78,7 @@ export default {
     };
   },
   mounted() {
-    if (!this.isHistoryMode) {
+    if (this.isHistoryMode) {
       return;
     }
 

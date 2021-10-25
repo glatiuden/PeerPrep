@@ -131,7 +131,7 @@ export default {
         const match = {
           user_id: this.user_id,
           question_id: this.question._id,
-          mode: "elo",
+          mode: "question",
           match_requirements: {
             programming_language: this.selected_programming_language,
             question_mode: this.selected_mode,

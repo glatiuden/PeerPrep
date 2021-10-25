@@ -9,6 +9,9 @@ import { matchService } from "../index";
  */
 export default async function cancelMatch(match_id: string) {
   try {
+    if (!match_id) {
+      return true; // Nothing to cancel
+    }
     const updated_match = await matchService.update({
       _id: match_id,
       status: MatchStatus.CANCELLED,

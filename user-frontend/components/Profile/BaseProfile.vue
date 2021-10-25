@@ -11,14 +11,17 @@
         </h1>
         <span>What do you want to do today?</span>
         <v-chip-group class="mt-3">
-          <v-chip color="primary">
+          <v-chip color="primary" @click="$router.push('/question')">
             <v-icon class="mr-1" small>mdi-help-circle-outline</v-icon>
-            View questions
+            View Questions
           </v-chip>
-          <v-chip color="secondary">
-            <v-icon class="mr-1" small>mdi-handshake-outline</v-icon>
-            Start a match</v-chip
+          <v-chip
+            color="secondary"
+            @click="SET_OPEN_ELO_MATCH_DIALOG({ data: true })"
           >
+            <v-icon class="mr-1" small>mdi-handshake-outline</v-icon>
+            Start Match
+          </v-chip>
         </v-chip-group>
       </div>
     </div>
@@ -41,6 +44,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 
@@ -60,6 +64,11 @@ export default {
     return {
       initial_loading: false,
     };
+  },
+  methods: {
+    ...mapMutations({
+      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
+    }),
   },
 };
 </script>

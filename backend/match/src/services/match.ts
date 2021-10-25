@@ -20,7 +20,7 @@ export default function makeMatchService({
 
     async findByCondition({
       user_id,
-      mode = MatchMode.QUESTION,
+      mode,
       programming_language,
       question_id,
       question_mode,

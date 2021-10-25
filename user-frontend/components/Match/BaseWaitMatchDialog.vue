@@ -2,14 +2,28 @@
   <v-card v-if="!loading">
     <v-divider></v-divider>
     <v-card-text class="my-3 text-center">
-      <Lottie
-        class="my-auto"
-        :options="defaultOptions"
-        :width="is_mobile ? 200 : 300"
-        :height="200"
-      />
-      <h2 class="my-3 loading">Looking for a match</h2>
-      <v-countdown :end-time="new Date().getTime() + 30000">
+      <div v-if="is_timer_ended">
+        <Lottie
+          class="my-auto"
+          :options="not_found_options"
+          :width="is_mobile ? 200 : 300"
+          :height="200"
+        />
+        <h2>😔 No match found</h2>
+      </div>
+      <div v-else>
+        <Lottie
+          class="my-auto"
+          :options="searching_options"
+          :width="is_mobile ? 200 : 300"
+          :height="200"
+        />
+        <h2 class="my-3 loading">Looking for a match</h2>
+      </div>
+      <v-countdown
+        :end-time="new Date().getTime() + 30000"
+        @finish="timerEnded"
+      >
         <h1 slot="process" slot-scope="{ timeObj }">{{ `${timeObj.s}` }}s</h1>
         <p slot="finish">No match found! Do you want to try again?</p>
       </v-countdown>
@@ -25,7 +39,8 @@
 </template>
 
 <script>
-import animationData from "@/assets/searching-lottie.json";
+import searchingLottie from "@/assets/searching-lottie.json";
+import notFoundLottie from "@/assets/not-found.json";
 
 import matchMixin from "@/mixins/match";
 import systemMixin from "@/mixins/system";
@@ -35,8 +50,10 @@ export default {
   mixins: [matchMixin, systemMixin],
   data() {
     return {
-      defaultOptions: { animationData, loop: true },
+      searching_options: { animationData: searchingLottie, loop: true },
+      not_found_options: { animationData: notFoundLottie, loop: true },
       match_id: undefined,
+      is_timer_ended: false,
     };
   },
   mounted() {
@@ -55,15 +72,18 @@ export default {
     });
 
     this.socket.on("waiting", (data) => {
-      if (data) {
+      console.log(data);
+      if (!!data) {
         this.match_id = data;
       }
     });
 
     this.socket.on("matched", (data) => {
-      if (data) {
+      console.log(data);
+      if (!!data) {
         const match_id = _.get(data, "_id");
         this.SET_MATCH({ data });
+        this.SET_OPEN_MATCHING_DIALOG({ data: false });
         localStorage.setItem("match_id", match_id);
         this.$router.push(`/match/${match_id}`);
       }
@@ -73,6 +93,10 @@ export default {
     closeDialog() {
       this.socket.emit("cancel", this.match_id);
       this.SET_OPEN_MATCHING_DIALOG({ data: false });
+    },
+
+    timerEnded() {
+      this.is_timer_ended = true;
     },
   },
 };

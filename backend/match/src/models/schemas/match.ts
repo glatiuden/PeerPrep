@@ -16,7 +16,14 @@ const matchSchema = new Schema(
       topic: { type: String, enum: ["Data Structures", "Algorithms", "Database"], trim: true }, // Optional
       difficulty: { type: String, enum: ["easy", "medium", "hard"], trim: true }, // Optional
       programming_language: { type: String, trim: true, lowercase: true }, // Optional for ELO match.
-      mode: { type: String, trim: true, lowercase: true, enum: ["timed", "otot"], required: true, default: "timed" }, // Optional. If ELO match => timed
+      question_mode: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        enum: ["timed", "otot"],
+        required: true,
+        default: "timed",
+      }, // Optional. If ELO match => timed
     },
     // A small data snapshot to aid the ease of displaying meaningful data on frontend
     meta: {
