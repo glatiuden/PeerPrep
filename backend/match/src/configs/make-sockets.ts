@@ -25,14 +25,14 @@ export default function makeSockets(server, cors) {
       const match = await findEloMatch(payload);
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");
-      socket.join(match_id);
+      const socket_id = String(match_id);
+      socket.join(socket_id);
       if (status === "matched") {
         logger.verbose("Match found! Redirect user to their room now...");
         const match_details = await getMatch(match_id);
-        // FIXME: Need to emit in the room instead
-        io.sockets.emit("matched", match_details);
+        io.sockets.in(socket_id).emit("matched", match_details);
       } else {
-        io.sockets.in(match_id).emit("waiting", match_id);
+        io.sockets.in(socket_id).emit("waiting", match_id);
       }
     });
 
@@ -41,14 +41,14 @@ export default function makeSockets(server, cors) {
       const match = await findMatch(payload);
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");
-      socket.join(String(match_id));
+      const socket_id = String(match_id);
+      socket.join(socket_id);
       if (status === "matched") {
         logger.verbose("Match found! Redirect user to their room now...");
         const match_details = await getMatch(match_id);
-        // FIXME: Need to emit in the room instead
-        io.sockets.in(match_id).emit("matched", match_details);
+        io.sockets.in(socket_id).emit("matched", match_details);
       } else {
-        io.sockets.in(match_id).emit("waiting", match_id);
+        io.sockets.in(socket_id).emit("waiting", match_id);
       }
     });
 
