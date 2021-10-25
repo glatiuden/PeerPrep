@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>Create A New User</v-card-title>
       <v-card-text>
-        <v-form v-model="valid_create" ref="form">
+        <v-form ref="form" v-model="valid_create">
           <v-col>
             <v-row class="gap">
               <v-text-field
@@ -63,7 +63,11 @@
               <v-spacer></v-spacer>
             </v-row>
           </v-col>
-          <v-btn :disabled="!valid_create" @click="createNewUser()">
+          <v-btn
+            :disabled="!valid_create"
+            :loading="loading"
+            @click="createNewUser()"
+          >
             Create User
           </v-btn>
         </v-form>
@@ -80,7 +84,9 @@
           </v-row>
           <div>
             <v-btn outlined color="primary" @click="toggleEditing(user)">
-              <v-icon v-if="!user.editing" small class="mr-1">mdi-account-remove</v-icon>
+              <v-icon v-if="!user.editing" small class="mr-1"
+                >mdi-account-remove</v-icon
+              >
               {{ user.editing ? "Cancel" : "Edit User" }}
             </v-btn>
             <v-btn color="primary" @click="deleteUser(user)">
@@ -125,8 +131,8 @@
     </div>
     <v-snackbar :color="snackbar.color" v-model="snackbar.show">
       {{ snackbar.message }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="white" text @click="snackbar.show = false" v-bind="attrs">
+      <template #action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar.show = false">
           Close
         </v-btn>
       </template>
@@ -188,6 +194,12 @@ export default {
     },
     resetForm() {
       this.$refs.form.reset(); // this doesn't work :(
+      this.new_user = {
+        display_name: undefined,
+        password: undefined,
+        email: undefined,
+        role: undefined,
+      };
     },
     async fetchUsers() {
       try {
@@ -219,19 +231,18 @@ export default {
     async createNewUser() {
       try {
         this.SET_LOADING({ data: true });
-        console.log(this.new_user);
         if (this.new_user.role === "Admin") {
           await this.CREATE_ADMIN({ admin: this.new_user });
         } else if (this.new_user.role == "User") {
           await this.CREATE_USER({ user: this.new_user });
         }
+        this.resetForm();
       } catch (err) {
         this.showSnackbar("Error creating user", "red");
         console.error(err);
       } finally {
         this.fetchUsers();
         this.SET_LOADING({ data: false });
-
         this.showSnackbar("Successfully created user", "green");
       }
     },
