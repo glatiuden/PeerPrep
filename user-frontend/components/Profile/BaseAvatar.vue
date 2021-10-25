@@ -15,7 +15,9 @@
         </v-card-text>
       </v-card>
       <div class="d-flex justify-center">
-        <h2 class="text-center my-3">Vinleon</h2>
+        <h2 class="text-center my-3">
+          {{ user.display_name }}
+        </h2>
         <v-btn icon class="my-auto"><v-icon>mdi-pencil</v-icon></v-btn>
       </div>
     </v-card-text>

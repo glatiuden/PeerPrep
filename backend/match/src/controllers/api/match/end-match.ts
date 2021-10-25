@@ -18,6 +18,8 @@ async function endMatchController(httpRequest: Request & { context: { validated:
     const updated_match = matchService.update({
       _id: match_id,
       status: MatchStatus.COMPLETED,
+      updated_at: new Date(),
+      completed_at: new Date(),
     });
 
     if (!updated_match) {

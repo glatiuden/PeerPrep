@@ -1,6 +1,7 @@
+import _ from "lodash";
 import mongoose from "mongoose";
 
-import IMatch, { MatchStatus } from "../models/interfaces/match";
+import IMatch, { MatchStatus, PaginatedMatchResult } from "../models/interfaces/match";
 
 export default function makeMatchService({
   matchDbModel,
@@ -19,11 +20,13 @@ export default function makeMatchService({
 
     async findByCondition({
       user_id,
+      is_elo_match = false,
       question_id,
       programming_language,
       mode,
     }: {
       user_id: string;
+      is_elo_match: boolean;
       question_id?: string;
       programming_language?: string;
       mode?: string;
@@ -32,7 +35,9 @@ export default function makeMatchService({
         deleted_at: undefined,
         status: MatchStatus.WAITING,
         $and: [{ partner1_id: { $ne: user_id } }, { partner2_id: { $ne: user_id } }],
+        is_elo_match,
       };
+
       if (question_id) {
         query_conditions["question_id"] = question_id;
       }
@@ -73,6 +78,80 @@ export default function makeMatchService({
         return existing;
       }
       return [];
+    }
+
+    async findAllByUserIdPaginated(
+      { user_id, is_elo_match, status }: { user_id: string; is_elo_match?: boolean; status?: MatchStatus },
+      {
+        query = "",
+        page = 1,
+        entries_per_page = 15,
+      }: {
+        query: string;
+        page: number;
+        entries_per_page?: number;
+      },
+    ): Promise<PaginatedMatchResult | null> {
+      const number_of_entries_to_skip = (page - 1) * entries_per_page;
+      // const search_conditions = [{ partner1_id: { $eq: user_id } }, { partner2_id: { $eq: user_id } }];
+
+      let search_conditions;
+      if (query) {
+        search_conditions = [
+          { partner1_id: { $eq: user_id } },
+          { partner2_id: { $eq: user_id } },
+          { "match_requirements.topic": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "match_requirements.difficulty": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "match_requirements.programming_language": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "match_requirements.mode": { $regex: ".*" + query + ".*", $options: "si" } },
+        ];
+      } else {
+        search_conditions = [{ partner1_id: { $eq: user_id } }, { partner2_id: { $eq: user_id } }];
+      }
+
+      const query_conditions = {
+        $or: search_conditions,
+        deleted_at: undefined,
+      };
+
+      if (_.isBoolean(is_elo_match)) {
+        query_conditions["is_elo_match"] = is_elo_match;
+      }
+
+      if (status) {
+        query_conditions["status"] = status;
+      }
+
+      const existing = await matchDbModel
+        .find(query_conditions)
+        .skip(number_of_entries_to_skip)
+        .limit(entries_per_page)
+        .sort({
+          updated_at: "desc",
+        })
+        .lean({ virtuals: true });
+
+      const total_count = await matchDbModel.countDocuments(query_conditions);
+
+      if (existing) {
+        const from = page - 1 > 0 ? page - 1 : null;
+        const has_more_entries = existing.length === entries_per_page && page * entries_per_page !== total_count;
+        const to = has_more_entries ? page + 1 : null;
+        const total_pages = Math.ceil(total_count / entries_per_page);
+        return {
+          data: existing,
+          pagination: {
+            current_page: page,
+            from,
+            to,
+            per_page: entries_per_page,
+            total: total_count,
+            total_pages,
+          },
+        };
+      }
+
+      return null;
     }
 
     async update(payload: Partial<IMatch>): Promise<IMatch | null> {

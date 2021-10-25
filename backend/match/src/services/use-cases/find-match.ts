@@ -23,14 +23,23 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
     } = payload;
 
     let match_details;
-    const ideal_match = await matchService.findByCondition({ user_id, question_id, programming_language, mode });
+    const ideal_match = await matchService.findByCondition({
+      user_id,
+      is_elo_match: false,
+      question_id,
+      programming_language,
+      mode,
+    });
     if (!ideal_match) {
       const mode_enum: MatchMode = <MatchMode>mode;
       match_details = await matchService.insert({
         partner1_id: user_id,
         question_id,
-        programming_language,
-        mode: mode_enum,
+        is_elo_match: false,
+        match_requirements: {
+          programming_language,
+          mode: mode_enum,
+        },
       });
       return { status: "waiting", match_id: match_details._id };
     } else {

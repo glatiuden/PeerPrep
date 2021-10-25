@@ -4,9 +4,13 @@ export default interface IMatch {
   partner2_id: string; // Used to fetch user info
   question_id: string; // Used to fetch question info
   status: MatchStatus; // Waiting | In-Progress | Completed -> Status to enqueue the match
-  programming_language: string;
-  mode: MatchMode;
-  is_random: boolean;
+  is_elo_match: boolean;
+  match_requirements: {
+    topic?: string;
+    difficulty?: string;
+    programming_language?: string;
+    mode?: MatchMode;
+  };
   completed_at?: Date;
   deleted_at?: Date;
   created_at: Date;
@@ -23,4 +27,16 @@ export enum MatchStatus {
 export enum MatchMode {
   TIMED = "timed",
   OTOT = "otot",
+}
+
+export interface PaginatedMatchResult {
+  data: IMatch[];
+  pagination: {
+    current_page: number;
+    from: number | null;
+    to: number | null;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
 }

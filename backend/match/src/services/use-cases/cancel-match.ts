@@ -12,6 +12,7 @@ export default async function cancelMatch(match_id: string) {
     const updated_match = await matchService.update({
       _id: match_id,
       status: MatchStatus.CANCELLED,
+      updated_at: new Date(),
     });
     return !!updated_match;
   } catch (err) {
