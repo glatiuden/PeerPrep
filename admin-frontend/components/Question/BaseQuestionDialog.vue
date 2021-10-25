@@ -48,15 +48,10 @@
       <!-- <small> 1 pair are solving the problem, 2 in queue... </small> -->
       <v-spacer></v-spacer>
       <v-btn color="error" text :loading="loading" @click="deleteQuestion">
-        Delete 
+        Delete
       </v-btn>
-      <v-btn
-        color="primary"
-        :loading="loading"
-        text
-        @click="editQuestion"
-      >
-        Edit 
+      <v-btn color="primary" :loading="loading" text @click="editQuestion">
+        Edit
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -76,57 +71,55 @@ export default {
       select_rules: [(v) => !!v || "Please select at least one option"],
     };
   },
-    methods: {
-      closeDialog() {
-        this.$emit("close");
-      },
-      async deleteQuestion() {
-        const is_confirmed = confirm(
-          "Are you sure you want to delete this question? It is an irreversible action.",
-        );
-
-        if (!is_confirmed) {
-          return;
-        }
-
-        try {
-          const question_id = this.question._id;
-          await this.DELETE_QUESTION({ question_id });
-          this.$notification.success(
-            `Successfully deleted!`,
-          );
-          this.closeDialog();
-          this.GET_QUESTION();
-        } catch (err) {
-          console.error(err);
-          this.$notification.error(`Encountered error deleting this question: ${err}`);
-        }
-      },
+  methods: {
+    closeDialog() {
+      this.$emit("close");
     },
-      async updateQuestion() {
-        try {
-          const testQuestion = {
-            _id: this.question._id,
-            title: "TEST",
-            description: "Test Question",
-            topic: "Data",
-            difficulty: "easy",
-            hints: "nil",
-            solution: "na",
-            recommended_duration: 30,
-            examples: "this is a test question",
-            constraints: "this is only a test question",
-          };
-          await this.UPDATE_QUESTION({ testQuestion });
-          this.$notification.success(
-            `Successfully updated!`,
-          );
-          this.closeDialog();
-          this.GET_QUESTION();
-        } catch (err) {
-          console.error(err);
-          this.$notification.error(`Encountered error updating a question: ${err}`);
-        }
-      },
+    async deleteQuestion() {
+      const is_confirmed = confirm(
+        "Are you sure you want to delete this question? It is an irreversible action.",
+      );
+
+      if (!is_confirmed) {
+        return;
+      }
+
+      try {
+        const question_id = this.question._id;
+        await this.DELETE_QUESTION({ question_id });
+        this.$notification.success(`Successfully deleted!`);
+        this.closeDialog();
+        this.GET_QUESTION();
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(
+          `Encountered error deleting this question: ${err}`,
+        );
+      }
+    },
+  },
+  async updateQuestion() {
+    try {
+      const testQuestion = {
+        _id: this.question._id,
+        title: "TEST",
+        description: "Test Question",
+        topic: "Data",
+        difficulty: "easy",
+        hints: "nil",
+        solution: "na",
+        recommended_duration: 30,
+        examples: "this is a test question",
+        constraints: "this is only a test question",
+      };
+      await this.UPDATE_QUESTION({ testQuestion });
+      this.$notification.success(`Successfully updated!`);
+      this.closeDialog();
+      this.GET_QUESTION();
+    } catch (err) {
+      console.error(err);
+      this.$notification.error(`Encountered error updating a question: ${err}`);
+    }
+  },
 };
 </script>

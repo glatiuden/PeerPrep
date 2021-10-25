@@ -4,10 +4,12 @@
       <div class="app-max-width mx-auto px-2">
         <h2 class="text-center mb-3">Question List</h2>
         <v-row align-content="start" align="stretch">
-          <v-col v-for="(topic, index) in question_topics"
-                 :key="index"
-                 cols="12"
-                 md="3">
+          <v-col
+            v-for="(topic, index) in question_topics"
+            :key="index"
+            cols="12"
+            md="3"
+          >
             <BaseQuestionCategoryCard :topic="topic" />
           </v-col>
         </v-row>
@@ -15,15 +17,17 @@
     </div>
 
     <div>
-      <v-btn color="primary"
-             outlined
-             class="rounded-lg"
-             large
-             depressed
-             v-bind="attrs"
-             v-on="on"
-             align="right"
-             @click="open_question_dialog = true">
+      <v-btn
+        color="primary"
+        outlined
+        class="rounded-lg"
+        large
+        depressed
+        v-bind="attrs"
+        align="right"
+        v-on="on"
+        @click="open_question_dialog = true"
+      >
         <v-icon small left>mdi-plus</v-icon>New Question
       </v-btn>
       <v-dialog v-model="open_question_dialog" max-width="950px">
@@ -34,18 +38,20 @@
     <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
       <v-row class="my-3">
         <v-col cols="12" sm="3">
-          <v-autocomplete v-model="selected_difficulty_levels"
-                          :items="difficulty_levels"
-                          :loading="loading"
-                          label="Difficulty Level"
-                          item-value="value"
-                          item-text="text"
-                          class="rounded-0"
-                          multiple
-                          outlined
-                          dense
-                          hide-details
-                          @change="performFilter">
+          <v-autocomplete
+            v-model="selected_difficulty_levels"
+            :items="difficulty_levels"
+            :loading="loading"
+            label="Difficulty Level"
+            item-value="value"
+            item-text="text"
+            class="rounded-0"
+            multiple
+            outlined
+            dense
+            hide-details
+            @change="performFilter"
+          >
             <template #selection="{ index }">
               <span v-if="index === 0">
                 Selected:
@@ -56,17 +62,19 @@
         </v-col>
 
         <v-col cols="12" sm="3">
-          <v-autocomplete v-model="selected_topics"
-                          :items="question_topics"
-                          :loading="loading"
-                          label="Topic"
-                          class="rounded-0"
-                          multiple
-                          outlined
-                          dense
-                          hide-details
-                          clearable
-                          @change="performFilter">
+          <v-autocomplete
+            v-model="selected_topics"
+            :items="question_topics"
+            :loading="loading"
+            label="Topic"
+            class="rounded-0"
+            multiple
+            outlined
+            dense
+            hide-details
+            clearable
+            @change="performFilter"
+          >
             <template #selection="{ index }">
               <span v-if="index === 0">
                 Selected:
@@ -78,45 +86,53 @@
         <v-spacer></v-spacer>
 
         <v-col cols="12" sm="3">
-          <v-text-field v-model="search"
-                        prepend-inner-icon="mdi-magnify"
-                        label="Search"
-                        class="rounded-0"
-                        single-line
-                        outlined
-                        dense
-                        hide-details
-                        clearable
-                        @input="performSearch" />
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+            class="rounded-0"
+            single-line
+            outlined
+            dense
+            hide-details
+            clearable
+            @input="performSearch"
+          />
         </v-col>
       </v-row>
 
       <div class="d-flex my-3">
-        <v-chip v-if="search"
-                class="mr-4"
-                close
-                @click:close="closeChip('search')">
+        <v-chip
+          v-if="search"
+          class="mr-4"
+          close
+          @click:close="closeChip('search')"
+        >
           Search: {{ search }}
         </v-chip>
 
         <template v-if="selected_difficulty_levels.length > 0">
-          <v-chip v-for="level in selected_difficulty_levels"
-                  :key="level"
-                  class="mr-4"
-                  close
-                  color="primary"
-                  @click:close="closeChip('difficulty_level', level)">
+          <v-chip
+            v-for="level in selected_difficulty_levels"
+            :key="level"
+            class="mr-4"
+            close
+            color="primary"
+            @click:close="closeChip('difficulty_level', level)"
+          >
             Difficulty:&nbsp;<b>{{ level | capitalize }}</b>
           </v-chip>
         </template>
 
         <template v-if="selected_topics.length > 0">
-          <v-chip v-for="topic in selected_topics"
-                  :key="topic"
-                  close
-                  class="mr-4"
-                  color="primary"
-                  @click:close="closeChip('topic', topic)">
+          <v-chip
+            v-for="topic in selected_topics"
+            :key="topic"
+            close
+            class="mr-4"
+            color="primary"
+            @click:close="closeChip('topic', topic)"
+          >
             Topic: {{ topic }}
           </v-chip>
         </template>
@@ -126,17 +142,19 @@
         <BaseQuestionDialog @close="open_dialog = false" />
       </v-dialog>
 
-      <v-data-table :headers="headers"
-                    :items="questions"
-                    :loading="loading"
-                    loading-text="Loading... Please wait"
-                    item-key="_id"
-                    :sort-by="['created_at']"
-                    :sort-desc="[true]"
-                    :page.sync="page"
-                    hide-default-footer
-                    :items-per-page="15"
-                    class="soft-box-shadow">
+      <v-data-table
+        :headers="headers"
+        :items="questions"
+        :loading="loading"
+        loading-text="Loading... Please wait"
+        item-key="_id"
+        :sort-by="['created_at']"
+        :sort-desc="[true]"
+        :page.sync="page"
+        hide-default-footer
+        :items-per-page="15"
+        class="soft-box-shadow"
+      >
         <template #item.title="{ item }">
           <span class="clickable" @click="openQuestionDialog(item._id)">
             {{ item.title }}
@@ -159,22 +177,22 @@
           <v-icon class="mr-2">mdi-pencil-outline</v-icon>
         </template>
 
-        <template #no-data>
-          No question available
-        </template>
+        <template #no-data> No question available </template>
       </v-data-table>
 
       <v-row justify="center" class="my-2">
         <v-col v-if="pages_exists" cols="4">
-          <v-pagination v-if="questions_pagination.current_page"
-                        v-model="page"
-                        :length="questions_pagination.total_pages"
-                        @input="
+          <v-pagination
+            v-if="questions_pagination.current_page"
+            v-model="page"
+            :length="questions_pagination.total_pages"
+            @input="
               GET_QUESTIONS_PAGINATED({
                 query: search,
                 page: $event,
               })
-            "></v-pagination>
+            "
+          ></v-pagination>
         </v-col>
       </v-row>
     </div>
