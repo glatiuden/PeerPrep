@@ -94,69 +94,6 @@
         </v-form>
       </v-card-text>
     </v-card>
-    <!--<div v-for="(user, index) in users" :key="index">
-    <v-card>
-      <v-card-title class="title">
-        <v-row class="margin-0">
-          {{ user.display_name }}
-          <div :class="'role-tag ' + user.role.toLowerCase()">
-            {{ user.role.toUpperCase() }}
-          </div>
-        </v-row>
-        <div>
-          <v-btn outlined color="primary" @click="toggleEditing(user)">
-            <v-icon small class="mr-1">mdi-account-remove</v-icon>
-            {{ user.editing ? "Cancel" : "Edit User" }}
-          </v-btn>
-          <v-btn color="primary" @click="deleteUser(user)">
-            <v-icon small class="mr-1">mdi-account-remove</v-icon>
-            Remove User
-          </v-btn>
-        </div>
-      </v-card-title>
-      <v-card-text v-if="!user.editing">
-        {{ user.email }}
-      </v-card-text>
-      <v-card-text v-if="user.editing">
-        <v-form>
-          <v-col cols="12" sm="9" md="9" lg="9" xl="8">
-            <v-text-field
-              v-model="user.email"
-              label="Email Address"
-              name="email"
-              prepend-inner-icon="mdi-email-outline"
-              type="email"
-              outlined
-              dense
-              required
-              hide-details="auto"
-              :rules="email_rules"
-            />
-            <v-text-field
-              label="Password"
-              name="password"
-              prepend-inner-icon="mdi-lock-outline"
-              type="text"
-              outlined
-              dense
-              required
-              hide-details="true"
-              :rules="required"
-            />
-          </v-col>
-        </v-form>
-      </v-card-text>
-    </v-card>
-  </div>
-    <v-btn @click="showSnackbar('hello', 'red')">snackbar</v-btn>
-    <v-snackbar :color="snackbar.color" v-model="snackbar.show">
-      {{ snackbar.message }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="white" text @click="snackbar.show = false" v-bind="attrs">
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>-->
   </v-col>
 </template>
 
@@ -216,7 +153,7 @@ export default {
         await this.CREATE_QUESTION({ question: this.new_question });
         this.closeDialog();
       } catch (err) {
-        this.$notification.error("Error creating user", "red");
+        this.$notification.error("Error creating question", "red");
         console.error(err);
       } finally {
         this.SET_LOADING({ data: false });
