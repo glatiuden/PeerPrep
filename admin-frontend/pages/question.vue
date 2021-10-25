@@ -26,12 +26,12 @@
         v-bind="attrs"
         align="right"
         v-on="on"
-        @click="open_question_dialog = true"
+        @click="open_create_question_dialog = true"
       >
         <v-icon small left>mdi-plus</v-icon>New Question
       </v-btn>
-      <v-dialog v-model="open_question_dialog" max-width="950px">
-        <CreateQuestionDialog @close="open_question_dialog = false" />
+      <v-dialog v-model="open_create_question_dialog" max-width="950px">
+        <CreateQuestionDialog @close="open_create_question_dialog = false" />
       </v-dialog>
     </div>
 
@@ -174,7 +174,12 @@
         </template>
 
         <template #item.actions="{ item }">
-          <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+            <v-icon
+                class="mr-2"
+                @click="openUpdateQuestionDialog(item._id)"
+            >
+            mdi-pencil-outline
+            </v-icon>
         </template>
 
         <template #no-data> No question available </template>
@@ -206,6 +211,7 @@ import questionMixin from "@/mixins/question";
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
 import CreateQuestionDialog from "@/components/Question/CreateQuestionDialog";
+import UpdateQuestionDialog from "@/components/Question/UpdateQuestionDialog";
 
 export default {
   name: "Question",
@@ -213,6 +219,7 @@ export default {
     BaseQuestionCategoryCard,
     BaseQuestionDialog,
     CreateQuestionDialog,
+    UpdateQuestionDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {
@@ -246,13 +253,21 @@ export default {
           class: "data-table-heading",
           width: 300,
         },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
+          class: "data-table-heading",
+          width: 300,
+        },
       ],
       search: "",
       page: 1,
       selected_difficulty_levels: [],
       selected_topics: [],
       open_dialog: false,
-      open_question_dialog: false,
+      open_create_question_dialog: false,
+      open_update_question_dialog: false,
     };
   },
   async fetch() {
@@ -342,6 +357,21 @@ export default {
         this.SET_LOADING({ data: true });
         await this.GET_QUESTION({ question_id });
         this.open_dialog = true;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
+    },
+
+    /**
+     * @description Load the question from server and opens the dialog to edit question
+     */
+    async openUpdateQuestionDialog(question_id) {
+      try {
+        this.SET_LOADING({ data: true });
+        await this.GET_QUESTION({ question_id });
+        this.open_update_question_dialog = true;
       } catch (err) {
         console.error(err);
       } finally {

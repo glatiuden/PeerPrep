@@ -16,15 +16,14 @@
                 hide-details="auto"
                 :rules="required"
               />
-              <v-text-field
+              <v-select
                 v-model="new_question.topic"
+                :items="['Data Structures', 'Algorithms', 'Database']"
                 label="Topic"
-                type="text"
                 outlined
                 dense
                 required
                 hide-details="auto"
-                :rules="required"
               />
               <v-select
                 v-model="new_question.difficulty"
@@ -257,7 +256,7 @@ export default {
         await this.CREATE_QUESTION({ question: this.new_question });
         this.closeDialog();
       } catch (err) {
-        this.$notification.error("Error creating user");
+        this.$notification.error("Error creating question");
         console.error(err);
       } finally {
         this.SET_LOADING({ data: false });
