@@ -22,6 +22,7 @@ export const state = () => ({
       value: "hard",
     },
   ] as any[],
+  selected_topics: [] as any[],
 });
 
 export type QuestionState = ReturnType<typeof state>;

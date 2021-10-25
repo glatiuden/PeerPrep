@@ -10,12 +10,16 @@
             cols="12"
             md="3"
           >
-            <BaseQuestionCategoryCard :topic="topic" />
+            <BaseQuestionCategoryCard
+              :topic="topic"
+              :index="index"
+              @perform-filter="performFilter"
+            />
           </v-col>
         </v-row>
       </div>
     </div>
-    <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
+    <div class="app-max-width mx-auto pt-6 px-8 px-lg-2">
       <v-card class="my-9 my-sm-4 rounded-lg" outlined>
         <v-card-title class="justify-center text-body-1">
           <h2>Questions</h2>
@@ -73,7 +77,6 @@
 
             <v-col cols="12" sm="3">
               <v-autocomplete
-                v-model="selected_topics"
                 :items="question_topics"
                 :loading="loading"
                 label="Topic"
@@ -83,7 +86,10 @@
                 dense
                 hide-details
                 clearable
-                @change="performFilter"
+                @change="
+                  SET_SELECTED_TOPICS({ data: $event });
+                  performFilter();
+                "
               >
                 <template #selection="{ index }">
                   <span v-if="index === 0">
@@ -258,10 +264,9 @@ export default {
           width: 300,
         },
       ],
-      search: "",
+      search: undefined,
       page: 1,
       selected_difficulty_levels: [],
-      selected_topics: [],
       open_dialog: false,
       open_info_dialog: false,
     };
@@ -333,10 +338,9 @@ export default {
           );
           break;
         case "topic":
-          this.selected_topics = _.filter(
-            this.selected_topics,
-            (topic) => topic != value,
-          );
+          this.SET_SELECTED_TOPICS({
+            data: _.filter(this.selected_topics, (topic) => topic != value),
+          });
           break;
         case "search":
           this.search = "";
