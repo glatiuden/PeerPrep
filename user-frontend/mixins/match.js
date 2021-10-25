@@ -8,6 +8,8 @@ export default {
       open_matching_dialog: "match/open_matching_dialog",
       match: "match/match",
       matches: "match/matches",
+      chat_messages: "match/chat_messages",
+      codes: "match/codes",
     }),
   },
 
@@ -17,12 +19,14 @@ export default {
       GET_MATCH: "match/GET_MATCH",
       CREATE_MATCH: "match/CREATE_MATCH",
       END_MATCH: "match/END_MATCH",
+      UPDATE_CODES: "match/UPDATE_CODES",
     }),
 
     ...mapMutations({
       SET_LOADING: "match/SET_LOADING",
       SET_OPEN_MATCHING_DIALOG: "match/SET_OPEN_MATCHING_DIALOG",
       SET_MATCH: "match/SET_MATCH",
+      UPDATE_CHAT_MESSAGES: "match/UPDATE_CHAT_MESSAGES",
     }),
   },
 };

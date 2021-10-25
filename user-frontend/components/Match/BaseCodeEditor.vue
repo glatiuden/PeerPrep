@@ -15,7 +15,7 @@
     >
     </v-select>
     <AceEditor
-      v-model="content"
+      :value="codes"
       :lang="selected_language"
       theme="monokai"
       width="100%"
@@ -39,6 +39,7 @@
           readOnly: true,
         },
       ]"
+      @input="save($event)"
       @init="editorInit"
     />
     <div class="my-3">
@@ -50,7 +51,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import editorMixin from "~/mixins/editor";
 
 export default {
@@ -99,6 +100,7 @@ export default {
   computed: {
     ...mapGetters({
       match: "match/match",
+      codes: "match/codes",
     }),
   },
   mounted() {
@@ -114,16 +116,41 @@ export default {
 
     this.socket.on("message", (data) => {
       console.log("Incoming message: ", data);
-      this.content = data;
+      // this.content = data;
+      this.UPDATE_CODES({ data });
     });
   },
   methods: {
-    async save() {
-      this.socket.emit("message", {
-        match_id: this.matchId,
-        payload: this.content,
-      });
-    },
+    ...mapMutations({
+      UPDATE_CODES: "match/UPDATE_CODES",
+    }),
+
+    // async save(text) {
+    //   if (!text) {
+    //     return;
+    //   }
+    //   this.socket.emit("message", {
+    //     match_id: this.matchId,
+    //     payload: text,
+    //   });
+    // },
+    /**
+     * @description On enter
+     */
+    save: _.throttle(
+      async function (text) {
+        if (!text) {
+          return;
+        }
+        this.socket.emit("message", {
+          match_id: this.matchId,
+          payload: text,
+        });
+      },
+      1000,
+      { leading: true },
+    ),
+
     editorInit: function () {
       require("brace/theme/monokai");
       require("brace/ext/language_tools"); //language extension prerequsite...

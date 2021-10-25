@@ -54,7 +54,7 @@ const actions: ActionTree<MatchState, RootState> = {
    * @param param0
    * @param param1
    */
-  async [ActionTypes.END_MATCH]({ commit, dispatch }, { match_id }) {
+  async [ActionTypes.END_MATCH]({ commit, dispatch, state }, { match_id }) {
     const { data: is_completed } = await this.$axios.$put(`/match/api/end`, {
       match_id,
     });
@@ -65,7 +65,10 @@ const actions: ActionTree<MatchState, RootState> = {
         {
           label: "editor",
           evt: "end_session",
-          msg: true,
+          msg: {
+            match_id,
+            content: state.codes,
+          },
         },
         { root: true },
       );
@@ -74,7 +77,10 @@ const actions: ActionTree<MatchState, RootState> = {
         {
           label: "chat",
           evt: "end_session",
-          msg: true,
+          msg: {
+            match_id,
+            content: state.chat_messages,
+          },
         },
         { root: true },
       );

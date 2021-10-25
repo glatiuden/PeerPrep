@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
 import { createClient } from "redis";
 import { logger } from "./logs";
+import { chatService } from "../services";
 
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["websocket", "polling"], cors });
@@ -28,9 +29,15 @@ export default function makeSockets(server, cors) {
       io.sockets.in(match_id).emit("message", payload);
     });
 
-    socket.on("end_session", (match_id) => {
+    socket.on("end_session", async (payload) => {
+      const { match_id, content } = payload;
+      await chatService.insert({
+        match_id,
+        content,
+      });
       logger.verbose("Ending session now...", { match_id });
-      io.sockets.in(match_id).socketsLeave(match_id);
+      io.sockets.in(match_id).emit("end_session", true);
+      io.sockets.socketsLeave(match_id);
     });
   });
 }

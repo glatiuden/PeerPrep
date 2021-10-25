@@ -23,9 +23,7 @@
         Description:
       </p>
       <div class="ml-8">{{ question.description }}</div>
-    </v-card-text>
-    <v-card-text class="d-flex flex-column">
-      <span>
+      <!-- <span>
         <v-icon class="mr-1">mdi-book</v-icon>
         <b>Examples:</b>
       </span>
@@ -38,46 +36,43 @@
           </code>
           <br v-if="index !== question.examples.length - 1" />
         </div>
-      </div>
+      </div> -->
+      <v-divider class="my-2"></v-divider>
+      <v-card-actions>
+        <v-btn text @click="show = !show"
+          >{{ show ? "Hide" : "Show" }} Examples</v-btn
+        >
+        <v-spacer></v-spacer>
+        <v-btn icon @click="show = !show">
+          <v-icon>
+            {{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}
+          </v-icon>
+        </v-btn>
+      </v-card-actions>
 
-      <!-- <v-card-actions>
-              <v-btn text @click="show = !show"
-                >{{ show ? "Hide" : "Show" }} Examples</v-btn
-              >
-              <v-spacer></v-spacer>
-              <v-btn icon @click="show = !show">
-                <v-icon>
-                  {{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}
-                </v-icon>
-              </v-btn>
-            </v-card-actions> -->
-
-      <!-- <v-expand-transition>
-              <div v-show="show">
-                <v-divider></v-divider>
-                <v-card-text>
-                  <template v-if="question.examples.length > 0">
-                    <div
-                      v-for="(example, index) in question.examples"
-                      :key="index"
-                    >
-                      <code style="display: block">
-                        <b>Input: </b> {{ example.input }}
-                        <br />
-                        <b>Output: </b> {{ example.output }}
-                      </code>
-                      <br v-if="index !== question.examples.length - 1" />
-                    </div>
-                  </template>
-                  <p v-else>No examples available!</p>
-                </v-card-text>
+      <v-expand-transition>
+        <div v-show="show">
+          <v-divider></v-divider>
+          <v-card-text>
+            <template v-if="question.examples.length > 0">
+              <div v-for="(example, index) in question.examples" :key="index">
+                <code style="display: block">
+                  <b>Input: </b> {{ example.input }}
+                  <br />
+                  <b>Output: </b> {{ example.output }}
+                </code>
+                <br v-if="index !== question.examples.length - 1" />
               </div>
-            </v-expand-transition> -->
+            </template>
+            <p v-else>No examples available!</p>
+          </v-card-text>
+        </div>
+      </v-expand-transition>
     </v-card-text>
-    <!-- <v-card-actions class="pb-3">
-              <v-spacer></v-spacer>
-              <v-btn color="primary" depressed>Show Hint</v-btn>
-            </v-card-actions> -->
+    <v-card-actions class="pb-3">
+      <v-spacer></v-spacer>
+      <v-btn color="primary" depressed>Show Hint</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 <script>
@@ -91,6 +86,11 @@ export default {
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      show: false,
+    };
   },
   methods: {
     async endMatch() {

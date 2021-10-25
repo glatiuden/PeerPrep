@@ -7,20 +7,26 @@
   >
     <template #prepend>
       <h4 class="text-center my-3">Match Chat</h4>
-      <BaseVideoChat />
+      <BaseVideoChat :match-id="matchId" />
       <v-divider></v-divider>
     </template>
     <v-sheet>
       <div>
         <section ref="chatArea" class="chat-area">
           <p
-            v-for="(message, index) in messages"
+            v-for="(message, index) in chat_messages"
             :key="index"
-            class="message message-out mb-1"
+            class="message mb-1"
+            :class="{
+              'message-out': message.user_id === user._id,
+              'message-in': message.user_id !== user._id,
+            }"
           >
-            <small>{{ message.username }} @ {{ message.time }}</small
+            <small
+              >{{ message.display_name }} @
+              {{ $moment(message.time_sent).format("hh:mm A") }}</small
             ><br />
-            {{ message.text }}
+            {{ message.message }}
           </p>
         </section>
       </div>
@@ -29,11 +35,12 @@
       <div class="d-flex pa-3 send">
         <v-textarea
           v-model="chat_message"
-          class="pt-0"
+          class="pt-0 white--text"
           rows="1"
           hide-details
           auto-grow
           append-outer-icon="mdi-send"
+          color="white"
           @click:append-outer="sendMessage"
           @keyup.enter="sendMessage"
         >
@@ -45,12 +52,15 @@
 
 <script>
 import systemMixin from "@/mixins/system";
+import userMixin from "@/mixins/user";
+import matchMixin from "@/mixins/match";
+
 import BaseVideoChat from "@/components/Match/BaseVideoChat";
 
 export default {
   name: "BaseChat",
   components: { BaseVideoChat },
-  mixins: [systemMixin],
+  mixins: [systemMixin, userMixin, matchMixin],
   props: {
     matchId: {
       type: String,
@@ -76,7 +86,13 @@ export default {
 
     this.socket.on("message", (data) => {
       console.log("Incoming message: ", data);
-      this.messages.push(data);
+      // this.messages.push(data);
+      this.UPDATE_CHAT_MESSAGES({ data });
+    });
+
+    this.socket.on("end_session", (match_id) => {
+      console.log("Incoming message: ", match_id);
+      this.$router.push("/thank-you");
     });
   },
   methods: {
@@ -85,14 +101,17 @@ export default {
      */
     sendMessage() {
       const message = {
-        username: "Max",
-        text: this.chat_message,
-        time: this.$moment().format("hh:mm A"),
+        user_id: this.user._id,
+        display_name: this.user.display_name,
+        message: this.chat_message,
+        time_sent: this.$moment(),
       };
+
       this.socket.emit("message", {
         match_id: this.matchId,
         payload: message,
       });
+
       this.chat_message = "";
     },
   },
@@ -111,47 +130,33 @@ export default {
 }
 
 .send {
-  background-color: #78acdb;
-}
-
-.headline {
-  text-align: center;
-  font-weight: 100;
-  color: white;
+  background-color: #407fff;
 }
 
 .chat-area {
-  /*   border: 1px solid #ccc; */
   padding-top: 1em;
   background: white;
   overflow: auto;
 }
+
 .message {
   width: 45%;
   border-radius: 10px;
   padding: 0.5em;
-  /*   margin-bottom: .5em; */
   font-size: 0.8em;
   word-wrap: break-word;
 }
+
 .message-out {
   background: #407fff;
   color: white;
   margin-left: 50%;
 }
+
 .message-in {
   background: #f1f0f0;
   color: black;
-}
-.chat-inputs {
-  display: flex;
-  justify-content: space-between;
-}
-#person1-input {
-  padding: 0.5em;
-}
-#person2-input {
-  padding: 0.5em;
+  margin-left: 5%;
 }
 
 .scrollable {

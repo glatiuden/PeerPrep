@@ -8,6 +8,8 @@ export const getters: GetterTree<MatchState, RootState> = {
   open_matching_dialog: (state) => state.open_matching_dialog,
   match: (state) => state.match,
   matches: (state) => state.matches,
+  chat_messages: (state) => state.chat_messages,
+  codes: (state) => state.codes,
 };
 
 export default getters;

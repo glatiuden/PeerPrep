@@ -2,6 +2,7 @@ import _ from "lodash";
 import { MutationTypes } from "./mutation-type";
 import { MutationTree } from "vuex";
 import { MatchState } from "./index";
+import * as Y from "yjs";
 
 const mutations: MutationTree<MatchState> = {
   /**
@@ -35,6 +36,22 @@ const mutations: MutationTree<MatchState> = {
    */
   [MutationTypes.SET_MATCHES](state, { data }: { data: any[] }) {
     state.matches = data;
+  },
+  /**
+   * @description to set matchs
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.UPDATE_CHAT_MESSAGES](state, { data }: { data: any }) {
+    state.chat_messages = _.concat(state.chat_messages, [data]);
+  },
+  /**
+   * @description to set matchs
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.UPDATE_CODES](state, { data }: { data: any }) {
+    state.codes = data;
   },
 };
 
