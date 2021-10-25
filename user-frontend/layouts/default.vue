@@ -15,17 +15,22 @@
       v-if="open_matching_dialog"
       v-model="open_matching_dialog"
       max-width="550px"
+      @click:outside="SET_OPEN_MATCHING_DIALOG({ data: false })"
     >
       <BaseWaitMatchDialog />
     </v-dialog>
 
-    <v-dialog v-model="open_elo_match_dialog" max-width="400px">
+    <v-dialog
+      v-model="open_elo_match_dialog"
+      max-width="550px"
+      @click:outside="SET_OPEN_ELO_MATCH_DIALOG({ data: false })"
+    >
       <BaseEloMatchDialog />
     </v-dialog>
   </v-app>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import userMixin from "@/mixins/user";
 
 import AppBar from "@/components/AppBar";
@@ -53,6 +58,12 @@ export default {
     ...mapGetters({
       open_elo_match_dialog: "match/open_elo_match_dialog",
       open_matching_dialog: "match/open_matching_dialog",
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      SET_OPEN_MATCHING_DIALOG: "match/SET_OPEN_MATCHING_DIALOG",
+      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
     }),
   },
 };
