@@ -1,6 +1,112 @@
 <template>
   <div class="fill-height">
-    <h3 class="text-center my-3">Match History</h3>
+    <v-card class="my-9 my-sm-4 rounded-lg" outlined>
+      <v-card-title class="justify-center text-body-1">
+        <h2>Match History</h2>
+      </v-card-title>
+      <v-card-text class="d-flex">
+        <v-row>
+          <v-col cols="12" sm="3">
+            <v-autocomplete
+              v-model="selected_statuses"
+              :items="['waiting', 'in-progress', 'completed', 'cancelled']"
+              :loading="loading"
+              label="Status"
+              class="rounded-0"
+              multiple
+              outlined
+              dense
+              hide-details
+              clearable
+              @change="performFilter"
+            >
+              <template #selection="{ index }">
+                <span v-if="index === 0">
+                  Selected:
+                  {{ selected_statuses.length }}
+                </span>
+              </template>
+            </v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" sm="3">
+            <v-autocomplete
+              v-model="selected_modes"
+              :loading="loading"
+              :items="['elo', 'question']"
+              label="Mode"
+              item-value="value"
+              item-text="text"
+              class="rounded-0"
+              multiple
+              outlined
+              dense
+              hide-details
+              @change="performFilter"
+            >
+              <template #selection="{ index }">
+                <span v-if="index === 0">
+                  Selected:
+                  {{ selected_modes.length }}
+                </span>
+              </template>
+            </v-autocomplete>
+          </v-col>
+
+          <v-col cols="12" sm="6">
+            <v-text-field
+              v-model="search"
+              prepend-inner-icon="mdi-magnify"
+              label="Search"
+              class="rounded-0"
+              single-line
+              outlined
+              dense
+              hide-details
+              clearable
+              @input="performSearch"
+            />
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+
+    <div class="d-flex my-3">
+      <v-chip
+        v-if="search"
+        class="mr-4"
+        close
+        @click:close="closeChip('search')"
+      >
+        Search: {{ search }}
+      </v-chip>
+
+      <template v-if="selected_modes.length > 0">
+        <v-chip
+          v-for="level in selected_modes"
+          :key="level"
+          class="mr-4"
+          close
+          color="primary"
+          @click:close="closeChip('difficulty_level', level)"
+        >
+          Difficulty:&nbsp;<b>{{ level | capitalize }}</b>
+        </v-chip>
+      </template>
+
+      <template v-if="selected_statuses.length > 0">
+        <v-chip
+          v-for="topic in selected_statuses"
+          :key="topic"
+          close
+          class="mr-4"
+          color="primary"
+          @click:close="closeChip('topic', topic)"
+        >
+          Status: {{ topic }}
+        </v-chip>
+      </template>
+    </div>
     <v-data-table
       :headers="headers"
       :items="matches"
@@ -14,6 +120,12 @@
       :items-per-page="15"
       class="soft-box-shadow"
     >
+      <template #item.title="{ item }">
+        <div>
+          {{ item.title }}
+        </div>
+      </template>
+
       <template #item.status="{ item }">
         <v-chip class="white--text" :color="status_chip_colors[item.status]">
           {{ item.status }}
@@ -65,7 +177,7 @@ export default {
       headers: [
         {
           text: "Question",
-          value: "question_id",
+          value: "meta.question_title",
           sortable: true,
           class: "data-table-heading",
           width: 350,
@@ -79,19 +191,19 @@ export default {
         },
         {
           text: "Programming Language",
-          value: "meta.programming_language",
+          value: "match_requirements.programming_language",
           sortable: true,
           class: "data-table-heading",
           width: 250,
         },
         {
-          text: "Match Date",
+          text: "Date",
           value: "updated_at",
           sortable: true,
           class: "data-table-heading",
         },
       ],
-      search: "",
+      search: undefined,
       page: 1,
       status_chip_colors: {
         waiting: "grey",
@@ -99,6 +211,8 @@ export default {
         completed: "green",
         cancelled: "red",
       },
+      selected_modes: [],
+      selected_statuses: [],
     };
   },
   async fetch() {
@@ -121,6 +235,63 @@ export default {
      */
     pages_exists() {
       return !!_.get(this.matches_pagination, "total_pages");
+    },
+  },
+  methods: {
+    /**
+     * @description Perform text search
+     */
+    performSearch: _.throttle(
+      async function () {
+        this.page = 1;
+        this.GET_MATCHES({
+          user_id: this.user_id,
+          query: this.search,
+          status: this.selected_statuses,
+          mode: this.selected_modes,
+        });
+      },
+      1000,
+      { leading: true },
+    ),
+    /**
+     * @description Remove filters from query
+     */
+    closeChip(type, value = "") {
+      switch (type) {
+        case "mode":
+          this.selected_modes = _.filter(
+            this.selected_modes,
+            (mode) => mode != value,
+          );
+          break;
+        case "status":
+          this.selected_statuses = _.filter(
+            this.selected_statuses,
+            (status) => status != value,
+          );
+          break;
+        case "search":
+          this.search = "";
+          break;
+      }
+      this.performFilter();
+    },
+    /**
+     * @description Perform filtering
+     */
+    async performFilter() {
+      this.page = 1;
+      try {
+        await this.GET_MATCHES({
+          user_id: this.user_id,
+          query: this.search,
+          status: this.selected_statuses,
+          mode: this.selected_modes,
+        });
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 };

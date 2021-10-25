@@ -22,10 +22,12 @@
                   </p>
                 </template>
               </v-countdown>
-              Partner's Display Name: <b>{{ match.user.display_name }}</b>
+              Partner's Display Name: <b>{{ partner_info.display_name }}</b>
               <br />
               Programming Language:
-              <b class="text-capitalize">{{ match.programming_language }}</b>
+              <b class="text-capitalize">{{
+                match.match_requirements.programming_language
+              }}</b>
             </v-card-text>
             <v-card-actions class="mx-2">
               <v-btn color="error" depressed @click="endMatch">End Match</v-btn>
@@ -46,14 +48,12 @@ import matchMixin from "@/mixins/match";
 
 import BaseChat from "@/components/Match/BaseChat";
 import BaseCodeEditor from "@/components/Match/BaseCodeEditor";
-import BaseVideoChat from "@/components/Match/BaseVideoChat";
 import BaseQuestion from "@/components/Match/BaseQuestion";
 
 export default {
   components: {
     BaseChat,
     BaseCodeEditor,
-    BaseVideoChat,
     BaseQuestion,
   },
   mixins: [editorMixin, matchMixin, systemMixin],
@@ -79,6 +79,15 @@ export default {
     } finally {
       this.SET_LOADING({ data: false });
     }
+  },
+  computed: {
+    partner_info() {
+      const partner1_id = _.get(this.match, "partner1._id");
+      if (partner1_id === this.user_id) {
+        return this.match.partner1;
+      }
+      return this.match.partner2;
+    },
   },
   methods: {
     async endMatch() {

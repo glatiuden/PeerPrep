@@ -81,42 +81,61 @@ export default function makeMatchService({
       return [];
     }
 
-    async findAllByUserIdPaginated(
-      { user_id, is_elo_match, status }: { user_id: string; is_elo_match?: boolean; status?: MatchStatus },
-      {
-        query = "",
-        page = 1,
-        entries_per_page = 10,
-      }: {
-        query: string;
-        page: number;
-        entries_per_page?: number;
-      },
-    ): Promise<PaginatedMatchResult | null> {
+    async findAllByUserIdPaginated({
+      user_id,
+      mode,
+      status,
+      query = "",
+      page = 1,
+      entries_per_page = 10,
+    }: {
+      user_id: string;
+      mode?: string[];
+      status?: string[];
+      query: string;
+      page: number;
+      entries_per_page?: number;
+    }): Promise<PaginatedMatchResult | null> {
       const number_of_entries_to_skip = (page - 1) * entries_per_page;
+      const user_id_conditions = [{ partner1_id: { $eq: user_id } }, { partner2_id: { $eq: user_id } }];
       let search_conditions;
+
       if (query) {
-        search_conditions = [
+        const queries = [
           { partner1_id: { $eq: user_id } },
           { partner2_id: { $eq: user_id } },
           { "match_requirements.programming_language": { $regex: ".*" + query + ".*", $options: "si" } },
           { "match_requirements.question_mode": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "meta.question_title": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "meta.partner1_display_name": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "meta.partner2_display_name": { $regex: ".*" + query + ".*", $options: "si" } },
         ];
+
+        search_conditions = {
+          $and: [
+            {
+              $or: user_id_conditions,
+            },
+            {
+              $or: queries,
+            },
+          ],
+        };
       } else {
-        search_conditions = [{ partner1_id: { $eq: user_id } }, { partner2_id: { $eq: user_id } }];
+        search_conditions = { $or: user_id_conditions };
       }
 
       const query_conditions = {
-        $or: search_conditions,
+        ...search_conditions,
         deleted_at: undefined,
       };
 
-      if (_.isBoolean(is_elo_match)) {
-        query_conditions["is_elo_match"] = is_elo_match;
+      if (!_.isEmpty(mode)) {
+        query_conditions["mode"] = { $in: mode };
       }
 
-      if (status) {
-        query_conditions["status"] = status;
+      if (!_.isEmpty(status)) {
+        query_conditions["status"] = { $in: status };
       }
 
       const existing = await matchDbModel
@@ -153,7 +172,7 @@ export default function makeMatchService({
 
     async update(payload: Partial<IMatch>): Promise<IMatch | null> {
       await matchDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await matchDbModel.findById({ _id: payload._id });
+      const updated = await matchDbModel.findById({ _id: payload._id }).lean();
       if (updated) {
         return updated;
       }

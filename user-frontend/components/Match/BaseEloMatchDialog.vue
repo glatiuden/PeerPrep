@@ -58,7 +58,6 @@
               dense
               :items="question_topics"
               persistent-hint
-              :rules="select_rules"
               hide-details="auto"
             >
             </v-select>

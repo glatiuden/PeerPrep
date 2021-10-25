@@ -19,14 +19,20 @@ export default function makeRPCConsumer() {
   const onRequest = async (data, reply) => {
     const requestor = _.get(data, "requestor");
     const request_type = _.get(data, "request_type");
-    const user_id = _.get(data, "user_id");
-    logger.verbose(`RPC: Received Request from ${requestor} - ${request_type}`, { user_id });
+    logger.verbose(`RPC: Received Request from ${requestor} - ${request_type}`);
 
     let result;
     switch (request_type) {
-      case "getById":
+      case "findById": {
+        const user_id = _.get(data, "user_id");
         result = await userService.findById({ id: user_id });
         break;
+      }
+      case "findByIds": {
+        const user_ids = _.get(data, "user_ids");
+        result = await userService.findAllByUserIds({ user_ids });
+        break;
+      }
     }
 
     logger.verbose("RPC: Sending back result...", { result });

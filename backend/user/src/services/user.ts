@@ -37,6 +37,16 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
       return [];
     }
 
+    async findAllByUserIds({ user_ids }: { user_ids: string[] }): Promise<IUser[]> {
+      console.log(user_ids);
+      const query_conditions = { deleted_at: undefined, _id: { $in: user_ids } };
+      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
+      if (existing) {
+        return existing;
+      }
+      return [];
+    }
+
     async update(payload: Partial<IUser>): Promise<IUser | null> {
       await userDbModel.findOneAndUpdate({ _id: payload._id }, payload);
       const updated = await userDbModel.findById({ _id: payload._id });

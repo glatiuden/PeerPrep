@@ -1,6 +1,6 @@
 import _ from "lodash";
+
 import { logger } from "../../../configs/logs";
-import { MatchStatus } from "../../../models/interfaces/match";
 import { matchService } from "../../../services";
 
 /**
@@ -15,26 +15,9 @@ async function getMatchesByUserIdPaginatedController(
   };
 
   try {
-    const {
-      user_id,
-      is_elo_match,
-      status,
-      query,
-      page,
-    }: { user_id: string; is_elo_match?: boolean; status?: string; query: string; page: number } = _.get(
-      httpRequest,
-      "context.validated",
-    );
-
-    const query_conditions = { user_id, is_elo_match };
-    if (status) {
-      query_conditions["status"] = <MatchStatus>status;
-    }
-
-    const matches_paginated = await matchService.findAllByUserIdPaginated(query_conditions, { query, page });
+    const query_conditions = _.get(httpRequest, "context.validated");
+    const matches_paginated = await matchService.findAllByUserIdPaginated(query_conditions);
     logger.verbose(`Fetched matches paginated`, {
-      query,
-      page,
       length: matches_paginated?.pagination.total,
     });
     return {

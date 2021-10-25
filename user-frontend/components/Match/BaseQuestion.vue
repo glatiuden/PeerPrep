@@ -37,8 +37,7 @@
           <br v-if="index !== question.examples.length - 1" />
         </div>
       </div> -->
-      <v-divider class="my-2"></v-divider>
-      <v-card-actions>
+      <v-card-actions v-if="question.examples.length > 0">
         <v-btn text @click="show = !show"
           >{{ show ? "Hide" : "Show" }} Examples</v-btn
         >
@@ -69,10 +68,9 @@
         </div>
       </v-expand-transition>
     </v-card-text>
-    <v-card-actions class="pb-3">
-      <v-spacer></v-spacer>
+    <!-- <v-card-actions class="pb-3">
       <v-btn color="primary" depressed>Show Hint</v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 <script>
