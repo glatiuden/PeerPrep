@@ -2,6 +2,24 @@ import _ from "lodash";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
+  data() {
+    return {
+      elo_rankings: [
+        {
+          elo: 1000,
+          text: "Novice",
+        },
+        {
+          elo: 2000,
+          text: "Competent",
+        },
+        {
+          elo: 3000,
+          text: "Expert",
+        },
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       loading: "user/loading",
