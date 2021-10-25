@@ -177,14 +177,6 @@
           ></v-pagination>
         </v-col>
       </v-row>
-
-      <v-dialog
-        v-if="open_matching_dialog"
-        v-model="open_matching_dialog"
-        max-width="550px"
-      >
-        <BaseMatchingDialog />
-      </v-dialog>
     </div>
   </div>
 </template>
@@ -195,14 +187,12 @@ import questionMixin from "@/mixins/question";
 
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
-import BaseMatchingDialog from "@/components/Match/BaseMatchingDialog";
 
 export default {
   name: "Question",
   components: {
     BaseQuestionCategoryCard,
     BaseQuestionDialog,
-    BaseMatchingDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {

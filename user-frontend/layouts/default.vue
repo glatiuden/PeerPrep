@@ -11,21 +11,32 @@
         &copy; {{ new Date().getFullYear() }} All rights reserved.
       </span>
     </v-footer>
+    <v-dialog
+      v-if="open_matching_dialog"
+      v-model="open_matching_dialog"
+      max-width="550px"
+    >
+      <BaseWaitMatchDialog />
+    </v-dialog>
+
     <v-dialog v-model="open_elo_match_dialog" max-width="400px">
       <BaseEloMatchDialog />
     </v-dialog>
   </v-app>
 </template>
 <script>
-import AppBar from "@/components/AppBar";
-import userMixin from "@/mixins/user";
-import BaseEloMatchDialog from "@/components/Match/BaseEloMatchDialog";
 import { mapGetters } from "vuex";
+import userMixin from "@/mixins/user";
+
+import AppBar from "@/components/AppBar";
+import BaseEloMatchDialog from "@/components/Match/BaseEloMatchDialog";
+import BaseWaitMatchDialog from "@/components/Match/BaseWaitMatchDialog";
 
 export default {
   components: {
     AppBar,
     BaseEloMatchDialog,
+    BaseWaitMatchDialog,
   },
   mixins: [userMixin],
   middleware: ["authenticated"],
@@ -34,27 +45,14 @@ export default {
       clipped: false,
       drawer: false,
       fixed: true,
-      items: [
-        {
-          icon: "mdi-apps",
-          title: "Welcome",
-          to: "/",
-        },
-        {
-          icon: "mdi-chart-bubble",
-          title: "Inspire",
-          to: "/inspire",
-        },
-      ],
       miniVariant: false,
       right: true,
-      rightDrawer: false,
-      title: "Vuetify.js",
     };
   },
   computed: {
     ...mapGetters({
       open_elo_match_dialog: "match/open_elo_match_dialog",
+      open_matching_dialog: "match/open_matching_dialog",
     }),
   },
 };

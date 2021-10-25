@@ -36,7 +36,6 @@ export default {
   data() {
     return {
       defaultOptions: { animationData, loop: true },
-      socketStatus: {},
       match_id: undefined,
     };
   },
@@ -44,26 +43,26 @@ export default {
     this.socket = this.$nuxtSocket({
       name: "match",
       reconnection: true,
-      statusProp: "socketStatus",
     });
+
+    const match_mode = _.get(this.match, "mode", "question");
 
     this.socket.on("connect", () => {
       this.$notification.success(
         `Successfully created a match! We will notify and start the session once there is a match!`,
       );
-      this.socket.emit("matching", this.match);
+      this.socket.emit(`${match_mode}_matching`, this.match);
     });
 
     this.socket.on("waiting", (data) => {
-      if (!!data) {
+      if (data) {
         this.match_id = data;
       }
     });
 
     this.socket.on("matched", (data) => {
-      if (!!data) {
+      if (data) {
         const match_id = _.get(data, "_id");
-        console.log(data);
         this.SET_MATCH({ data });
         localStorage.setItem("match_id", match_id);
         this.$router.push(`/match/${match_id}`);

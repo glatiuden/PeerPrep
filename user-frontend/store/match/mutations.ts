@@ -2,7 +2,6 @@ import _ from "lodash";
 import { MutationTypes } from "./mutation-type";
 import { MutationTree } from "vuex";
 import { MatchState } from "./index";
-import * as Y from "yjs";
 
 const mutations: MutationTree<MatchState> = {
   /**
@@ -30,7 +29,7 @@ const mutations: MutationTree<MatchState> = {
     state.match = data;
   },
   /**
-   * @description to set matchs
+   * @description to set matches
    * @param state
    * @param param1
    */
@@ -38,7 +37,28 @@ const mutations: MutationTree<MatchState> = {
     state.matches = data;
   },
   /**
-   * @description to set matchs
+   * @description to set questions pagination
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_MATCHES_PAGINATION](
+    state,
+    {
+      data,
+    }: {
+      data: {
+        current_page: number;
+        from: null | number;
+        to: null | number;
+        per_page: number;
+        total: number;
+      };
+    },
+  ) {
+    state.matches_pagination = data;
+  },
+  /**
+   * @description to update chat messages
    * @param state
    * @param param1
    */
@@ -46,7 +66,7 @@ const mutations: MutationTree<MatchState> = {
     state.chat_messages = _.concat(state.chat_messages, [data]);
   },
   /**
-   * @description to set matchs
+   * @description to update codes
    * @param state
    * @param param1
    */

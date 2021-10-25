@@ -8,6 +8,7 @@ export default {
       open_matching_dialog: "match/open_matching_dialog",
       match: "match/match",
       matches: "match/matches",
+      matches_pagination: "match/matches_pagination",
       chat_messages: "match/chat_messages",
       codes: "match/codes",
     }),
@@ -25,9 +26,9 @@ export default {
     ...mapMutations({
       SET_LOADING: "match/SET_LOADING",
       SET_OPEN_MATCHING_DIALOG: "match/SET_OPEN_MATCHING_DIALOG",
+      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
       SET_MATCH: "match/SET_MATCH",
       UPDATE_CHAT_MESSAGES: "match/UPDATE_CHAT_MESSAGES",
-      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
     }),
   },
 };

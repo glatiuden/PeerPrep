@@ -36,11 +36,12 @@
     <v-row justify="center" class="my-2">
       <v-col v-if="pages_exists" cols="4">
         <v-pagination
-          v-if="questions_pagination.current_page"
+          v-if="matches_pagination.current_page"
           v-model="page"
-          :length="questions_pagination.total_pages"
+          :length="matches_pagination.total_pages"
           @input="
-            GET_QUESTIONS_PAGINATED({
+            GET_MATCHES({
+              user_id,
               query: search,
               page: $event,
             })
@@ -112,6 +113,15 @@ export default {
     } finally {
       this.SET_LOADING({ data: false });
     }
+  },
+  computed: {
+    /**
+     * @description pages_exists will return true
+     * @returns boolean
+     */
+    pages_exists() {
+      return !!_.get(this.matches_pagination, "total_pages");
+    },
   },
 };
 </script>

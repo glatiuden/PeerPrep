@@ -36,7 +36,7 @@ export default function makeSockets(server, cors) {
       }
     });
 
-    socket.on("matching", async (payload) => {
+    socket.on("question_matching", async (payload) => {
       const match = await findMatch(payload);
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");

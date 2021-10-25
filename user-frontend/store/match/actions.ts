@@ -11,11 +11,16 @@ const actions: ActionTree<MatchState, RootState> = {
    * @param param0
    * @param param1
    */
-  async [ActionTypes.GET_MATCHES]({ commit }, { user_id }) {
-    const { data: matches } = await this.$axios.$get(
+  async [ActionTypes.GET_MATCHES]({ commit }, params = {}) {
+    const user_id = _.get(params, "user_id");
+    delete params["user_id"];
+
+    const { data: matches, pagination } = await this.$axios.$get(
       `/match/api/user/${user_id}`,
+      { params },
     );
     commit(MutationTypes.SET_MATCHES, { data: matches });
+    commit(MutationTypes.SET_MATCHES_PAGINATION, { data: pagination });
     return matches;
   },
   /**
