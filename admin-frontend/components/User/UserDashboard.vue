@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>Create A New User</v-card-title>
       <v-card-text>
-        <v-form v-model="valid_create" ref="form" >
+        <v-form v-model="valid_create" ref="form">
           <v-col>
             <v-row class="gap">
               <v-text-field
@@ -80,7 +80,9 @@
           </v-row>
           <div>
             <v-btn outlined color="primary" @click="toggleEditing(user)">
-              <v-icon v-if="!user.editing" small class="mr-1">mdi-account-remove</v-icon>
+              <v-icon v-if="!user.editing" small class="mr-1"
+                >mdi-account-remove</v-icon
+              >
               {{ user.editing ? "Cancel" : "Edit User" }}
             </v-btn>
             <v-btn color="primary" @click="deleteUser(user)">
@@ -90,36 +92,59 @@
           </div>
         </v-card-title>
         <v-card-text v-if="!user.editing">
-          {{ user.email }}
+          <p>
+            <b> Email: </b>
+            {{ user.email }}
+          </p>
+          <p>
+            <b> Password Hash: </b>
+            {{ user.password_hash }}
+          </p>
         </v-card-text>
         <v-card-text v-if="user.editing">
-          <v-form>
-            <v-col cols="12" sm="9" md="9" lg="9" xl="8">
-              <v-text-field
-                v-model="user.email"
-                label="Email Address"
-                name="email"
-                prepend-inner-icon="mdi-email-outline"
-                type="email"
-                outlined
-                dense
-                required
-                hide-details="auto"
-                :rules="email_rules"
-              />
-              <v-text-field
-                label="Password"
-                name="password"
-                prepend-inner-icon="mdi-lock-outline"
-                type="text"
-                outlined
-                dense
-                required
-                hide-details="true"
-                :rules="required"
-              />
-            </v-col>
-          </v-form>
+          <v-col cols="12" sm="9" md="9" lg="9" xl="8" class="gap">
+            <v-row class="gap align-bottom">
+              <v-form v-model="valid_display_name">
+                <v-text-field
+                  v-model="user.new_display_name"
+                  label="Display Name"
+                  name="email"
+                  prepend-inner-icon="mdi-account-outline"
+                  outlined
+                  dense
+                  required
+                  hide-details="auto"
+                  :rules="[(v) => v !== user.display_name && !!v]"
+                />
+              </v-form>
+              <v-btn
+                :disabled="!valid_display_name"
+                @click="updateUserDisplayName(user)"
+              >
+                Update
+              </v-btn>
+            </v-row>
+            <v-row class="gap align-bottom">
+              <v-form v-model="valid_new_password">
+                <v-text-field
+                  v-model="user.new_password"
+                  label="New Password"
+                  prepend-inner-icon="mdi-lock-outline"
+                  type="password"
+                  outlined
+                  dense
+                  hide-details="true"
+                  :rules="required"
+                />
+              </v-form>
+              <v-btn
+                :disabled="!valid_new_password"
+                @click="updateUserPassword(user)"
+              >
+                Update
+              </v-btn>
+            </v-row>
+          </v-col>
         </v-card-text>
       </v-card>
     </div>
@@ -161,6 +186,8 @@ export default {
           "Confirm Password must match Password.",
       ],
       valid_create: false,
+      valid_display_name: false,
+      valid_new_password: false,
       role_types: ["User", "Admin"],
       snackbar: {
         show: false,
@@ -186,18 +213,23 @@ export default {
     toggleEditing(user) {
       user.editing = !user.editing;
     },
-    resetForm() {
+    resetCreateUserForm() {
       this.new_user.display_name = undefined;
       this.new_user.password = undefined;
       this.new_user.email = undefined;
       this.new_user.role = undefined;
-      this.$refs.form.reset(); // this doesn't work :(
+      this.$refs.form.reset();
     },
     async fetchUsers() {
       try {
         this.SET_LOADING({ data: true });
         const users = await this.GET_USERS();
-        this.users = users.map((user) => ({ ...user, editing: false }));
+        this.users = users.map((user) => ({
+          ...user,
+          editing: false,
+          new_display_name: user.display_name,
+          new_password: undefined,
+        }));
       } catch (err) {
         console.error(err);
       } finally {
@@ -230,13 +262,43 @@ export default {
           await this.CREATE_USER({ user: this.new_user });
         }
         this.showSnackbar("Successfully created user", "green");
-        this.resetForm();
+        this.resetCreateUserForm();
       } catch (err) {
         this.showSnackbar("Error creating user", "red");
         console.error(err);
       } finally {
         this.fetchUsers();
         this.SET_LOADING({ data: false });
+      }
+    },
+    async updateUserDisplayName(user) {
+      try {
+        this.SET_LOADING({ data: true });
+        const users = await this.UPDATE_USER({
+          user: { _id: user._id, display_name: user.new_display_name },
+        });
+        this.showSnackbar("Successfully updated user display name", "green");
+      } catch (err) {
+        console.error(err);
+        this.showSnackbar("Error updating user display name", "red");
+      } finally {
+        user.editing = false;
+        this.fetchUsers();
+      }
+    },
+    async updateUserPassword(user) {
+      try {
+        this.SET_LOADING({ data: true });
+        const users = await this.UPDATE_USER({
+          user: { _id: user._id, password: user.new_password },
+        });
+        this.showSnackbar("Successfully updated user password", "green");
+      } catch (err) {
+        console.error(err);
+        this.showSnackbar("Error updating user password", "red");
+      } finally {
+        user.editing = false;
+        this.fetchUsers();
       }
     },
   },
@@ -288,5 +350,9 @@ export default {
 .gap {
   column-gap: 10px;
   row-gap: 10px;
+}
+
+.align-bottom {
+  align-items: flex-end;
 }
 </style>
