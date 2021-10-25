@@ -14,14 +14,11 @@
       :items-per-page="15"
       class="soft-box-shadow"
     >
-      <!-- <template #item.difficulty="{ item }">
-        <v-chip
-          class="white--text"
-          :color="difficulty_chip_colors[item.difficulty]"
-        >
-          {{ item.difficulty }}
+      <template #item.status="{ item }">
+        <v-chip class="white--text" :color="status_chip_colors[item.status]">
+          {{ item.status }}
         </v-chip>
-      </template> -->
+      </template>
 
       <template #item.updated_at="{ item }">
         <div class="d-flex">
@@ -66,7 +63,7 @@ export default {
     return {
       headers: [
         {
-          text: "Title",
+          text: "Question",
           value: "question_id",
           sortable: true,
           class: "data-table-heading",
@@ -95,6 +92,12 @@ export default {
       ],
       search: "",
       page: 1,
+      status_chip_colors: {
+        waiting: "grey",
+        "in-progress": "orange",
+        completed: "green",
+        cancelled: "red",
+      },
     };
   },
   async fetch() {

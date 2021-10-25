@@ -85,7 +85,7 @@ export default function makeMatchService({
       {
         query = "",
         page = 1,
-        entries_per_page = 15,
+        entries_per_page = 10,
       }: {
         query: string;
         page: number;

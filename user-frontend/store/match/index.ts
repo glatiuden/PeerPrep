@@ -5,6 +5,7 @@ export const state = () => ({
   matches: [] as any[],
   chat_messages: [] as any[],
   codes: "" as string,
+  open_elo_match_dialog: false,
 });
 
 export type MatchState = ReturnType<typeof state>;

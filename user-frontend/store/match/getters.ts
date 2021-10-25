@@ -10,6 +10,7 @@ export const getters: GetterTree<MatchState, RootState> = {
   matches: (state) => state.matches,
   chat_messages: (state) => state.chat_messages,
   codes: (state) => state.codes,
+  open_elo_match_dialog: (state) => state.open_elo_match_dialog,
 };
 
 export default getters;

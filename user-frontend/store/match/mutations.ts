@@ -53,6 +53,17 @@ const mutations: MutationTree<MatchState> = {
   [MutationTypes.UPDATE_CODES](state, { data }: { data: any }) {
     state.codes = data;
   },
+  /**
+   * @description to set open dialog
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_OPEN_ELO_MATCH_DIALOG](
+    state,
+    { data }: { data: boolean },
+  ) {
+    state.open_elo_match_dialog = data;
+  },
 };
 
 export default mutations;

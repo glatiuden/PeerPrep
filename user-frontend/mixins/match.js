@@ -27,6 +27,7 @@ export default {
       SET_OPEN_MATCHING_DIALOG: "match/SET_OPEN_MATCHING_DIALOG",
       SET_MATCH: "match/SET_MATCH",
       UPDATE_CHAT_MESSAGES: "match/UPDATE_CHAT_MESSAGES",
+      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
     }),
   },
 };

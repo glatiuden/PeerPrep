@@ -81,6 +81,10 @@
           <span class="black--text font-weight-bold">{{ nav.title }}</span>
         </v-tab>
       </template>
+      <v-tab @click="SET_OPEN_ELO_MATCH_DIALOG({ data: true })">
+        <v-icon small class="mr-1">mdi-pencil</v-icon>
+        <span class="black--text font-weight-bold">Start Match</span>
+      </v-tab>
     </v-tabs>
 
     <v-spacer></v-spacer>
@@ -112,6 +116,7 @@
 <script>
 import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
+import { mapMutations } from "vuex";
 
 export default {
   name: "AppBar",
@@ -141,6 +146,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    ...mapMutations({
+      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
+    }),
   },
 };
 </script>

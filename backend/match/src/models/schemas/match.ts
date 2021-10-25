@@ -18,6 +18,12 @@ const matchSchema = new Schema(
       programming_language: { type: String, trim: true, lowercase: true }, // Optional for ELO match.
       mode: { type: String, trim: true, lowercase: true, enum: ["timed", "otot"], required: true }, // Optional. If ELO match => timed
     },
+    // A small data snapshot to aid the ease of displaying meaningful data on frontend
+    meta: {
+      partner1_display_name: { type: String },
+      partner2_display_name: { type: String },
+      question_title: { type: String },
+    },
     completed_at: { type: Date },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
