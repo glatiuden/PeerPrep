@@ -2,19 +2,35 @@
   <div>
     <div class="light_primary rounded-lg pa-6">
       <div class="app-max-width mx-auto px-2">
-        <h2 class="text-center mb-3">Featured Topics</h2>
+        <h2 class="text-center mb-3">Question List</h2>
         <v-row align-content="start" align="stretch">
-          <v-col
-            v-for="(topic, index) in question_topics"
-            :key="index"
-            cols="12"
-            md="3"
-          >
+          <v-col v-for="(topic, index) in question_topics"
+                 :key="index"
+                 cols="12"
+                 md="3">
             <BaseQuestionCategoryCard :topic="topic" />
           </v-col>
         </v-row>
       </div>
     </div>
+
+    <div>
+      <v-btn color="primary"
+             outlined
+             class="rounded-lg"
+             large
+             depressed
+             v-bind="attrs"
+             v-on="on"
+             align="right"
+             @click="open_question_dialog = true">
+        <v-icon small left>mdi-plus</v-icon>New Question
+      </v-btn>
+      <v-dialog v-model="open_question_dialog" max-width="950px">
+        <CreateQuestionDialog @close="open_question_dialog = false" />
+      </v-dialog>
+    </div>
+
     <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
       <v-row class="my-3">
         <v-col cols="12" sm="3">
@@ -60,17 +76,6 @@
           </v-autocomplete>
         </v-col>
         <v-spacer></v-spacer>
-        <v-btn color="primary"
-               outlined
-               class="rounded-lg"
-               large
-               depressed
-               v-bind="attrs"
-               v-on="on"
-               onclick="createQuestion">
-          <v-icon small left>mdi-plus</v-icon>New Question
-        </v-btn>
-        <v-spacer></v-spacer>
 
         <v-col cols="12" sm="3">
           <v-text-field v-model="search"
@@ -87,37 +92,31 @@
       </v-row>
 
       <div class="d-flex my-3">
-        <v-chip
-          v-if="search"
-          class="mr-4"
-          close
-          @click:close="closeChip('search')"
-        >
+        <v-chip v-if="search"
+                class="mr-4"
+                close
+                @click:close="closeChip('search')">
           Search: {{ search }}
         </v-chip>
 
         <template v-if="selected_difficulty_levels.length > 0">
-          <v-chip
-            v-for="level in selected_difficulty_levels"
-            :key="level"
-            class="mr-4"
-            close
-            color="primary"
-            @click:close="closeChip('difficulty_level', level)"
-          >
+          <v-chip v-for="level in selected_difficulty_levels"
+                  :key="level"
+                  class="mr-4"
+                  close
+                  color="primary"
+                  @click:close="closeChip('difficulty_level', level)">
             Difficulty:&nbsp;<b>{{ level | capitalize }}</b>
           </v-chip>
         </template>
 
         <template v-if="selected_topics.length > 0">
-          <v-chip
-            v-for="topic in selected_topics"
-            :key="topic"
-            close
-            class="mr-4"
-            color="primary"
-            @click:close="closeChip('topic', topic)"
-          >
+          <v-chip v-for="topic in selected_topics"
+                  :key="topic"
+                  close
+                  class="mr-4"
+                  color="primary"
+                  @click:close="closeChip('topic', topic)">
             Topic: {{ topic }}
           </v-chip>
         </template>
@@ -127,19 +126,17 @@
         <BaseQuestionDialog @close="open_dialog = false" />
       </v-dialog>
 
-      <v-data-table
-        :headers="headers"
-        :items="questions"
-        :loading="loading"
-        loading-text="Loading... Please wait"
-        item-key="_id"
-        :sort-by="['created_at']"
-        :sort-desc="[true]"
-        :page.sync="page"
-        hide-default-footer
-        :items-per-page="15"
-        class="soft-box-shadow"
-      >
+      <v-data-table :headers="headers"
+                    :items="questions"
+                    :loading="loading"
+                    loading-text="Loading... Please wait"
+                    item-key="_id"
+                    :sort-by="['created_at']"
+                    :sort-desc="[true]"
+                    :page.sync="page"
+                    hide-default-footer
+                    :items-per-page="15"
+                    class="soft-box-shadow">
         <template #item.title="{ item }">
           <span class="clickable" @click="openQuestionDialog(item._id)">
             {{ item.title }}
@@ -162,27 +159,24 @@
           <v-icon class="mr-2">mdi-pencil-outline</v-icon>
         </template>
 
-        <template #no-data>No question available</template>
+        <template #no-data>
+          No question available
+        </template>
       </v-data-table>
 
       <v-row justify="center" class="my-2">
         <v-col v-if="pages_exists" cols="4">
-          <v-pagination
-            v-if="questions_pagination.current_page"
-            v-model="page"
-            :length="questions_pagination.total_pages"
-            @input="
+          <v-pagination v-if="questions_pagination.current_page"
+                        v-model="page"
+                        :length="questions_pagination.total_pages"
+                        @input="
               GET_QUESTIONS_PAGINATED({
                 query: search,
                 page: $event,
               })
-            "
-          ></v-pagination>
+            "></v-pagination>
         </v-col>
       </v-row>
-      <v-dialog v-model="open_matching_dialog" max-width="550px">
-        <BaseMatchingDialog />
-      </v-dialog>
     </div>
   </div>
 </template>
@@ -193,12 +187,14 @@ import questionMixin from "@/mixins/question";
 
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
+import CreateQuestionDialog from "@/components/Question/CreateQuestionDialog";
 
 export default {
   name: "Question",
   components: {
     BaseQuestionCategoryCard,
     BaseQuestionDialog,
+    CreateQuestionDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {
@@ -238,6 +234,7 @@ export default {
       selected_difficulty_levels: [],
       selected_topics: [],
       open_dialog: false,
+      open_question_dialog: false,
     };
   },
   async fetch() {
@@ -249,33 +246,7 @@ export default {
     } catch (err) {
       console.error(err);
     }
-    },
-
-    async createQuestion() {
-      try {
-        const testQuestion = {
-          title: "TEST",
-          description: "Test Question",
-          topic: "Data",
-          difficulty: "easy",
-          hints: "nil",
-          solution: "na",
-          recommended_duration: 30,
-          examples: "this is a test question",
-          constraints: "this is only a test question",
-        };
-        await this.CREATE_QUESTION({ testQuestion });
-        this.$notification.success(
-          `Successfully updated!`,
-        );
-        this.closeDialog();
-        this.GET_QUESTION();
-      } catch (err) {
-        console.error(err);
-        this.$notification.error(`Encountered error creating a question: ${err}`);
-      }
-    },
-
+  },
   computed: {
     ...mapGetters({
       open_matching_dialog: "match/open_matching_dialog",

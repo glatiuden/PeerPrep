@@ -128,8 +128,5 @@ export default {
           this.$notification.error(`Encountered error updating a question: ${err}`);
         }
       },
-      closeDialog() {
-        this.$emit("close");
-      },
 };
 </script>
