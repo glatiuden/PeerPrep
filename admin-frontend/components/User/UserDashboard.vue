@@ -96,10 +96,6 @@
             <b> Email: </b>
             {{ user.email }}
           </p>
-          <p>
-            <b> Password Hash: </b>
-            {{ user.password_hash }}
-          </p>
         </v-card-text>
         <v-card-text v-if="user.editing">
           <v-col cols="12" sm="9" md="9" lg="9" xl="8" class="gap">
