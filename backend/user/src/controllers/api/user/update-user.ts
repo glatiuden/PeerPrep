@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { hashPassword } from "../../../configs/bcrypt";
 
 import IUser from "../../../models/interfaces/user";
 import { userService } from "../../../services";
@@ -7,13 +8,27 @@ import { userService } from "../../../services";
  * @description Update existing user record in database
  * @function updateUserController
  */
-async function updateUserController(httpRequest: Request & { context: { validated: Partial<IUser> } }) {
+async function updateUserController(
+  httpRequest: Request & { context: { validated: Partial<IUser> & { password: string } } },
+) {
   const headers = {
     "Content-Type": "application/json",
   };
 
   try {
-    const userDetails: IUser = _.get(httpRequest, "context.validated");
+    const userDetails: Partial<IUser> & { password: string } = _.get(httpRequest, "context.validated");
+    // Password is passed in, hash the new password and save into DB
+    const new_password = _.get(userDetails, "password");
+    if (new_password) {
+      const password_hash = await hashPassword({
+        password: new_password,
+      });
+
+      Object.assign(userDetails, {
+        password_hash,
+      });
+    }
+
     const updated_user = await userService.update(userDetails);
     if (!updated_user) {
       throw new Error(`User was not updated.`);

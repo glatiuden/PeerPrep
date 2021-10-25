@@ -24,6 +24,6 @@ userRouter.delete("/reset", makeExpressCallback(resetUsersController));
 userRouter.delete("/:user_id", makeExpressCallback(deleteUserController));
 userRouter.delete("/hard-delete/:user_id", makeExpressCallback(hardDeleteUserController));
 
-userRouter.put("/:user_id", makeExpressCallback(updateUserController));
+userRouter.put("/", makeExpressCallback(updateUserController));
 
 export default userRouter;
