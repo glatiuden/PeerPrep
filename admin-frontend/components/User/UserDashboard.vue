@@ -230,6 +230,7 @@ export default {
           await this.CREATE_USER({ user: this.new_user });
         }
         this.showSnackbar("Successfully created user", "green");
+        this.resetForm();
       } catch (err) {
         this.showSnackbar("Error creating user", "red");
         console.error(err);
