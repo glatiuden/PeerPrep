@@ -22,7 +22,7 @@ export default {
 
     ...mapMutations({
       SET_LOADING: "match/SET_LOADING",
-      // SET_OPEN_DIALOG: "match/SET_OPEN_DIALOG",
+      SET_OPEN_DIALOG: "match/SET_OPEN_DIALOG",
       SET_MATCH: "match/SET_MATCH",
       SET_MATCH_ID: "match/SET_MATCH_ID",
     }),

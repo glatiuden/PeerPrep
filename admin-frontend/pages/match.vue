@@ -40,7 +40,7 @@
             <v-icon small left>mdi-plus</v-icon>New Match
           </v-btn>
         </template>
-        <BaseMatchDialog @close="() => (dialog = false)" />
+        <MatchDashboard @close="() => (dialog = false)" />
       </v-dialog>
     </v-toolbar>
 
@@ -106,12 +106,11 @@
 import matchMixin from "@/mixins/match";
 import systemMixin from "@/mixins/system";
 
-// TODO: set up folder under components/Match/BaseMatchRequirements
-// import BaseMatchRequirements from "@/components/Match/BaseMatchRequirements";
+import MatchDashboard from "@/components/Match/MatchDashboard";
 
 export default {
   name: "Match",
-  // components: { BaseMatchRequirements},
+  components: {MatchDashboard},
   mixins: [matchMixin, systemMixin],
   data() {
     return {
@@ -125,17 +124,18 @@ export default {
           width: 250,
         },
         {
-          text: "Chat",
-          value: "chat",
-          sortable: false,
+          text: "Programming Language",
+          value: "programming_language",
+          sortable: true,
           class: "data-table-heading",
           width: 250,
         },
         {
-          text: "Message",
-          value: "message",
+          text: "Question ID",
+          value: "question_id",
           sortable: true,
           class: "data-table-heading",
+          width: 250,
         },
         {
           text: "Created At",
