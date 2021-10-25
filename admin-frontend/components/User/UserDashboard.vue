@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>Create A New User</v-card-title>
       <v-card-text>
-        <v-form v-model="valid_create">
+        <v-form v-model="valid_create" ref="form">
           <v-col>
             <v-row class="gap">
               <v-text-field
@@ -80,7 +80,7 @@
           </v-row>
           <div>
             <v-btn outlined color="primary" @click="toggleEditing(user)">
-              <v-icon small class="mr-1">mdi-account-remove</v-icon>
+              <v-icon v-if="!user.editing" small class="mr-1">mdi-account-remove</v-icon>
               {{ user.editing ? "Cancel" : "Edit User" }}
             </v-btn>
             <v-btn color="primary" @click="deleteUser(user)">
@@ -136,7 +136,6 @@
 </template>
 
 <script>
-
 import userMixin from "@/mixins/user";
 
 export default {
@@ -188,6 +187,9 @@ export default {
     toggleEditing(user) {
       user.editing = !user.editing;
     },
+    resetForm() {
+      this.$refs.form.reset(); // this doesn't work :(
+    },
     async fetchUsers() {
       try {
         this.SET_LOADING({ data: true });
@@ -206,14 +208,13 @@ export default {
         this.SET_LOADING({ data: true });
         console.log(user);
         const res = await this.DELETE_USER({ user_id: user._id });
-        console.log(res);
+        this.showSnackbar("Successfully deleted user", "green");
       } catch (err) {
         console.error(err);
         this.showSnackbar("Error deleting user", "red");
       } finally {
         this.fetchUsers();
         this.SET_LOADING({ data: false });
-        this.showSnackbar("Successfully deleted user", "green");
       }
     },
     async createNewUser() {
@@ -231,6 +232,7 @@ export default {
       } finally {
         this.fetchUsers();
         this.SET_LOADING({ data: false });
+
         this.showSnackbar("Successfully created user", "green");
       }
     },

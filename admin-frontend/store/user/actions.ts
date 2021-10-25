@@ -48,7 +48,6 @@ const actions: ActionTree<UserState, RootState> = {
       `/user/admin/admin`,
       admin,
     );
-    console.log("attempt to create admin", created_admin)
     return created_admin;
   },
 

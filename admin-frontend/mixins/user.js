@@ -19,6 +19,7 @@ export default {
       CREATE_USER: "user/CREATE_USER",
       CREATE_ADMIN: "user/CREATE_ADMIN",
       DELETE_USER: "user/DELETE_USER",
+      UPDATE_USER: "user/UPDATE_USER",
     }),
 
     ...mapMutations({
