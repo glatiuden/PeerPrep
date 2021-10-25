@@ -24,15 +24,19 @@ export default function makeSockets(server, cors) {
       logger.verbose("User started an Elo Match!");
       const match = await findEloMatch(payload);
       const status = _.get(match, "status");
-      const match_id = _.get(match, "match_id");
-      const socket_id = String(match_id);
+      const elo_match_pool_id = _.get(match, "elo_match_pool_id");
+      const socket_id = String(elo_match_pool_id);
       socket.join(socket_id);
       if (status === "matched") {
+        const match_id = _.get(match, "match_id");
+        if (!match_id) {
+          return;
+        }
         logger.verbose("Match found! Redirect user to their room now...");
         const match_details = await getMatch(match_id);
         io.sockets.in(socket_id).emit("matched", match_details);
       } else {
-        io.sockets.in(socket_id).emit("waiting", match_id);
+        io.sockets.in(socket_id).emit("waiting", elo_match_pool_id);
       }
     });
 
@@ -42,6 +46,9 @@ export default function makeSockets(server, cors) {
       const status = _.get(match, "status");
       const match_id = _.get(match, "match_id");
       const socket_id = String(match_id);
+      if (!match_id) {
+        return;
+      }
       socket.join(socket_id);
       if (status === "matched") {
         logger.verbose("Match found! Redirect user to their room now...");

@@ -24,18 +24,12 @@ export default function makeMatchService({
       programming_language,
       question_id,
       question_mode,
-      topic,
-      difficulty,
     }: {
       user_id: string;
       mode: MatchMode;
       programming_language?: string;
-      // Question Match
       question_id?: string;
       question_mode?: string;
-      // Elo Match
-      topic?: string;
-      difficulty?: string;
     }): Promise<IMatch | null> {
       const query_conditions = {
         deleted_at: undefined,
@@ -53,14 +47,8 @@ export default function makeMatchService({
       if (question_mode) {
         query_conditions["match_requirements.question_mode"] = question_mode;
       }
-      if (topic) {
-        query_conditions["match_requirements.topic"] = topic;
-      }
-      if (difficulty) {
-        query_conditions["match_requirements.difficulty"] = difficulty;
-      }
 
-      const existing = await matchDbModel.findOne(query_conditions).sort({ updated_at: "desc" });
+      const existing = await matchDbModel.findOne(query_conditions);
       if (existing) {
         return existing;
       }
@@ -111,10 +99,8 @@ export default function makeMatchService({
         search_conditions = [
           { partner1_id: { $eq: user_id } },
           { partner2_id: { $eq: user_id } },
-          { "match_requirements.topic": { $regex: ".*" + query + ".*", $options: "si" } },
-          { "match_requirements.difficulty": { $regex: ".*" + query + ".*", $options: "si" } },
           { "match_requirements.programming_language": { $regex: ".*" + query + ".*", $options: "si" } },
-          { "match_requirements.mode": { $regex: ".*" + query + ".*", $options: "si" } },
+          { "match_requirements.question_mode": { $regex: ".*" + query + ".*", $options: "si" } },
         ];
       } else {
         search_conditions = [{ partner1_id: { $eq: user_id } }, { partner2_id: { $eq: user_id } }];

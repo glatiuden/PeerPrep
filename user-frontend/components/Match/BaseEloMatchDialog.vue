@@ -98,15 +98,13 @@ export default {
   },
   methods: {
     async startMatch() {
-      console.log("abc");
       try {
         const match = {
           user_id: this.user_id,
+          programming_language: this.selected_programming_language,
+          difficulty: this.selected_difficulty,
+          user_elo: this.user.elo,
           mode: "elo",
-          match_requirements: {
-            programming_language: this.selected_programming_language,
-            difficulty: this.selected_difficulty,
-          },
         };
         this.SET_MATCH({ data: match });
         this.closeDialog();

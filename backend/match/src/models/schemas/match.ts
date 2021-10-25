@@ -13,9 +13,7 @@ const matchSchema = new Schema(
     },
     mode: { type: String, enum: ["elo", "question"], default: "question" }, // To differentiate between question & elo match
     match_requirements: {
-      topic: { type: String, enum: ["Data Structures", "Algorithms", "Database"], trim: true }, // Optional
-      difficulty: { type: String, enum: ["easy", "medium", "hard"], trim: true }, // Optional
-      programming_language: { type: String, trim: true, lowercase: true }, // Optional for ELO match.
+      programming_language: { type: String, trim: true, lowercase: true },
       question_mode: {
         type: String,
         trim: true,
@@ -23,7 +21,8 @@ const matchSchema = new Schema(
         enum: ["timed", "otot"],
         required: true,
         default: "timed",
-      }, // Optional. If ELO match => timed
+      }, // If ELO match => timed
+      elo_match_pool: { type: Schema.Types.ObjectId, ref: "EloMatchPool", required: true },
     },
     // A small data snapshot to aid the ease of displaying meaningful data on frontend
     meta: {

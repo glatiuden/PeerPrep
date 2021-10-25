@@ -1,56 +1,57 @@
 import _ from "lodash";
 import { logger } from "../../configs/logs";
+import IEloMatchPool, { EloMatchPoolStatus } from "../../models/interfaces/elo-match-pool";
 
-import IMatch, { MatchMode, MatchStatus, QuestionMode } from "../../models/interfaces/match";
-import { matchService, questionService } from "../index";
+import { MatchMode, MatchStatus, QuestionMode } from "../../models/interfaces/match";
+import { eloMatchPoolService, questionService, matchService } from "../index";
 
 /**
  * @description If there is a match that meets the requirement -> update. Else create new record.
  * @function findEloMatch
  */
-export default async function findEloMatch(payload: Partial<IMatch> & { user_id: string }) {
+export default async function findEloMatch(payload: IEloMatchPool) {
   try {
-    const { user_id, match_requirements }: { user_id: string; match_requirements?: any } = payload;
-    const {
-      difficulty,
-      programming_language,
-      topic,
-    }: { difficulty: string; programming_language: string; topic?: string } = match_requirements;
+    const { user_id, programming_language, difficulty, topic }: IEloMatchPool = payload;
 
-    let match_details;
-    const ideal_match = await matchService.findByCondition({
-      user_id,
-      mode: MatchMode.ELO,
-      difficulty,
-      programming_language,
-      topic,
-    });
+    const ideal_elo_match = await eloMatchPoolService.findByCondition(payload);
 
-    const no_match_found = !ideal_match;
+    let elo_match_pool_id;
+    const no_match_found = !ideal_elo_match;
     if (no_match_found) {
-      match_details = await matchService.insert({
-        partner1_id: user_id,
-        mode: MatchMode.ELO,
-        match_requirements: {
-          programming_language,
-          question_mode: QuestionMode.TIMED,
-          difficulty,
-          topic,
-        },
+      const elo_match_pool_details = await eloMatchPoolService.insert({
+        ...payload,
+        status: EloMatchPoolStatus.WAITING,
       });
-      return { status: "waiting", match_id: match_details._id };
+      elo_match_pool_id = _.get(elo_match_pool_details, "_id");
+      return { status: "waiting", elo_match_pool_id };
     }
 
-    const match_id = _.get(ideal_match, "_id");
+    elo_match_pool_id = _.get(ideal_elo_match, "_id");
     const random_question = await questionService.findByDifficultyAndTopic({ difficulty, topic });
-    match_details = await matchService.update({
-      _id: match_id,
-      partner2_id: user_id,
-      question_id: random_question._id,
-      status: MatchStatus.IN_PROGRESS,
+    // Update the pool to updated so no user can match with this person
+    await eloMatchPoolService.update({
+      _id: elo_match_pool_id,
+      status: EloMatchPoolStatus.MATCHED,
       updated_at: new Date(),
     });
-    return { status: "matched", match_id };
+
+    // Create Match
+    const { user_id: partner1_id } = ideal_elo_match;
+    const created_match = await matchService.insert({
+      partner1_id: partner1_id,
+      partner2_id: user_id,
+      question_id: random_question._id,
+      mode: MatchMode.ELO,
+      match_requirements: {
+        programming_language,
+        question_mode: QuestionMode.TIMED,
+        elo_match_pool: ideal_elo_match,
+      },
+      status: MatchStatus.IN_PROGRESS,
+    });
+    // Update the pool to updated
+    const match_id = _.get(created_match, "_id");
+    return { status: "matched", elo_match_pool_id, match_id };
   } catch (err) {
     logger.error(err);
   }

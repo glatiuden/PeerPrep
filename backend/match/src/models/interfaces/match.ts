@@ -1,3 +1,5 @@
+import IEloMatchPool from "./elo-match-pool";
+
 export default interface IMatch {
   _id: string; // Match ID
   partner1_id: string; // Used to fetch user info
@@ -8,8 +10,7 @@ export default interface IMatch {
   match_requirements: {
     programming_language?: string;
     question_mode?: QuestionMode;
-    topic?: string;
-    difficulty?: string;
+    elo_match_pool?: IEloMatchPool;
   };
   // A small data snapshot to aid the ease of displaying meaningful data on frontend
   meta: {

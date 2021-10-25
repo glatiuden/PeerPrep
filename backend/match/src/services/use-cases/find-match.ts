@@ -19,7 +19,6 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
     const { programming_language, question_mode }: { programming_language: string; question_mode?: QuestionMode } =
       match_requirements;
 
-    let match_details;
     const ideal_match = await matchService.findByCondition({
       user_id,
       mode: MatchMode.QUESTION,
@@ -29,7 +28,7 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
     });
 
     if (!ideal_match) {
-      match_details = await matchService.insert({
+      const match_details = await matchService.insert({
         partner1_id: user_id,
         question_id,
         mode: MatchMode.QUESTION,
@@ -38,17 +37,21 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
           question_mode: question_mode,
         },
       });
-      return { status: "waiting", match_id: match_details._id };
-    } else {
-      const match_id = _.get(ideal_match, "_id");
-      match_details = await matchService.update({
-        _id: match_id,
-        partner2_id: user_id,
-        status: MatchStatus.IN_PROGRESS,
-        updated_at: new Date(),
-      });
-      return { status: "matched", match_id };
+      if (!match_details) {
+        throw Error("Match not created");
+      }
+      const match_id = _.get(match_details, "_id");
+      return { status: "waiting", match_id };
     }
+
+    const match_id = _.get(ideal_match, "_id");
+    await matchService.update({
+      _id: match_id,
+      partner2_id: user_id,
+      status: MatchStatus.IN_PROGRESS,
+      updated_at: new Date(),
+    });
+    return { status: "matched", match_id };
   } catch (err) {
     logger.error(err);
   }
