@@ -15,7 +15,7 @@ export default {
 
   methods: {
     ...mapActions({
-      GET_MATCHES_BY_USER_ID: "match/GET_MATCHES_BY_USER_ID",
+      GET_MATCHES: "match/GET_MATCHES",
       GET_MATCH: "match/GET_MATCH",
       CREATE_MATCH: "match/CREATE_MATCH",
       END_MATCH: "match/END_MATCH",

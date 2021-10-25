@@ -30,6 +30,7 @@
         tabSize: 2,
         showPrintMargin: false,
         showGutter: true,
+        readOnly: isHistoryMode,
       }"
       :commands="[
         {
@@ -61,6 +62,10 @@ export default {
       type: String,
       required: true,
       default: localStorage.getItem("match_id"),
+    },
+    isHistoryMode: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -105,6 +110,12 @@ export default {
   },
   mounted() {
     this.selected_language = this.match.programming_language;
+
+    // If is view history -> disable sockets on initializing.
+    if (this.isHistoryMode) {
+      return;
+    }
+
     this.socket = this.$nuxtSocket({
       name: "editor",
       persist: "editor",
@@ -116,7 +127,6 @@ export default {
 
     this.socket.on("message", (data) => {
       console.log("Incoming message: ", data);
-      // this.content = data;
       this.UPDATE_CODES({ data });
     });
   },

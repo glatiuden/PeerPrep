@@ -93,8 +93,6 @@ export default function makeMatchService({
       },
     ): Promise<PaginatedMatchResult | null> {
       const number_of_entries_to_skip = (page - 1) * entries_per_page;
-      // const search_conditions = [{ partner1_id: { $eq: user_id } }, { partner2_id: { $eq: user_id } }];
-
       let search_conditions;
       if (query) {
         search_conditions = [

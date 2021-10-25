@@ -8,6 +8,10 @@ export default {
       user: "user/user",
       has_user: "user/has_user",
     }),
+
+    user_id() {
+      return _.get(this.user, "_id");
+    },
   },
 
   methods: {

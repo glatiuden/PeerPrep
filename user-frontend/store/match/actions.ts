@@ -11,10 +11,12 @@ const actions: ActionTree<MatchState, RootState> = {
    * @param param0
    * @param param1
    */
-  async [ActionTypes.GET_MATCH_BY_USER_ID]({ commit }, { user_id }) {
-    const { data: matchs } = await this.$axios.$get(`/match/api/${user_id}`);
-    commit(MutationTypes.SET_MATCHES, { data: matchs });
-    return matchs;
+  async [ActionTypes.GET_MATCHES]({ commit }, { user_id }) {
+    const { data: matches } = await this.$axios.$get(
+      `/match/api/user/${user_id}`,
+    );
+    commit(MutationTypes.SET_MATCHES, { data: matches });
+    return matches;
   },
   /**
    * @description to get match by id

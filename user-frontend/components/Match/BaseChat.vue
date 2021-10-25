@@ -7,7 +7,7 @@
   >
     <template #prepend>
       <h4 class="text-center my-3">Match Chat</h4>
-      <BaseVideoChat :match-id="matchId" />
+      <BaseVideoChat v-if="!isHistoryMode" :match-id="matchId" />
       <v-divider></v-divider>
     </template>
     <v-sheet>
@@ -31,7 +31,7 @@
         </section>
       </div>
     </v-sheet>
-    <template #append class="mt-2">
+    <template v-if="!isHistoryMode" #append class="mt-2">
       <div class="d-flex pa-3 send">
         <v-textarea
           v-model="chat_message"
@@ -67,14 +67,21 @@ export default {
       required: true,
       default: localStorage.getItem("match_id"),
     },
+    isHistoryMode: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
-      messages: [],
-      chat_message: "",
+      chat_message: undefined,
     };
   },
   mounted() {
+    if (!this.isHistoryMode) {
+      return;
+    }
+
     this.socket = this.$nuxtSocket({
       name: "chat",
       persist: "chat",
@@ -86,7 +93,6 @@ export default {
 
     this.socket.on("message", (data) => {
       console.log("Incoming message: ", data);
-      // this.messages.push(data);
       this.UPDATE_CHAT_MESSAGES({ data });
     });
 

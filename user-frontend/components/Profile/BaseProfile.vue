@@ -34,7 +34,7 @@
         </v-row>
       </v-col>
       <v-col cols="12" sm="12" md="12" lg="9" xl="9">
-        <h3>Match History</h3>
+        <BaseMatchHistory />
       </v-col>
     </v-row>
   </div>
@@ -46,12 +46,14 @@ import userMixin from "@/mixins/user";
 
 import BaseAvatar from "@/components/Profile/BaseAvatar";
 import BaseElo from "@/components/Profile/BaseElo";
+import BaseMatchHistory from "@/components/Profile/BaseMatchHistory";
 
 export default {
   name: "BaseProfile",
   components: {
     BaseAvatar,
     BaseElo,
+    BaseMatchHistory,
   },
   mixins: [systemMixin, userMixin],
   data() {
