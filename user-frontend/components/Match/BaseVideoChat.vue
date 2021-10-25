@@ -5,20 +5,20 @@
       color="primary"
       block
       depressed
-      @click="clickVideoChat({ join: true })"
+      @click="clickVideoChat"
     >
       Start Video Chat
     </v-btn>
-    <v-btn
-      v-else
-      color="primary"
-      block
-      depressed
-      @click="clickVideoChat({ join: false })"
-    >
+    <v-btn v-else color="primary" block depressed @click="clickVideoChat">
       Stop Video Chat
     </v-btn>
-    <vue-webrtc ref="webrtc" class="my-2" width="100%" :room-id="match_id" />
+    <vue-webrtc
+      v-show="is_video_on"
+      ref="webrtc"
+      class="py-2"
+      width="100%"
+      :room-id="matchId"
+    />
   </div>
 </template>
 
@@ -28,20 +28,26 @@ import systemMixin from "@/mixins/system";
 export default {
   name: "BaseVideoChat",
   mixins: [systemMixin],
+  props: {
+    matchId: {
+      type: String,
+      required: true,
+      default: localStorage.getItem("match_id"),
+    },
+  },
   data() {
     return {
-      match_id: localStorage.getItem("match_id"),
       is_video_on: false,
     };
   },
   methods: {
-    clickVideoChat({ join }) {
-      if (join) {
+    clickVideoChat() {
+      this.is_video_on = !this.is_video_on;
+      if (this.is_video_on) {
         this.$refs.webrtc.join();
       } else {
         this.$refs.webrtc.leave();
       }
-      this.is_video_on = join;
     },
   },
 };

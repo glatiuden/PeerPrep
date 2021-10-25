@@ -1,11 +1,13 @@
 <template>
   <v-navigation-drawer
-    absolute
     :permanent="!small_screen && !is_medium_screen"
     right
+    app
+    clipped
   >
     <template #prepend>
       <h4 class="text-center my-3">Match Chat</h4>
+      <BaseVideoChat />
       <v-divider></v-divider>
     </template>
     <v-sheet>
@@ -43,9 +45,11 @@
 
 <script>
 import systemMixin from "@/mixins/system";
+import BaseVideoChat from "@/components/Match/BaseVideoChat";
 
 export default {
   name: "BaseChat",
+  components: { BaseVideoChat },
   mixins: [systemMixin],
   props: {
     matchId: {
@@ -115,12 +119,12 @@ export default {
   font-weight: 100;
   color: white;
 }
+
 .chat-area {
   /*   border: 1px solid #ccc; */
   padding-top: 1em;
   background: white;
   overflow: auto;
-  max-width: 350px;
 }
 .message {
   width: 45%;

@@ -6,9 +6,9 @@
   </v-skeleton-loader>
   <div v-else>
     <BaseChat :match-id="match_id" />
-    <v-row class="mx-auto my-2">
-      <v-col cols="12" lg="3" style="position: relative">
-        <div class="scrollable-column">
+    <v-row class="mx-auto app-max-width my-2">
+      <v-col cols="12" lg="5">
+        <div>
           <BaseQuestion :question="match_question" />
           <v-card outlined class="mt-3">
             <v-card-title> Match Details</v-card-title>
@@ -33,7 +33,7 @@
           </v-card>
         </div>
       </v-col>
-      <v-col cols="12" lg="5">
+      <v-col cols="12" lg="7">
         <BaseCodeEditor :match-id="match_id" />
       </v-col>
     </v-row>
