@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>Create A New User</v-card-title>
       <v-card-text>
-        <v-form v-model="valid_create" ref="form">
+        <v-form v-model="valid_create" ref="form" >
           <v-col>
             <v-row class="gap">
               <v-text-field
@@ -187,6 +187,10 @@ export default {
       user.editing = !user.editing;
     },
     resetForm() {
+      this.new_user.display_name = undefined;
+      this.new_user.password = undefined;
+      this.new_user.email = undefined;
+      this.new_user.role = undefined;
       this.$refs.form.reset(); // this doesn't work :(
     },
     async fetchUsers() {
@@ -225,14 +229,14 @@ export default {
         } else if (this.new_user.role == "User") {
           await this.CREATE_USER({ user: this.new_user });
         }
+        this.showSnackbar("Successfully created user", "green");
+        this.resetForm();
       } catch (err) {
         this.showSnackbar("Error creating user", "red");
         console.error(err);
       } finally {
         this.fetchUsers();
         this.SET_LOADING({ data: false });
-
-        this.showSnackbar("Successfully created user", "green");
       }
     },
   },
