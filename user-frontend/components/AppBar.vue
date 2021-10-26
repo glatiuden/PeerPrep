@@ -154,7 +154,7 @@ export default {
         );
         return;
       }
-      SET_OPEN_ELO_MATCH_DIALOG({ data: true });
+      this.SET_OPEN_ELO_MATCH_DIALOG({ data: true });
     },
   },
 };
