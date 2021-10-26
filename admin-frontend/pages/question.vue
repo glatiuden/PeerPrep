@@ -1,21 +1,33 @@
 <template>
   <div>
-    <div class="light_primary rounded-lg pa-6">
-      <div class="app-max-width mx-auto px-2">
-        <h2 class="text-center mb-3">Featured Topics</h2>
-        <v-btn color="primary" text :loading="loading" @click="createQuestion" align="right">
-          Create Question
-        </v-btn>
-        <v-row align-content="start" align="stretch">
-          <v-col v-for="(topic, index) in question_topics"
-                 :key="index"
-                 cols="12"
-                 md="3">
-            <BaseQuestionCategoryCard :topic="topic" />
-          </v-col>
-        </v-row>
+    <div class="mx-2">
+      <v-toolbar flat class="transparent">
+        <v-toolbar-title>
+          <h2 class="font-weight-medium">Question Database</h2>
+        </v-toolbar-title>
+      </v-toolbar>
+
+      <div>
+        <v-dialog v-model="open_create_question_dialog" max-width="950px">
+          <CreateQuestionDialog @close="open_create_question_dialog = false" />
+        </v-dialog>
       </div>
+
+      <v-col class="text-right">
+        <v-btn
+          color="primary"
+          outlined
+          class="rounded-lg"
+          large
+          depressed
+          align="right"
+          @click="open_create_question_dialog = true"
+        >
+          <v-icon small left>mdi-plus</v-icon>New Question
+        </v-btn>
+      </v-col>
     </div>
+
     <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
       <v-row class="my-3">
         <v-col cols="12" sm="3">
@@ -65,6 +77,7 @@
           </v-autocomplete>
         </v-col>
         <v-spacer></v-spacer>
+
         <v-col cols="12" sm="3">
           <v-text-field
             v-model="search"
@@ -154,10 +167,30 @@
         </template>
 
         <template #item.actions="{ item }">
-          <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+          <v-btn
+            fab
+            dark
+            small
+            color="blue"
+            class="mr-2"
+            @click="openUpdateQuestionDialog(item._id)"
+          >
+            <v-icon dark> mdi-pencil-outline </v-icon>
+          </v-btn>
+
+          <v-btn
+            fab
+            dark
+            small
+            color="red"
+            class="mr-2"
+            @click="deleteQuestion(item._id)"
+          >
+            <v-icon dark> mdi-delete </v-icon>
+          </v-btn>
         </template>
 
-        <template #no-data>No question available</template>
+        <template #no-data> No question available </template>
       </v-data-table>
 
       <v-row justify="center" class="my-2">
@@ -175,27 +208,30 @@
           ></v-pagination>
         </v-col>
       </v-row>
-      <v-dialog v-model="open_matching_dialog" max-width="550px">
-        <BaseMatchingDialog />
+
+      <v-dialog v-model="open_update_question_dialog" max-width="950px">
+        <UpdateQuestionDialog
+          v-if="open_update_question_dialog"
+          @close="open_update_question_dialog = false"
+        />
       </v-dialog>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 
-import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
-import BaseMatchingDialog from "@/components/Match/BaseMatchingDialog";
+import CreateQuestionDialog from "@/components/Question/CreateQuestionDialog";
+import UpdateQuestionDialog from "@/components/Question/UpdateQuestionDialog";
 
 export default {
   name: "Question",
   components: {
-    BaseQuestionCategoryCard,
     BaseQuestionDialog,
-    BaseMatchingDialog,
+    CreateQuestionDialog,
+    UpdateQuestionDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {
@@ -229,12 +265,21 @@ export default {
           class: "data-table-heading",
           width: 300,
         },
+        {
+          text: "",
+          value: "actions",
+          sortable: false,
+          class: "data-table-heading",
+          width: 150,
+        },
       ],
       search: "",
       page: 1,
       selected_difficulty_levels: [],
       selected_topics: [],
       open_dialog: false,
+      open_create_question_dialog: false,
+      open_update_question_dialog: false,
     };
   },
   async fetch() {
@@ -248,9 +293,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      open_matching_dialog: "match/open_matching_dialog",
-    }),
     /**
      * @description pages_exists will return true
      * @returns boolean
@@ -328,6 +370,43 @@ export default {
         console.error(err);
       } finally {
         this.SET_LOADING({ data: false });
+      }
+    },
+
+    /**
+     * @description Load the question from server and opens the dialog to edit question
+     */
+    async openUpdateQuestionDialog(question_id) {
+      try {
+        this.SET_LOADING({ data: true });
+        await this.GET_QUESTION({ question_id });
+        this.open_update_question_dialog = true;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
+    },
+
+    /**
+     * @description Delete the question from server
+     */
+    async deleteQuestion(question_id) {
+      const is_confirmed = confirm(
+        "Are you sure you want to delete this question? It is an irreversible action.",
+      );
+
+      if (!is_confirmed) {
+        return;
+      }
+
+      try {
+        await this.DELETE_QUESTION({ question_id });
+        this.$notification.success(`Successfully deleted!`);
+        this.GET_QUESTIONS_PAGINATED();
+      } catch (err) {
+        console.error(err);
+        this.$notification.error("Encountered error deleting this question.");
       }
     },
   },
