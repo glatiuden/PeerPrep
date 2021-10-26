@@ -15,6 +15,7 @@ async function executeCodeController(httpRequest: Request) {
       httpRequest,
       "context.validated",
     );
+    console.log(language);
     let final_language;
     switch (language) {
       case "c++":
@@ -29,7 +30,7 @@ async function executeCodeController(httpRequest: Request) {
     }
     const stringify_data = JSON.stringify({
       code,
-      final_language,
+      language: final_language,
       input,
     });
     const server_response = await axios.post(
@@ -39,6 +40,7 @@ async function executeCodeController(httpRequest: Request) {
         headers,
       },
     );
+    console.log(server_response);
 
     return {
       headers,

@@ -109,7 +109,10 @@ export default {
     }),
   },
   mounted() {
-    this.selected_language = this.match.programming_language;
+    this.selected_language = _.get(
+      this.match,
+      "match_requirements.programming_language",
+    );
 
     // If is view history -> disable sockets on initializing.
     if (this.isHistoryMode) {
@@ -195,8 +198,8 @@ export default {
         );
 
         const result = await this.EXECUTE_CODE({
-          code: this.content,
-          language: language_object.language,
+          code: this.codes,
+          language: this.selected_language,
         });
         this.output = _.get(result, "output");
       } catch (err) {

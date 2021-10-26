@@ -14,6 +14,7 @@
             <v-card-title> Match Details</v-card-title>
             <v-card-text>
               <v-countdown
+                v-if="match.match_requirements.question_mode === 'timed'"
                 :left-time="match_question.recommended_duration * 60000"
               >
                 <template #process="{ timeObj }">
