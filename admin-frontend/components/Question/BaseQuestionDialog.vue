@@ -50,9 +50,6 @@
       <v-btn color="error" text :loading="loading" @click="deleteQuestion">
         Delete
       </v-btn>
-      <v-btn color="primary" :loading="loading" text @click="editQuestion">
-        Edit
-      </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -97,29 +94,6 @@ export default {
         );
       }
     },
-  },
-  async updateQuestion() {
-    try {
-      const testQuestion = {
-        _id: this.question._id,
-        title: "TEST",
-        description: "Test Question",
-        topic: "Data",
-        difficulty: "easy",
-        hints: "nil",
-        solution: "na",
-        recommended_duration: 30,
-        examples: "this is a test question",
-        constraints: "this is only a test question",
-      };
-      await this.UPDATE_QUESTION({ testQuestion });
-      this.$notification.success(`Successfully updated!`);
-      this.closeDialog();
-      this.GET_QUESTION();
-    } catch (err) {
-      console.error(err);
-      this.$notification.error(`Encountered error updating a question: ${err}`);
-    }
   },
 };
 </script>

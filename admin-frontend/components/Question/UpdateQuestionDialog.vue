@@ -208,22 +208,6 @@ import questionMixin from "@/mixins/question";
 export default {
   name: "UpdateQuestionDialog",
   mixins: [questionMixin],
-  /**
-    props: {
-      update_question: {
-        _id: undefined,
-        title: undefined,
-        description: undefined,
-        topic: undefined,
-        difficulty: undefined,
-        hints: [""],
-        solution: undefined,
-        recommended_duration: undefined,
-        examples: [{ input: "", output: "" }],
-        constraints: [""],
-      },
-    },
-    */
   data() {
     return {
       update_question: {
@@ -259,6 +243,18 @@ export default {
     closeDialog() {
       this.$emit("close");
     },
+    resetUpdateQuestionDialog() {
+      this.update_question._id = undefined;
+      this.update_question.title = undefined;
+      this.update_question.description = undefined;
+      this.update_question.topic = undefined;
+      this.update_question.difficulty = undefined;
+      this.update_question.hints = [""];
+      this.update_question.solution = undefined;
+      this.update_question.recommended_duration = undefined;
+      this.update_question.examples = [{ input: "", output: "" }];
+      this.update_question.constraints = [""];
+    },
     showSnackbar(message, color) {
       this.snackbar = {
         show: true,
@@ -277,6 +273,7 @@ export default {
       } finally {
         this.SET_LOADING({ data: false });
         this.closeDialog();
+        this.resetUpdateQuestionDialog();
         this.$notification.success("Successfully updated question");
       }
     },

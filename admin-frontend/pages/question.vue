@@ -7,9 +7,7 @@
         class="rounded-lg"
         large
         depressed
-        v-bind="attrs"
         align="right"
-        v-on="on"
         @click="open_create_question_dialog = true"
       >
         <v-icon small left>mdi-plus</v-icon>New Question
@@ -158,9 +156,27 @@
         </template>
 
         <template #item.actions="{ item }">
-          <v-icon class="mr-2" @click="openUpdateQuestionDialog(item._id)">
-            mdi-pencil-outline
-          </v-icon>
+          <v-btn fab
+                 dark
+                 small
+                 color="blue"
+                 class="mr-2"
+                 @click="openUpdateQuestionDialog(item._id)">
+            <v-icon dark>
+              mdi-pencil-outline
+            </v-icon>
+          </v-btn>
+
+          <v-btn fab
+                 dark
+                 small
+                 color="red"
+                 class="mr-2"
+                 @click="deleteQuestion(item._id)">
+            <v-icon dark>
+              mdi-delete
+            </v-icon>
+          </v-btn>
         </template>
 
         <template #no-data> No question available </template>
@@ -236,10 +252,11 @@ export default {
           width: 300,
         },
         {
-          text: "Actions",
+          text: "",
           value: "actions",
           sortable: false,
           class: "data-table-heading",
+          width: 150,
         },
       ],
       search: "",
@@ -354,6 +371,28 @@ export default {
         console.error(err);
       } finally {
         this.SET_LOADING({ data: false });
+      }
+    },
+
+    /**
+    * @description Delete the question from server
+    */
+    async deleteQuestion(question_id) {
+      const is_confirmed = confirm(
+        "Are you sure you want to delete this question? It is an irreversible action.",
+      );
+
+      if (!is_confirmed) {
+        return;
+      }
+
+      try {
+        await this.DELETE_QUESTION({ question_id });
+        this.$notification.success(`Successfully deleted!`);
+        this.GET_QUESTIONS_PAGINATED();
+      } catch (err) {
+        console.error(err);
+        this.$notification.error('Encountered error deleting this question.');
       }
     },
   },

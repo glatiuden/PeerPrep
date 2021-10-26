@@ -254,12 +254,13 @@ export default {
       try {
         this.SET_LOADING({ data: true });
         await this.CREATE_QUESTION({ question: this.new_question });
-        this.closeDialog();
+        await this.GET_QUESTIONS_PAGINATED();
       } catch (err) {
         this.$notification.error("Error creating question");
         console.error(err);
       } finally {
         this.SET_LOADING({ data: false });
+        this.closeDialog();
         this.$notification.success("Successfully created question");
       }
     },
