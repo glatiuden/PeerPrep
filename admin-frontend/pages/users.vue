@@ -1,13 +1,12 @@
 <template>
-  <UserDashboard />
+  <UserDashBoard />
 </template>
 <script>
-
-import UserDashBoard from '@/components/User/UserDashboard'
+import UserDashBoard from "@/components/User/UserDashboard";
 
 export default {
   components: {
-    UserDashBoard
-  }
+    UserDashBoard,
+  },
 };
 </script>

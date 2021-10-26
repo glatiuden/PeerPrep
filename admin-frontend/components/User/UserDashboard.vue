@@ -3,7 +3,7 @@
     <v-card>
       <v-card-title>Create A New User</v-card-title>
       <v-card-text>
-        <v-form v-model="valid_create" ref="form">
+        <v-form ref="form" v-model="valid_create">
           <v-col>
             <v-row class="gap">
               <v-text-field
@@ -59,6 +59,9 @@
                 :items="role_types"
                 label="User Role"
                 :rules="required"
+                outlined
+                dense
+                required
               ></v-select>
               <v-spacer></v-spacer>
             </v-row>
@@ -69,7 +72,12 @@
         </v-form>
       </v-card-text>
     </v-card>
-    <div v-for="(user, index) in users" :key="index">
+    <v-skeleton-loader
+      v-if="loading"
+      type="table-heading, table-tbody, table-tfoot"
+    >
+    </v-skeleton-loader>
+    <div v-for="(user, index) in users" v-else :key="index">
       <v-card>
         <v-card-title class="title">
           <v-row class="margin-0">
@@ -144,10 +152,10 @@
         </v-card-text>
       </v-card>
     </div>
-    <v-snackbar :color="snackbar.color" v-model="snackbar.show">
+    <v-snackbar v-model="snackbar.show" :color="snackbar.color">
       {{ snackbar.message }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="white" text @click="snackbar.show = false" v-bind="attrs">
+      <template #action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar.show = false">
           Close
         </v-btn>
       </template>
@@ -174,7 +182,7 @@ export default {
         (v) => !!v || "Email Address is required",
         (v) => /.+@.+\..+/.test(v) || "Email Address must be valid.",
       ],
-      required: [(v) => !!v || "Required"],
+      required: [(v) => !!v || "Password is required"],
       confirm_password_rules: [
         (v) => !!v || "Password is required",
         (v) =>
@@ -192,13 +200,10 @@ export default {
       },
     };
   },
-  created() {
+  async fetch() {
     this.fetchUsers();
   },
   methods: {
-    print(item) {
-      console.log(item);
-    },
     showSnackbar(message, color) {
       this.snackbar = {
         show: true,
