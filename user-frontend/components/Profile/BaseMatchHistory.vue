@@ -120,10 +120,12 @@
       :items-per-page="15"
       class="soft-box-shadow"
     >
-      <template #item.title="{ item }">
-        <div>
-          {{ item.title }}
+      <template #item.meta.question_title="{ item }">
+        <div v-if="item.meta && item.meta.question_title">
+          {{ item.meta.question_title }} <br />
+          (with {{ getPartnerName(item.meta) }})
         </div>
+        <div v-else>No Question Selected</div>
       </template>
 
       <template #item.status="{ item }">
@@ -176,25 +178,29 @@ export default {
     return {
       headers: [
         {
-          text: "Question",
+          text: "Match Details",
           value: "meta.question_title",
           sortable: true,
           class: "data-table-heading",
-          width: 350,
+          width: 300,
+        },
+        {
+          text: "Mode",
+          value: "mode",
+          sortable: true,
+          class: "data-table-heading",
         },
         {
           text: "Status",
           value: "status",
           sortable: true,
           class: "data-table-heading",
-          width: 250,
         },
         {
           text: "Programming Language",
           value: "match_requirements.programming_language",
           sortable: true,
           class: "data-table-heading",
-          width: 250,
         },
         {
           text: "Date",
@@ -292,6 +298,17 @@ export default {
       } catch (err) {
         console.error(err);
       }
+    },
+    /**
+     * @description Determines the partner name by checking against own
+     */
+    getPartnerName(meta) {
+      const partner1_display_name = _.get(meta, "partner1_display_name");
+      const partner2_display_name = _.get(meta, "partner2_display_name");
+      if (partner1_display_name === this.user.display_name) {
+        return partner2_display_name;
+      }
+      return partner1_display_name;
     },
   },
 };
