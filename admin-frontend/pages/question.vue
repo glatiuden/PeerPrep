@@ -1,21 +1,5 @@
 <template>
   <div>
-    <div class="light_primary rounded-lg pa-6">
-      <div class="app-max-width mx-auto px-2">
-        <h2 class="text-center mb-3">Question List</h2>
-        <v-row align-content="start" align="stretch">
-          <v-col
-            v-for="(topic, index) in question_topics"
-            :key="index"
-            cols="12"
-            md="3"
-          >
-            <BaseQuestionCategoryCard :topic="topic" />
-          </v-col>
-        </v-row>
-      </div>
-    </div>
-
     <div>
       <v-btn
         color="primary"
@@ -174,29 +158,9 @@
         </template>
 
         <template #item.actions="{ item }">
-            <v-icon
-                class="mr-2"
-                @click="openUpdateQuestionDialog(item._id)"
-            >
+          <v-icon class="mr-2" @click="openUpdateQuestionDialog(item._id)">
             mdi-pencil-outline
-            </v-icon>
-          <v-dialog
-            v-model="open_update_question_dialog"
-            v-if="open_update_question_dialog"
-            max-width="950px">
-            <UpdateQuestionDialog
-              :update_question._id="item._id"
-              :update_question.title="item.title"
-              :update_question.description="item.description"
-              :update_question.topic="item.topic"
-              :update_question.hints="item.hints"
-              :update_question.solution="item.solution"
-              :update_question.recommended_duration="item.recommended_duration"
-              :update_question.examples="item.examples"
-              :update_question.constraints="item.constraints"
-            >
-            </UpdateQuestionDialog>
-          </v-dialog>
+          </v-icon>
         </template>
 
         <template #no-data> No question available </template>
@@ -217,15 +181,17 @@
           ></v-pagination>
         </v-col>
       </v-row>
+
+      <v-dialog v-model="open_update_question_dialog" max-width="950px">
+        <UpdateQuestionDialog @close="open_update_question_dialog = false" />
+      </v-dialog>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 
-import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
 import CreateQuestionDialog from "@/components/Question/CreateQuestionDialog";
 import UpdateQuestionDialog from "@/components/Question/UpdateQuestionDialog";
@@ -233,7 +199,6 @@ import UpdateQuestionDialog from "@/components/Question/UpdateQuestionDialog";
 export default {
   name: "Question",
   components: {
-    BaseQuestionCategoryCard,
     BaseQuestionDialog,
     CreateQuestionDialog,
     UpdateQuestionDialog,
@@ -275,7 +240,6 @@ export default {
           value: "actions",
           sortable: false,
           class: "data-table-heading",
-          width: 300,
         },
       ],
       search: "",
@@ -298,9 +262,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      open_matching_dialog: "match/open_matching_dialog",
-    }),
     /**
      * @description pages_exists will return true
      * @returns boolean
