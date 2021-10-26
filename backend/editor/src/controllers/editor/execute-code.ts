@@ -11,8 +11,27 @@ async function executeCodeController(httpRequest: Request) {
   };
 
   try {
-    const data_to_execute: { code: string; language: string; input?: string } = _.get(httpRequest, "context.validated");
-    const stringify_data = JSON.stringify(data_to_execute);
+    const { code, language, input }: { code: string; language: string; input?: string } = _.get(
+      httpRequest,
+      "context.validated",
+    );
+    let final_language;
+    switch (language) {
+      case "c++":
+        final_language = "cpp";
+        break;
+      case "java":
+        final_language = "java";
+        break;
+      case "python":
+        final_language = "py";
+        break;
+    }
+    const stringify_data = JSON.stringify({
+      code,
+      final_language,
+      input,
+    });
     const server_response = await axios.post(
       "https://codexweb.netlify.app/.netlify/functions/enforceCode",
       stringify_data,

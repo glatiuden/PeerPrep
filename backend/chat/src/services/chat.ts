@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import IChat from "../models/interfaces/chat";
 
 export default function makeChatService({ chatDbModel }: { chatDbModel: mongoose.Model<IChat & mongoose.Document> }) {
