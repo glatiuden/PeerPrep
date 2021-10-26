@@ -12,18 +12,23 @@ async function getMatchesPaginatedController(httpRequest: Request) {
   };
 
   try {
-    const { 
-        programming_languages,
-        statuses,
-        query, 
-        page 
-    }: { programming_languages: string[]; statuses: string[]; query: string; page: number } = _.get(httpRequest, "context.validated");
-    
-    
-    const matches_paginated = await matchService.findAllPaginated({ 
-        programming_languages, statuses, query, page });
-    
-    
+    const {
+      programming_languages,
+      statuses,
+      query,
+      page,
+    }: { programming_languages: string[]; statuses: string[]; query: string; page: number } = _.get(
+      httpRequest,
+      "context.validated",
+    );
+
+    const matches_paginated = await matchService.findAllPaginated({
+      programming_languages,
+      statuses,
+      query,
+      page,
+    });
+
     logger.verbose(`Fetched matches paginated`, {
       query,
       page,

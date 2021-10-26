@@ -8,11 +8,13 @@ import {
   deleteMatchController,
   hardDeleteMatchController,
   getMatchesController,
+  getMatchesPaginatedController,
 } from "../../controllers/admin/match";
 
 const matchRouter = express.Router();
 
 matchRouter.get("/", makeExpressCallback(getMatchesController));
+matchRouter.get("/paginated", makeExpressCallback(getMatchesPaginatedController));
 matchRouter.get("/:match_id", makeValidator(getMatchRules), makeExpressCallback(getMatchController));
 matchRouter.delete("/:match_id", makeValidator(deleteMatchRules), makeExpressCallback(deleteMatchController));
 matchRouter.delete(
