@@ -5,7 +5,7 @@
     <v-form v-model="valid">
       <v-card-text>
         <v-container>
-          <v-text-field
+          <!-- <v-text-field
             v-model="new_match.match_id"
             :counter="255"
             :rules="match_id_rules"
@@ -14,9 +14,9 @@
             required
             outlined
             dense
-          />
+          /> -->
 
-          <v-text-field
+          <!-- <v-text-field
             v-model="new_match.programming_language"
             :counter="360"
             :rules="programming_language_rules"
@@ -25,10 +25,10 @@
             required
             outlined
             dense
-          ></v-text-field>
+          ></v-text-field> -->
 
           <v-textarea
-            v-model="new_match.question_id"
+            v-model="new_match.status"
             :counter="255"
             :rules="status_rules"
             label="Status"
@@ -75,24 +75,24 @@ export default {
       new_match: {
         match_id: "",
         programming_language: "",
-        question_id: "",
+        status: "",
       },
       default_match: {
         match_id: "",
         programming_language: "",
-        question_id: "",
+        status: "",
       },
-      match_id_rules: [
-        (v) => !!v || "Match ID is required",
-        (v) =>
-          (v && v.length <= 255) || "Match ID must be less than 255 characters",
-      ],
-      programming_language_rules: [
-        (v) => !!v || "Programming Language is required",
-        (v) =>
-          (v && v.length <= 255) ||
-          "Programming Language must be less than 255 characters",
-      ],
+      // match_id_rules: [
+      //   (v) => !!v || "Match ID is required",
+      //   (v) =>
+      //     (v && v.length <= 255) || "Match ID must be less than 255 characters",
+      // ],
+      // programming_language_rules: [
+      //   (v) => !!v || "Programming Language is required",
+      //   (v) =>
+      //     (v && v.length <= 255) ||
+      //     "Programming Language must be less than 255 characters",
+      // ],
       status_rules: [
         (v) => !!v || "Status is required",
         (v) =>
@@ -123,25 +123,25 @@ export default {
         await this.addMatch();
       }
     },
-    /**
-     * @description: add a new match to server + store
-     */
-    async addMatch() {
-      try {
-        this.SET_LOADING({ data: true });
-        await this.CREATE_MATCH({
-          match: this.new_match,
-        });
-        await this.GET_MATCHES_PAGINATED();
-        this.$notification.success(`Match has been created successfully.`);
-        this.$emit("close-dialog");
-      } catch (err) {
-        console.error(err);
-        this.$notification.error(`Encountered error adding match: ${err}.`);
-      } finally {
-        this.closeDialog();
-      }
-    },
+    // /**
+    //  * @description: add a new match to server + store
+    //  */
+    // async addMatch() {
+    //   try {
+    //     this.SET_LOADING({ data: true });
+    //     await this.CREATE_MATCH({
+    //       match: this.new_match,
+    //     });
+    //     await this.GET_MATCHES_PAGINATED();
+    //     this.$notification.success(`Match has been created successfully.`);
+    //     this.$emit("close-dialog");
+    //   } catch (err) {
+    //     console.error(err);
+    //     this.$notification.error(`Encountered error adding match: ${err}.`);
+    //   } finally {
+    //     this.closeDialog();
+    //   }
+    // },
     /**
      * @description: update match to server + store
      */
@@ -152,6 +152,7 @@ export default {
           match: {
             ...this.new_match,
             id: this.match_id,
+            status: this.match_status
           },
         });
         await this.GET_MATCHES_PAGINATED();

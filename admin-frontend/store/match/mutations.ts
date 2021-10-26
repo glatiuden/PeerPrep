@@ -57,6 +57,14 @@ const mutations: MutationTree<MatchState> = {
   [MutationTypes.SET_MATCH_ID](state, { data }: { data: string }) {
     state.match_id = data;
   },
+  /**
+   * @description to set match status
+   * @param state
+   * @param param1
+   */
+   [MutationTypes.SET_MATCH_STATUS](state, { data }: { data: string }) {
+    state.match_status = data;
+  },
 };
 
 export default mutations;

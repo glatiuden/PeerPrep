@@ -8,6 +8,7 @@ export default {
       match: "match/match",
       matches: "match/matches",
       matches_pagination: "match/matches_pagination",
+      match_status: "match/match_status",
     }),
   },
 
@@ -18,6 +19,7 @@ export default {
       GET_MATCH: "match/GET_MATCH",
       CREATE_MATCH: "match/CREATE_MATCH",
       DELETE_MATCH: "match/DELETE_MATCH",
+      UPDATE_MATCH: "match/UPDATE_MATCH",
     }),
 
     ...mapMutations({
@@ -25,6 +27,7 @@ export default {
       SET_OPEN_DIALOG: "match/SET_OPEN_DIALOG",
       SET_MATCH: "match/SET_MATCH",
       SET_MATCH_ID: "match/SET_MATCH_ID",
+      SET_MATCH_STATUS: "match/SET_MATCH_STATUS",
     }),
   },
 };

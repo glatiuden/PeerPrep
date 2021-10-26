@@ -176,12 +176,25 @@ export default {
     async editMatch(id) {
       try {
         await this.GET_MATCH({ match_id: id });
+        this.SET_MATCH_ID({data: id});
+        this.open_dialog = true;
+      } catch (err) {
+        console.error(err);
+        this.$notification.error(`Encountered error updating match: ${err}.`);
+      }
+    },
+
+    async editMatch(status) {
+      try {
+        await this.GET_MATCH({match_status: status});
+        this.SET_MATCH_STATUS({data: status});
         this.dialog = true;
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error updating match: ${err}.`);
       }
     },
+
     async deleteMatch(item) {
       const is_confirmed = confirm(
         "Are you sure you want to delete this match? It is an irreversible action.",

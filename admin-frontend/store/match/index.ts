@@ -8,6 +8,7 @@ export const state = () => ({
   },
   loading: false,
   match_id: "" as string,
+  match_status: "" as string,
 });
 
 export type MatchState = ReturnType<typeof state>;
