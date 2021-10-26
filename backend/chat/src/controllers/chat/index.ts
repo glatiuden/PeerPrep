@@ -4,6 +4,7 @@ import getChatController from "./get-chat";
 import updateChatController from "./update-chat";
 import deleteChatController from "./delete-chat";
 import hardDeleteChatController from "./hard-delete-chat";
+import getChatByMatchIdController from "./get-chat-by-match-id";
 
 const chatController = Object.freeze({
   createChatController,
@@ -12,6 +13,7 @@ const chatController = Object.freeze({
   updateChatController,
   deleteChatController,
   hardDeleteChatController,
+  getChatByMatchIdController,
 });
 
 export default chatController;
@@ -23,4 +25,5 @@ export {
   updateChatController,
   deleteChatController,
   hardDeleteChatController,
+  getChatByMatchIdController,
 };

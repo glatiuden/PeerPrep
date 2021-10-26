@@ -47,9 +47,14 @@ export default function makeQuestionService({
       topic,
     }: {
       difficulty: string;
-      topic: string;
+      topic?: string;
     }): Promise<IQuestion | null> {
-      const resultArray = await questionDbModel.find({ difficulty, topic });
+      const query_conditions = { difficulty, deleted_at: undefined };
+      if (topic) {
+        query_conditions["topic"] = topic;
+      }
+
+      const resultArray = await questionDbModel.find(query_conditions);
 
       const resultArrayLength = resultArray.length;
 

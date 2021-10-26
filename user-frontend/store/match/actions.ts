@@ -11,10 +11,17 @@ const actions: ActionTree<MatchState, RootState> = {
    * @param param0
    * @param param1
    */
-  async [ActionTypes.GET_MATCH_BY_USER_ID]({ commit }, { user_id }) {
-    const { data: matchs } = await this.$axios.$get(`/match/api/${user_id}`);
-    commit(MutationTypes.SET_MATCHES, { data: matchs });
-    return matchs;
+  async [ActionTypes.GET_MATCHES]({ commit }, params = {}) {
+    const user_id = _.get(params, "user_id");
+    delete params["user_id"];
+
+    const { data: matches, pagination } = await this.$axios.$get(
+      `/match/api/user/${user_id}`,
+      { params },
+    );
+    commit(MutationTypes.SET_MATCHES, { data: matches });
+    commit(MutationTypes.SET_MATCHES_PAGINATION, { data: pagination });
+    return matches;
   },
   /**
    * @description to get match by id
@@ -47,6 +54,45 @@ const actions: ActionTree<MatchState, RootState> = {
   async [ActionTypes.UPDATE_MATCH]({ commit }, { match }) {
     const { data: updated_match } = await this.$axios.$put(`/match/api`, match);
     return updated_match;
+  },
+
+  /**
+   * @description to end match
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.END_MATCH]({ commit, dispatch, state }, { match_id }) {
+    const { data: is_completed } = await this.$axios.$put(`/match/api/end`, {
+      match_id,
+    });
+
+    if (is_completed) {
+      dispatch(
+        "$nuxtSocket/emit",
+        {
+          label: "editor",
+          evt: "end_session",
+          msg: {
+            match_id,
+            content: state.codes,
+          },
+        },
+        { root: true },
+      );
+      dispatch(
+        "$nuxtSocket/emit",
+        {
+          label: "chat",
+          evt: "end_session",
+          msg: {
+            match_id,
+            content: state.chat_messages,
+          },
+        },
+        { root: true },
+      );
+    }
+    return is_completed;
   },
 };
 

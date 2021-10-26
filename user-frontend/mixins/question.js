@@ -2,16 +2,6 @@ import _ from "lodash";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
-  data() {
-    return {
-      chip_colors: {
-        easy: "green",
-        medium: "yellow",
-        hard: "red",
-      },
-    };
-  },
-
   computed: {
     ...mapGetters({
       loading: "question/loading",
@@ -20,6 +10,7 @@ export default {
       questions_pagination: "question/questions_pagination",
       question_topics: "question/question_topics",
       difficulty_levels: "question/difficulty_levels",
+      selected_topics: "question/selected_topics",
     }),
   },
 
@@ -32,6 +23,7 @@ export default {
 
     ...mapMutations({
       SET_LOADING: "question/SET_LOADING",
+      SET_SELECTED_TOPICS: "question/SET_SELECTED_TOPICS",
     }),
   },
 };

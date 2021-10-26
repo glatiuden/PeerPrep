@@ -10,6 +10,7 @@ export const getters: GetterTree<QuestionState, RootState> = {
   questions_pagination: (state) => state.questions_pagination,
   question_topics: (state) => state.question_topics,
   difficulty_levels: (state) => state.difficulty_levels,
+  selected_topics: (state) => state.selected_topics,
 };
 
 export default getters;

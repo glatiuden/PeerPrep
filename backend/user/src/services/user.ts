@@ -13,7 +13,8 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     }
 
     async findById({ id }: { id: string }): Promise<IUser | null> {
-      const existing = await userDbModel.findById(id);
+      const query_conditions = { _id: id, deleted_at: undefined };
+      const existing = await userDbModel.findOne(query_conditions);
       if (existing) {
         return existing;
       }
@@ -21,7 +22,8 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     }
 
     async findByEmail({ email, role = UserRole.USER }: { email: string; role?: UserRole }): Promise<IUser | null> {
-      const existing = await userDbModel.findOne({ email, role });
+      const query_conditions = { email, role, deleted_at: undefined };
+      const existing = await userDbModel.findOne(query_conditions);
       if (existing) {
         return existing;
       }
@@ -30,6 +32,16 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
 
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
+      const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
+      if (existing) {
+        return existing;
+      }
+      return [];
+    }
+
+    async findAllByUserIds({ user_ids }: { user_ids: string[] }): Promise<IUser[]> {
+      console.log(user_ids);
+      const query_conditions = { deleted_at: undefined, _id: { $in: user_ids } };
       const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
       if (existing) {
         return existing;

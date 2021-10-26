@@ -21,3 +21,14 @@
   color: rgb(87, 89, 91, 0.7) !important;
   font-weight: 600;
 }
+
+.sticky-column {
+  position: sticky !important;
+  top: 4rem !important;
+}
+
+.scrollable-column {
+  width: 100%;
+  max-height: 760px;
+  overflow-y: auto;
+}

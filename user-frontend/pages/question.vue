@@ -7,79 +7,118 @@
           Create Question
         </v-btn>
         <v-row align-content="start" align="stretch">
-          <v-col v-for="(topic, index) in question_topics"
-                 :key="index"
-                 cols="12"
-                 md="3">
-            <BaseQuestionCategoryCard :topic="topic" />
+          <v-col
+            v-for="(topic, index) in question_topics"
+            :key="index"
+            cols="12"
+            md="4"
+          >
+            <BaseQuestionCategoryCard
+              :topic="topic"
+              :index="index"
+              @perform-filter="performFilter"
+            />
           </v-col>
         </v-row>
       </div>
     </div>
-    <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
-      <v-row class="my-3">
-        <v-col cols="12" sm="3">
-          <v-autocomplete
-            v-model="selected_difficulty_levels"
-            :items="difficulty_levels"
-            :loading="loading"
-            label="Difficulty Level"
-            item-value="value"
-            item-text="text"
-            class="rounded-0"
-            multiple
-            outlined
-            dense
-            hide-details
-            @change="performFilter"
+    <div class="app-max-width mx-auto pt-6 px-8 px-lg-2">
+      <v-card class="my-9 my-sm-4 rounded-lg" outlined>
+        <v-card-title class="justify-center text-body-1">
+          <h2>Questions</h2>
+          <v-btn
+            icon
+            class="text--secondary"
+            color="#0560AD"
+            @click="open_info_dialog = !open_info_dialog"
           >
-            <template #selection="{ index }">
-              <span v-if="index === 0">
-                Selected:
-                {{ selected_difficulty_levels.length }}
-              </span>
-            </template>
-          </v-autocomplete>
-        </v-col>
+            <v-icon color="#0560AD">mdi-information</v-icon>
+          </v-btn>
+          <v-dialog v-model="open_info_dialog" max-width="600" max-height="400">
+            <v-card>
+              <v-card-title class="justify-center">
+                Questions on PeerPrep
+              </v-card-title>
+              <v-card-text>
+                <ul>
+                  <li>
+                    Questions on PeerPrep are curated from popular online
+                    competitive programming platforms such as Leetcode and
+                    Hackerrank.
+                  </li>
+                  <li>We do not own any of the questions and solutions.</li>
+                </ul>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+        </v-card-title>
+        <v-card-text class="d-flex">
+          <v-row>
+            <v-col cols="12" sm="3">
+              <v-autocomplete
+                v-model="selected_difficulty_levels"
+                :items="difficulty_levels"
+                :loading="loading"
+                label="Difficulty Level"
+                item-value="value"
+                item-text="text"
+                class="rounded-0"
+                multiple
+                outlined
+                dense
+                hide-details
+                @change="performFilter"
+              >
+                <template #selection="{ index }">
+                  <span v-if="index === 0">
+                    Selected:
+                    {{ selected_difficulty_levels.length }}
+                  </span>
+                </template>
+              </v-autocomplete>
+            </v-col>
 
-        <v-col cols="12" sm="3">
-          <v-autocomplete
-            v-model="selected_topics"
-            :items="question_topics"
-            :loading="loading"
-            label="Topic"
-            class="rounded-0"
-            multiple
-            outlined
-            dense
-            hide-details
-            clearable
-            @change="performFilter"
-          >
-            <template #selection="{ index }">
-              <span v-if="index === 0">
-                Selected:
-                {{ selected_topics.length }}
-              </span>
-            </template>
-          </v-autocomplete>
-        </v-col>
-        <v-spacer></v-spacer>
-        <v-col cols="12" sm="3">
-          <v-text-field
-            v-model="search"
-            prepend-inner-icon="mdi-magnify"
-            label="Search"
-            class="rounded-0"
-            single-line
-            outlined
-            dense
-            hide-details
-            clearable
-            @input="performSearch"
-          />
-        </v-col>
-      </v-row>
+            <v-col cols="12" sm="3">
+              <v-autocomplete
+                :items="question_topics"
+                :loading="loading"
+                label="Topic"
+                class="rounded-0"
+                multiple
+                outlined
+                dense
+                hide-details
+                clearable
+                @change="
+                  SET_SELECTED_TOPICS({ data: $event });
+                  performFilter();
+                "
+              >
+                <template #selection="{ index }">
+                  <span v-if="index === 0">
+                    Selected:
+                    {{ selected_topics.length }}
+                  </span>
+                </template>
+              </v-autocomplete>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field
+                v-model="search"
+                prepend-inner-icon="mdi-magnify"
+                label="Search"
+                class="rounded-0"
+                single-line
+                outlined
+                dense
+                hide-details
+                clearable
+                @input="performSearch"
+              />
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
 
       <div class="d-flex my-3">
         <v-chip
@@ -142,7 +181,10 @@
         </template>
 
         <template #item.difficulty="{ item }">
-          <v-chip class="white--text" :color="chip_colors[item.difficulty]">
+          <v-chip
+            class="white--text"
+            :color="difficulty_chip_colors[item.difficulty]"
+          >
             {{ item.difficulty }}
           </v-chip>
         </template>
@@ -175,9 +217,6 @@
           ></v-pagination>
         </v-col>
       </v-row>
-      <v-dialog v-model="open_matching_dialog" max-width="550px">
-        <BaseMatchingDialog />
-      </v-dialog>
     </div>
   </div>
 </template>
@@ -188,14 +227,12 @@ import questionMixin from "@/mixins/question";
 
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
-import BaseMatchingDialog from "@/components/Match/BaseMatchingDialog";
 
 export default {
   name: "Question",
   components: {
     BaseQuestionCategoryCard,
     BaseQuestionDialog,
-    BaseMatchingDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {
@@ -230,11 +267,11 @@ export default {
           width: 300,
         },
       ],
-      search: "",
+      search: undefined,
       page: 1,
       selected_difficulty_levels: [],
-      selected_topics: [],
       open_dialog: false,
+      open_info_dialog: false,
     };
   },
   async fetch() {
@@ -245,10 +282,12 @@ export default {
       ]);
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching questions: ${err}`);
     }
   },
   computed: {
     ...mapGetters({
+      has_user: "user/has_user",
       open_matching_dialog: "match/open_matching_dialog",
     }),
     /**
@@ -289,6 +328,9 @@ export default {
         });
       } catch (err) {
         console.error(err);
+        this.$notification.error(
+          `Encountered error fetching questions: ${err}`,
+        );
       }
     },
 
@@ -304,10 +346,9 @@ export default {
           );
           break;
         case "topic":
-          this.selected_topics = _.filter(
-            this.selected_topics,
-            (topic) => topic != value,
-          );
+          this.SET_SELECTED_TOPICS({
+            data: _.filter(this.selected_topics, (topic) => topic != value),
+          });
           break;
         case "search":
           this.search = "";
@@ -317,15 +358,25 @@ export default {
     },
 
     /**
-     * @description Load the question from server and opens the dialog
+     * @description Loads the question from server and opens the dialog
      */
     async openQuestionDialog(question_id) {
+      if (!this.has_user) {
+        this.$notification.warning(
+          `Want to see more? Login to get the full experience!`,
+        );
+        return;
+      }
+
       try {
         this.SET_LOADING({ data: true });
         await this.GET_QUESTION({ question_id });
         this.open_dialog = true;
       } catch (err) {
         console.error(err);
+        this.$notification.error(
+          `Encountered error retrieving question: ${err}`,
+        );
       } finally {
         this.SET_LOADING({ data: false });
       }

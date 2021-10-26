@@ -9,7 +9,7 @@ export default function makeQuestionService({ exchange }: { exchange: Exchange }
     async findById({ id }: { id: string }): Promise<any> {
       return new Promise((resolve, reject) => {
         exchange.publish(
-          { requestor, request_type: "getById", question_id: id },
+          { requestor, request_type: "findById", question_id: id },
           {
             key: "question",
             reply: (data) => {
@@ -17,6 +17,22 @@ export default function makeQuestionService({ exchange }: { exchange: Exchange }
                 resolve(data.result);
               }
               reject(`Question by ${id} not found.`);
+            },
+          },
+        );
+      });
+    }
+    async findByDifficultyAndTopic({ difficulty, topic }: { difficulty: string; topic?: string }): Promise<any> {
+      return new Promise((resolve, reject) => {
+        exchange.publish(
+          { requestor, request_type: "findByDifficultyAndTopic", difficulty, topic },
+          {
+            key: "question",
+            reply: (data) => {
+              if (data.result) {
+                resolve(data.result);
+              }
+              reject(`Question by ${difficulty} not found.`);
             },
           },
         );

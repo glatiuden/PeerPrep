@@ -1,6 +1,15 @@
 import _ from "lodash";
 
 export default {
+  data() {
+    return {
+      difficulty_chip_colors: {
+        easy: "green",
+        medium: "orange",
+        hard: "red",
+      },
+    };
+  },
   computed: {
     /**
      * @description return true if xs;

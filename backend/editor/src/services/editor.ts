@@ -25,6 +25,15 @@ export default function makeEditorService({
       return null;
     }
 
+    async findByMatchId({ match_id }: { match_id: string }): Promise<IEditor | null> {
+      const query_conditions = { match_id: match_id as any, deleted_at: undefined };
+      const existing = await editorDbModel.findOne(query_conditions);
+      if (existing) {
+        return existing;
+      }
+      return null;
+    }
+
     async findAll(): Promise<IEditor[]> {
       const query_conditions = { deleted_at: undefined };
       const existing = await editorDbModel.find(query_conditions).sort({ updated_at: "desc" });

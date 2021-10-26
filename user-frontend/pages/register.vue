@@ -47,6 +47,7 @@
                     dense
                     required
                     hide-details="auto"
+                    :rules="display_name_rules"
                   />
                 </v-col>
 
@@ -108,7 +109,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    :hide-details="auto"
                     :rules="confirm_password_rules"
                   >
                   </v-text-field>
@@ -136,7 +137,7 @@
                       text
                       small
                       color="primary"
-                      href="/login"
+                      @click="$router.push('/login')"
                       >Sign In
                     </v-btn>
                   </span>
@@ -152,7 +153,6 @@
 <script>
 import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
-import animationData from "@/assets/searching-lottie.json";
 
 export default {
   name: "Register",
@@ -170,6 +170,7 @@ export default {
         (v) => !!v || "Email Address is required",
         (v) => /.+@.+\..+/.test(v) || "Email Address must be valid.",
       ],
+      display_name_rules: [(v) => !!v || "Display name is required"],
       password_rules: [(v) => !!v || "Password is required"],
       confirm_password_rules: [
         (v) => !!v || "Password is required",
@@ -177,15 +178,27 @@ export default {
           this.register_user.password === v ||
           "Confirm Password must match Password.",
       ],
-      defaultOptions: { animationData, loop: true },
     };
+  },
+  mounted() {
+    if (this.has_user) {
+      this.$router.push("/");
+    }
   },
   methods: {
     async register() {
       try {
+        this.SET_LOADING({ data: true });
         await this.CREATE_USER({ user: this.register_user });
+        this.$notification.success(
+          `You have registered successfully! You can login with your credentials now. Redirect in 3 seconds...`,
+        );
+        setTimeout(() => {
+          this.$router.push("/login");
+        }, 3000);
       } catch (err) {
         console.error(err);
+        this.$notification.error(`Encountered error registering: ${err}`);
       }
     },
   },

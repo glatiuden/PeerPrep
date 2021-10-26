@@ -6,6 +6,7 @@ const chatSchema = new Schema(
     content: [
       {
         user_id: { type: Schema.Types.ObjectId, default: "" },
+        display_name: { type: String },
         message: { type: String, default: "" },
         time_sent: { type: Date },
       },

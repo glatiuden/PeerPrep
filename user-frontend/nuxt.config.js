@@ -64,6 +64,10 @@ export default {
         name: "chat",
         url: "http://localhost:3005",
       },
+      {
+        name: "match",
+        url: "http://localhost:3003",
+      },
     ],
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

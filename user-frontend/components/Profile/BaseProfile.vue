@@ -11,14 +11,17 @@
         </h1>
         <span>What do you want to do today?</span>
         <v-chip-group class="mt-3">
-          <v-chip color="primary">
+          <v-chip color="primary" @click="$router.push('/question')">
             <v-icon class="mr-1" small>mdi-help-circle-outline</v-icon>
-            View questions
+            View Questions
           </v-chip>
-          <v-chip color="secondary">
-            <v-icon class="mr-1" small>mdi-handshake-outline</v-icon>
-            Start a match</v-chip
+          <v-chip
+            color="secondary"
+            @click="SET_OPEN_ELO_MATCH_DIALOG({ data: true })"
           >
+            <v-icon class="mr-1" small>mdi-handshake-outline</v-icon>
+            Start Match
+          </v-chip>
         </v-chip-group>
       </div>
     </div>
@@ -34,30 +37,38 @@
         </v-row>
       </v-col>
       <v-col cols="12" sm="12" md="12" lg="9" xl="9">
-        <h3>Match History</h3>
+        <BaseMatchHistory />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 
 import BaseAvatar from "@/components/Profile/BaseAvatar";
 import BaseElo from "@/components/Profile/BaseElo";
+import BaseMatchHistory from "@/components/Profile/BaseMatchHistory";
 
 export default {
   name: "BaseProfile",
   components: {
     BaseAvatar,
     BaseElo,
+    BaseMatchHistory,
   },
   mixins: [systemMixin, userMixin],
   data() {
     return {
       initial_loading: false,
     };
+  },
+  methods: {
+    ...mapMutations({
+      SET_OPEN_ELO_MATCH_DIALOG: "match/SET_OPEN_ELO_MATCH_DIALOG",
+    }),
   },
 };
 </script>

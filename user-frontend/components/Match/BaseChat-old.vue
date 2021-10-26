@@ -70,7 +70,7 @@ export default {
     return {
       messages: [],
       chat_message: "",
-      match_id: "abc123", // Temporarily hardcoded
+      match_id: localStorage.getItem("match_id"), // Temporarily hardcoded
       is_video_on: false,
     };
   },
@@ -89,6 +89,9 @@ export default {
     });
   },
   methods: {
+    /**
+     * @description Send message
+     */
     sendMessage() {
       const message = {
         username: "Max",
@@ -101,6 +104,9 @@ export default {
       });
       this.chat_message = "";
     },
+    /**
+     * @description Join video chat
+     */
     clickVideoChat({ join }) {
       if (join) {
         this.$refs.webrtc.join();

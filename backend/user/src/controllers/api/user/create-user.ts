@@ -27,6 +27,7 @@ async function createUserController(httpRequest: Request & { context: { validate
     const password_hash = await hashPassword({
       password: userDetails.password,
     });
+
     Object.assign(userDetails, {
       password_hash,
       role: UserRole.USER,
@@ -41,7 +42,7 @@ async function createUserController(httpRequest: Request & { context: { validate
       headers,
       statusCode: 200,
       body: {
-        data: created_user,
+        data: _.omit(created_user, "password_hash"),
       },
     };
   } catch (err: any) {
