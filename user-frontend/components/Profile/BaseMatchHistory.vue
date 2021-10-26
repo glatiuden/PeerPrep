@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <v-card class="my-9 my-sm-4 rounded-lg" outlined>
+    <v-card class="my-9 my-sm-1 rounded-lg" outlined>
       <v-card-title class="justify-center text-body-1">
         <h2>Match History</h2>
       </v-card-title>

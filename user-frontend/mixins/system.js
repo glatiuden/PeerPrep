@@ -5,7 +5,7 @@ export default {
     return {
       difficulty_chip_colors: {
         easy: "green",
-        medium: "yellow",
+        medium: "orange",
         hard: "red",
       },
     };

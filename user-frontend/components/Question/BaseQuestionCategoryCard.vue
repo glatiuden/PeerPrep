@@ -24,7 +24,7 @@
         </v-col>
         <v-col cols="4" class="my-auto">
           <v-btn depressed text class="mx-0 px-0" @click="clickFilter">
-            Start
+            Explore
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>

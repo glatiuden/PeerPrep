@@ -8,7 +8,7 @@
             v-for="(topic, index) in question_topics"
             :key="index"
             cols="12"
-            md="3"
+            md="4"
           >
             <BaseQuestionCategoryCard
               :topic="topic"
