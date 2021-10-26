@@ -1,124 +1,98 @@
 <template>
   <div>
-    <div class="light_primary rounded-lg pa-6">
-      <div class="app-max-width mx-auto px-2">
-        <h2 class="text-center mb-3">Featured Topics</h2>
-        <v-btn color="primary" text :loading="loading" @click="createQuestion" align="right">
-          Create Question
-        </v-btn>
-        <v-row align-content="start" align="stretch">
-          <v-col
-            v-for="(topic, index) in question_topics"
-            :key="index"
-            cols="12"
-            md="4"
-          >
-            <BaseQuestionCategoryCard
-              :topic="topic"
-              :index="index"
-              @perform-filter="performFilter"
-            />
-          </v-col>
-        </v-row>
-      </div>
-    </div>
-    <div class="app-max-width mx-auto pt-6 px-8 px-lg-2">
-      <v-card class="my-9 my-sm-4 rounded-lg" outlined>
-        <v-card-title class="justify-center text-body-1">
-          <h2>Questions</h2>
-          <v-btn
-            icon
-            class="text--secondary"
-            color="#0560AD"
-            @click="open_info_dialog = !open_info_dialog"
-          >
-            <v-icon color="#0560AD">mdi-information</v-icon>
-          </v-btn>
-          <v-dialog v-model="open_info_dialog" max-width="600" max-height="400">
-            <v-card>
-              <v-card-title class="justify-center">
-                Questions on PeerPrep
-              </v-card-title>
-              <v-card-text>
-                <ul>
-                  <li>
-                    Questions on PeerPrep are curated from popular online
-                    competitive programming platforms such as Leetcode and
-                    Hackerrank.
-                  </li>
-                  <li>We do not own any of the questions and solutions.</li>
-                </ul>
-              </v-card-text>
-            </v-card>
-          </v-dialog>
-        </v-card-title>
-        <v-card-text class="d-flex">
-          <v-row>
-            <v-col cols="12" sm="3">
-              <v-autocomplete
-                v-model="selected_difficulty_levels"
-                :items="difficulty_levels"
-                :loading="loading"
-                label="Difficulty Level"
-                item-value="value"
-                item-text="text"
-                class="rounded-0"
-                multiple
-                outlined
-                dense
-                hide-details
-                @change="performFilter"
-              >
-                <template #selection="{ index }">
-                  <span v-if="index === 0">
-                    Selected:
-                    {{ selected_difficulty_levels.length }}
-                  </span>
-                </template>
-              </v-autocomplete>
-            </v-col>
+    <div class="mx-2">
+      <v-toolbar flat class="transparent">
+        <v-toolbar-title>
+          <h2 class="font-weight-medium">Question Database</h2>
+        </v-toolbar-title>
+      </v-toolbar>
 
-            <v-col cols="12" sm="3">
-              <v-autocomplete
-                :items="question_topics"
-                :loading="loading"
-                label="Topic"
-                class="rounded-0"
-                multiple
-                outlined
-                dense
-                hide-details
-                clearable
-                @change="
-                  SET_SELECTED_TOPICS({ data: $event });
-                  performFilter();
-                "
-              >
-                <template #selection="{ index }">
-                  <span v-if="index === 0">
-                    Selected:
-                    {{ selected_topics.length }}
-                  </span>
-                </template>
-              </v-autocomplete>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field
-                v-model="search"
-                prepend-inner-icon="mdi-magnify"
-                label="Search"
-                class="rounded-0"
-                single-line
-                outlined
-                dense
-                hide-details
-                clearable
-                @input="performSearch"
-              />
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+      <div>
+        <v-dialog v-model="open_create_question_dialog" max-width="950px">
+          <CreateQuestionDialog @close="open_create_question_dialog = false" />
+        </v-dialog>
+      </div>
+
+      <v-col class="text-right">
+        <v-btn
+          color="primary"
+          outlined
+          class="rounded-lg"
+          large
+          depressed
+          align="right"
+          @click="open_create_question_dialog = true"
+        >
+          <v-icon small left>mdi-plus</v-icon>New Question
+        </v-btn>
+      </v-col>
+    </div>
+
+    <div class="app-max-width mx-auto pt-6 px-8 px-md-2">
+      <v-row class="my-3">
+        <v-col cols="12" sm="3">
+          <v-autocomplete
+            v-model="selected_difficulty_levels"
+            :items="difficulty_levels"
+            :loading="loading"
+            label="Difficulty Level"
+            item-value="value"
+            item-text="text"
+            class="rounded-0"
+            multiple
+            outlined
+            dense
+            hide-details
+            @change="performFilter"
+          >
+            <template #selection="{ index }">
+              <span v-if="index === 0">
+                Selected:
+                {{ selected_difficulty_levels.length }}
+              </span>
+            </template>
+          </v-autocomplete>
+        </v-col>
+
+        <v-col cols="12" sm="3">
+          <v-autocomplete
+            v-model="selected_topics"
+            :items="question_topics"
+            :loading="loading"
+            label="Topic"
+            class="rounded-0"
+            multiple
+            outlined
+            dense
+            hide-details
+            clearable
+            @change="performFilter"
+          >
+            <template #selection="{ index }">
+              <span v-if="index === 0">
+                Selected:
+                {{ selected_topics.length }}
+              </span>
+            </template>
+          </v-autocomplete>
+        </v-col>
+        <v-spacer></v-spacer>
+
+        <v-col cols="12" sm="3">
+          <v-text-field
+            v-model="search"
+            prepend-inner-icon="mdi-magnify"
+            label="Search"
+            class="rounded-0"
+            single-line
+            outlined
+            dense
+            hide-details
+            clearable
+            @input="performSearch"
+          />
+        </v-col>
+      </v-row>
 
       <div class="d-flex my-3">
         <v-chip
@@ -181,10 +155,7 @@
         </template>
 
         <template #item.difficulty="{ item }">
-          <v-chip
-            class="white--text"
-            :color="difficulty_chip_colors[item.difficulty]"
-          >
+          <v-chip class="white--text" :color="chip_colors[item.difficulty]">
             {{ item.difficulty }}
           </v-chip>
         </template>
@@ -196,10 +167,30 @@
         </template>
 
         <template #item.actions="{ item }">
-          <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+          <v-btn
+            fab
+            dark
+            small
+            color="blue"
+            class="mr-2"
+            @click="openUpdateQuestionDialog(item._id)"
+          >
+            <v-icon dark> mdi-pencil-outline </v-icon>
+          </v-btn>
+
+          <v-btn
+            fab
+            dark
+            small
+            color="red"
+            class="mr-2"
+            @click="deleteQuestion(item._id)"
+          >
+            <v-icon dark> mdi-delete </v-icon>
+          </v-btn>
         </template>
 
-        <template #no-data>No question available</template>
+        <template #no-data> No question available </template>
       </v-data-table>
 
       <v-row justify="center" class="my-2">
@@ -217,22 +208,30 @@
           ></v-pagination>
         </v-col>
       </v-row>
+
+      <v-dialog v-model="open_update_question_dialog" max-width="950px">
+        <UpdateQuestionDialog
+          v-if="open_update_question_dialog"
+          @close="open_update_question_dialog = false"
+        />
+      </v-dialog>
     </div>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
 import systemMixin from "@/mixins/system";
 import questionMixin from "@/mixins/question";
 
-import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import BaseQuestionDialog from "@/components/Question/BaseQuestionDialog";
+import CreateQuestionDialog from "@/components/Question/CreateQuestionDialog";
+import UpdateQuestionDialog from "@/components/Question/UpdateQuestionDialog";
 
 export default {
   name: "Question",
   components: {
-    BaseQuestionCategoryCard,
     BaseQuestionDialog,
+    CreateQuestionDialog,
+    UpdateQuestionDialog,
   },
   mixins: [systemMixin, questionMixin],
   data() {
@@ -266,12 +265,21 @@ export default {
           class: "data-table-heading",
           width: 300,
         },
+        {
+          text: "",
+          value: "actions",
+          sortable: false,
+          class: "data-table-heading",
+          width: 150,
+        },
       ],
-      search: undefined,
+      search: "",
       page: 1,
       selected_difficulty_levels: [],
+      selected_topics: [],
       open_dialog: false,
-      open_info_dialog: false,
+      open_create_question_dialog: false,
+      open_update_question_dialog: false,
     };
   },
   async fetch() {
@@ -282,14 +290,9 @@ export default {
       ]);
     } catch (err) {
       console.error(err);
-      this.$notification.error(`Encountered error fetching questions: ${err}`);
     }
   },
   computed: {
-    ...mapGetters({
-      has_user: "user/has_user",
-      open_matching_dialog: "match/open_matching_dialog",
-    }),
     /**
      * @description pages_exists will return true
      * @returns boolean
@@ -328,9 +331,6 @@ export default {
         });
       } catch (err) {
         console.error(err);
-        this.$notification.error(
-          `Encountered error fetching questions: ${err}`,
-        );
       }
     },
 
@@ -346,9 +346,10 @@ export default {
           );
           break;
         case "topic":
-          this.SET_SELECTED_TOPICS({
-            data: _.filter(this.selected_topics, (topic) => topic != value),
-          });
+          this.selected_topics = _.filter(
+            this.selected_topics,
+            (topic) => topic != value,
+          );
           break;
         case "search":
           this.search = "";
@@ -358,27 +359,54 @@ export default {
     },
 
     /**
-     * @description Loads the question from server and opens the dialog
+     * @description Load the question from server and opens the dialog
      */
     async openQuestionDialog(question_id) {
-      if (!this.has_user) {
-        this.$notification.warning(
-          `Want to see more? Login to get the full experience!`,
-        );
-        return;
-      }
-
       try {
         this.SET_LOADING({ data: true });
         await this.GET_QUESTION({ question_id });
         this.open_dialog = true;
       } catch (err) {
         console.error(err);
-        this.$notification.error(
-          `Encountered error retrieving question: ${err}`,
-        );
       } finally {
         this.SET_LOADING({ data: false });
+      }
+    },
+
+    /**
+     * @description Load the question from server and opens the dialog to edit question
+     */
+    async openUpdateQuestionDialog(question_id) {
+      try {
+        this.SET_LOADING({ data: true });
+        await this.GET_QUESTION({ question_id });
+        this.open_update_question_dialog = true;
+      } catch (err) {
+        console.error(err);
+      } finally {
+        this.SET_LOADING({ data: false });
+      }
+    },
+
+    /**
+     * @description Delete the question from server
+     */
+    async deleteQuestion(question_id) {
+      const is_confirmed = confirm(
+        "Are you sure you want to delete this question? It is an irreversible action.",
+      );
+
+      if (!is_confirmed) {
+        return;
+      }
+
+      try {
+        await this.DELETE_QUESTION({ question_id });
+        this.$notification.success(`Successfully deleted!`);
+        this.GET_QUESTIONS_PAGINATED();
+      } catch (err) {
+        console.error(err);
+        this.$notification.error("Encountered error deleting this question.");
       }
     },
   },
