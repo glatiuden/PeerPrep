@@ -6,7 +6,7 @@
         <v-form v-model="valid_create">
           <v-col>
             <v-row class="gap">
-              <v-text-field v-model="update_question.title"
+              <v-text-field :value="update_question.title"
                             label="Title"
                             type="text"
                             outlined
@@ -14,14 +14,14 @@
                             required
                             hide-details="auto"
                             :rules="required" />
-              <v-select v-model="update_question.topic"
+              <v-select :value="update_question.topic"
                         :items="['Data Structures', 'Algorithms', 'Database']"
                         label="Topic"
                         outlined
                         dense
                         required
                         hide-details="auto" />
-              <v-select v-model="update_question.difficulty"
+              <v-select :value="update_question.difficulty"
                         :items="['easy', 'medium', 'hard']"
                         label="Difficulty"
                         required
@@ -30,7 +30,7 @@
                         hide-details="auto" />
             </v-row>
             <v-row class="gap">
-              <v-textarea v-model="update_question.description"
+              <v-textarea :value="update_question.description"
                           label="Description"
                           type="text"
                           outlined
@@ -55,13 +55,13 @@
                    :key="`example-${index}`"
                    class="my-0 py-0">
               <v-col cols="8">
-                <v-text-field v-model="example.input"
+                <v-text-field :value="example.input"
                               label="Input"
                               outlined
                               hide-details></v-text-field>
               </v-col>
               <v-col cols="3">
-                <v-text-field v-model="example.output"
+                <v-text-field :value="example.output"
                               label="Output"
                               outlined
                               hide-details></v-text-field>
@@ -93,7 +93,7 @@
                    :key="`constraint-${index}`"
                    class="my-0 py-0">
               <v-col cols="11">
-                <v-text-field v-model="update_question.constraints[index]"
+                <v-text-field :value="update_question.constraints[index]"
                               label="Example"
                               outlined
                               hide-details></v-text-field>
@@ -125,7 +125,7 @@
                    :key="`hint-${index}`"
                    class="my-0 py-0">
               <v-col cols="11">
-                <v-text-field v-model="update_question.hints[index]"
+                <v-text-field :value="update_question.hints[index]"
                               label="Hint"
                               outlined
                               hide-details></v-text-field>
@@ -141,7 +141,7 @@
             </v-row>
 
             <v-row class="gap">
-              <v-textarea v-model="update_question.solution"
+              <v-textarea :value="update_question.solution"
                           label="Solution"
                           type="text"
                           outlined
@@ -151,7 +151,7 @@
                           :rules="required" />
             </v-row>
             <v-row class="gap">
-              <v-text-field v-model="update_question.recommended_duration"
+              <v-text-field :value="update_question.recommended_duration"
                             label="Recommended Duration (mins)"
                             type="number"
                             outlined
@@ -176,6 +176,7 @@
   export default {
     name: "updateQuestionDialog",
     mixins: [questionMixin],
+    /**
     props: {
       update_question: {
         _id: undefined,
@@ -190,9 +191,10 @@
         constraints: [""],
       },
     },
+    */
     data() {
       return {
-        update_question: {
+          update_question: {
           _id: undefined,
           title: undefined,
           description: undefined,
