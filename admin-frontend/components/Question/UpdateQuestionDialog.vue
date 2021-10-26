@@ -6,7 +6,7 @@
         <v-form v-model="valid_create">
           <v-col>
             <v-row class="gap">
-              <v-text-field v-model="new_question.title"
+              <v-text-field v-model="update_question.title"
                             label="Title"
                             type="text"
                             outlined
@@ -14,14 +14,14 @@
                             required
                             hide-details="auto"
                             :rules="required" />
-              <v-select v-model="new_question.topic"
+              <v-select v-model="update_question.topic"
                         :items="['Data Structures', 'Algorithms', 'Database']"
                         label="Topic"
                         outlined
                         dense
                         required
                         hide-details="auto" />
-              <v-select v-model="new_question.difficulty"
+              <v-select v-model="update_question.difficulty"
                         :items="['easy', 'medium', 'hard']"
                         label="Difficulty"
                         required
@@ -30,7 +30,7 @@
                         hide-details="auto" />
             </v-row>
             <v-row class="gap">
-              <v-textarea v-model="new_question.description"
+              <v-textarea v-model="update_question.description"
                           label="Description"
                           type="text"
                           outlined
@@ -51,7 +51,7 @@
                 </div>
               </v-col>
             </v-row>
-            <v-row v-for="(example, index) in new_question.examples"
+            <v-row v-for="(example, index) in update_question.examples"
                    :key="`example-${index}`"
                    class="my-0 py-0">
               <v-col cols="8">
@@ -89,11 +89,11 @@
               </v-col>
             </v-row>
 
-            <v-row v-for="(constraint, index) in new_question.constraints"
+            <v-row v-for="(constraint, index) in update_question.constraints"
                    :key="`constraint-${index}`"
                    class="my-0 py-0">
               <v-col cols="11">
-                <v-text-field v-model="new_question.constraints[index]"
+                <v-text-field v-model="update_question.constraints[index]"
                               label="Example"
                               outlined
                               hide-details></v-text-field>
@@ -121,11 +121,11 @@
               </v-col>
             </v-row>
 
-            <v-row v-for="(hint, index) in new_question.hints"
+            <v-row v-for="(hint, index) in update_question.hints"
                    :key="`hint-${index}`"
                    class="my-0 py-0">
               <v-col cols="11">
-                <v-text-field v-model="new_question.hints[index]"
+                <v-text-field v-model="update_question.hints[index]"
                               label="Hint"
                               outlined
                               hide-details></v-text-field>
@@ -141,7 +141,7 @@
             </v-row>
 
             <v-row class="gap">
-              <v-textarea v-model="new_question.solution"
+              <v-textarea v-model="update_question.solution"
                           label="Solution"
                           type="text"
                           outlined
@@ -151,7 +151,7 @@
                           :rules="required" />
             </v-row>
             <v-row class="gap">
-              <v-text-field v-model="new_question.recommended_duration"
+              <v-text-field v-model="update_question.recommended_duration"
                             label="Recommended Duration (mins)"
                             type="number"
                             outlined
@@ -177,23 +177,32 @@
     name: "updateQuestionDialog",
     mixins: [questionMixin],
     props: {
-      question_dialog: {
-        default: false,
+      update_question: {
+        _id: undefined,
+        title: undefined,
+        description: undefined,
+        topic: undefined,
+        difficulty: undefined,
+        hints: [""],
+        solution: undefined,
+        recommended_duration: undefined,
+        examples: [{ input: "", output: "" }],
+        constraints: [""],
       },
     },
     data() {
       return {
-        new_question: {
-          _id: this._id,
-          title: this.title,
-          description: this.description,
-          topic: this.topic,
-          difficulty: this.difficulty,
-          hints: this.hints,
-          solution: this.solution,
-          recommended_duration: this.recommended_duration,
-          examples: this.examples,
-          constraints: this.constraints,
+        update_question: {
+          _id: undefined,
+          title: undefined,
+          description: undefined,
+          topic: undefined,
+          difficulty: undefined,
+          hints: [""],
+          solution: undefined,
+          recommended_duration: undefined,
+          examples: [{ input: "", output: "" }],
+          constraints: [""],
         },
         users: [],
         required: [(v) => !!v || "Required"],
@@ -205,6 +214,11 @@
         },
       };
     },
+    /**
+    async fetch() {
+      this.fetchQuestion();
+    },
+     */
     methods: {
       print(item) {
         console.log(item);
@@ -219,11 +233,35 @@
           color: color,
         };
       },
+      /**async fetchQuestion() {
+        try {
+          this.SET_LOADING({ data: true });
+          const questionToBeUpdated = await this.GET_QUESTION({ question_id });
+          (update_question) => ({
+            ...update_question,
+            _id: update_question._id,
+            title: update_question.title,
+            description: update_question.description,
+            topic: update_question.topic,
+            difficulty: update_question.difficulty,
+            hints: update_question.hints,
+            solution: update_question.solution,
+            recommended_duration: update_question.recommended_duration,
+            examples: update_question.examples,
+            constraints: update_question.constraints,
+          });
+        } catch (err) {
+          console.error(err);
+        } finally {
+          this.SET_LOADING({ data: false });
+        }
+      },
+      */
       async updateNewQuestion() {
         try {
           this.SET_LOADING({ data: true });
-          console.log(this, new_question);
-          await this.UPDATE_QUESTION({ question: this.new_question });
+          console.log(this.update_question);
+          await this.UPDATE_QUESTION({ question: this.update_question });
           this.closeDialog();
         } catch (err) {
           this.$notification.error("Error updating question");
@@ -241,10 +279,10 @@
             output: "",
           };
         }
-        this.new_question[row_name].push(data);
+        this.update_question[row_name].push(data);
       },
       removeRow(row_name, index) {
-        this.new_question[row_name] = this.new_question[row_name].splice(
+        this.update_question[row_name] = this.update_question[row_name].splice(
           index,
           1,
         );

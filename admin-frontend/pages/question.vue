@@ -180,6 +180,23 @@
             >
             mdi-pencil-outline
             </v-icon>
+          <v-dialog
+            v-model="open_update_question_dialog"
+            v-if="open_update_question_dialog"
+            max-width="950px">
+            <UpdateQuestionDialog
+              :update_question._id="item._id"
+              :update_question.title="item.title"
+              :update_question.description="item.description"
+              :update_question.topic="item.topic"
+              :update_question.hints="item.hints"
+              :update_question.solution="item.solution"
+              :update_question.recommended_duration="item.recommended_duration"
+              :update_question.examples="item.examples"
+              :update_question.constraints="item.constraints"
+            >
+            </UpdateQuestionDialog>
+          </v-dialog>
         </template>
 
         <template #no-data> No question available </template>
