@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+import mongoose, { Schema } from "mongoose";
 import IChat from "../models/interfaces/chat";
 
 export default function makeChatService({ chatDbModel }: { chatDbModel: mongoose.Model<IChat & mongoose.Document> }) {
@@ -28,6 +27,15 @@ export default function makeChatService({ chatDbModel }: { chatDbModel: mongoose
         return existing;
       }
       return [];
+    }
+
+    async findByMatchId({ match_id }: { match_id: string }): Promise<IChat | null> {
+      const query_conditions = { match_id: match_id as any, deleted_at: undefined };
+      const existing = await chatDbModel.findOne(query_conditions);
+      if (existing) {
+        return existing;
+      }
+      return null;
     }
 
     async update(payload: Partial<IChat>): Promise<IChat | null> {
