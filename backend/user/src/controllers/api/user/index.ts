@@ -4,6 +4,7 @@ import getUserController from "./get-user";
 import updateUserController from "./update-user";
 import getUserByEmailController from "./get-user-by-email";
 import logoutUserController from "./logout-user";
+import updateUserEloController from "./update-user-elo";
 
 const userController = Object.freeze({
   createUserController,
@@ -12,6 +13,7 @@ const userController = Object.freeze({
   loginUserController,
   getUserByEmailController,
   logoutUserController,
+  updateUserEloController,
 });
 
 export default userController;
@@ -23,4 +25,5 @@ export {
   loginUserController,
   getUserByEmailController,
   logoutUserController,
+  updateUserEloController,
 };
