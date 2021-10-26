@@ -24,3 +24,14 @@ export enum MatchMode {
   TIMED = "timed",
   OTOT = "otot",
 }
+export interface PaginatedMatchResult {
+  data: IMatch[];
+  pagination: {
+    current_page: number;
+    from: number | null;
+    to: number | null;
+    per_page: number;
+    total: number;
+    total_pages: number;
+  };
+}

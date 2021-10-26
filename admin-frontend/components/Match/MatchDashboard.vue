@@ -30,9 +30,9 @@
           <v-textarea
             v-model="new_match.question_id"
             :counter="255"
-            :rules="question_id_rules"
-            label="Question ID"
-            hint="Question ID of the match"
+            :rules="status_rules"
+            label="Status"
+            hint="Status of the match"
             required
             outlined
             dense
@@ -93,11 +93,11 @@ export default {
           (v && v.length <= 255) ||
           "Programming Language must be less than 255 characters",
       ],
-      content_rules: [
-        (v) => !!v || "Quesiton ID is required",
+      status_rules: [
+        (v) => !!v || "Status is required",
         (v) =>
           (v && v.length <= 255) ||
-          "Question ID must be less than 255 characters",
+          "Status must be less than 255 characters",
       ],
     };
   },

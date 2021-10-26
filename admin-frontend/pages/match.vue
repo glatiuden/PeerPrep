@@ -131,8 +131,8 @@ export default {
           width: 250,
         },
         {
-          text: "Question ID",
-          value: "question_id",
+          text: "Status",
+          value: "status",
           sortable: true,
           class: "data-table-heading",
           width: 250,
