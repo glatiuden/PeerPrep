@@ -96,7 +96,8 @@ export default {
       content_rules: [
         (v) => !!v || "Quesiton ID is required",
         (v) =>
-          (v && v.length <= 255) || "Question ID must be less than 255 characters",
+          (v && v.length <= 255) ||
+          "Question ID must be less than 255 characters",
       ],
     };
   },

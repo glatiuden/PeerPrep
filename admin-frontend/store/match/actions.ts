@@ -7,7 +7,7 @@ import { RootState } from "../index";
 
 const actions: ActionTree<MatchState, RootState> = {
   async [ActionTypes.GET_MATCHES]({ commit }) {
-    const { data: matches } = await this.$axios.$get(`/admin/match/`);
+    const { data: matches } = await this.$axios.$get(`/match/admin/`);
     commit(MutationTypes.SET_MATCHES, { data: matches });
     return matches;
   },
@@ -27,7 +27,7 @@ const actions: ActionTree<MatchState, RootState> = {
     }
 
     const { data: matches, pagination } = await this.$axios.$get(
-      `/admin/match/paginated${url_query}`,
+      `/match/admin/paginated${url_query}`,
     );
 
     commit(MutationTypes.SET_MATCHES, { data: matches });
@@ -43,9 +43,7 @@ const actions: ActionTree<MatchState, RootState> = {
    * @param param1
    */
   async [ActionTypes.GET_MATCH]({ commit }, { match_id }) {
-    const { data: match } = await this.$axios.$get(
-      `/admin/match/${match_id}`,
-    );
+    const { data: match } = await this.$axios.$get(`/match/admin/${match_id}`);
     commit(MutationTypes.SET_MATCH, { data: match });
     return match;
   },
@@ -70,7 +68,7 @@ const actions: ActionTree<MatchState, RootState> = {
    */
   async [ActionTypes.DELETE_MATCH]({ commit }, { match_id }) {
     const { data: deleted_match } = await this.$axios.$delete(
-      `/admin/match/${match_id}`,
+      `/match/admin/${match_id}`,
     );
     return deleted_match;
   },
@@ -82,7 +80,7 @@ const actions: ActionTree<MatchState, RootState> = {
    */
   async [ActionTypes.UPDATE_MATCH]({ commit }, { match }) {
     const { data: updated_match } = await this.$axios.$put(
-      `/admin/match`,
+      `/match/admin`,
       match,
     );
     return updated_match;

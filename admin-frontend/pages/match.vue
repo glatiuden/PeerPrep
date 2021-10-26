@@ -110,7 +110,7 @@ import MatchDashboard from "@/components/Match/MatchDashboard";
 
 export default {
   name: "Match",
-  components: {MatchDashboard},
+  components: { MatchDashboard },
   mixins: [matchMixin, systemMixin],
   data() {
     return {
