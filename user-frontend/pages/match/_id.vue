@@ -44,7 +44,6 @@
 </template>
 <script>
 import systemMixin from "@/mixins/system";
-import editorMixin from "@/mixins/editor";
 import matchMixin from "@/mixins/match";
 
 import BaseChat from "@/components/Match/BaseChat";
@@ -57,7 +56,7 @@ export default {
     BaseCodeEditor,
     BaseQuestion,
   },
-  mixins: [editorMixin, matchMixin, systemMixin],
+  mixins: [matchMixin, systemMixin],
   data() {
     return {
       match_id: undefined,

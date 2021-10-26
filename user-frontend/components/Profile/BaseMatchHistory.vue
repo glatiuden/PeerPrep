@@ -121,7 +121,10 @@
       class="soft-box-shadow"
     >
       <template #item.meta.question_title="{ item }">
-        <div v-if="item.meta && item.meta.question_title">
+        <div
+          v-if="item.meta && item.meta.question_title"
+          @click="$router.push(`/history/${item._id}`)"
+        >
           {{ item.meta.question_title }} <br />
           (with {{ getPartnerName(item.meta) }})
         </div>
@@ -132,6 +135,12 @@
         <v-chip class="white--text" :color="status_chip_colors[item.status]">
           {{ item.status }}
         </v-chip>
+      </template>
+
+      <template #item.match_requirements.programming_language="{ item }">
+        <span class="text-capitalize">
+          {{ item.match_requirements.programming_language }}</span
+        >
       </template>
 
       <template #item.updated_at="{ item }">
