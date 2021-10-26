@@ -279,10 +279,12 @@ export default {
       ]);
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching questions: ${err}`);
     }
   },
   computed: {
     ...mapGetters({
+      has_user: "user/has_user",
       open_matching_dialog: "match/open_matching_dialog",
     }),
     /**
@@ -323,6 +325,9 @@ export default {
         });
       } catch (err) {
         console.error(err);
+        this.$notification.error(
+          `Encountered error fetching questions: ${err}`,
+        );
       }
     },
 
@@ -353,12 +358,22 @@ export default {
      * @description Loads the question from server and opens the dialog
      */
     async openQuestionDialog(question_id) {
+      if (!this.has_user) {
+        this.$notification.warning(
+          `Want to see more? Login to get the full experience!`,
+        );
+        return;
+      }
+
       try {
         this.SET_LOADING({ data: true });
         await this.GET_QUESTION({ question_id });
         this.open_dialog = true;
       } catch (err) {
         console.error(err);
+        this.$notification.error(
+          `Encountered error retrieving question: ${err}`,
+        );
       } finally {
         this.SET_LOADING({ data: false });
       }

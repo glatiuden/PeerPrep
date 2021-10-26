@@ -147,9 +147,8 @@ export default {
       password_rules: [(v) => !!v || "Required"],
     };
   },
-  fetch() {
+  mounted() {
     if (this.has_user) {
-      console.log("hello");
       this.$router.push("/");
     }
   },

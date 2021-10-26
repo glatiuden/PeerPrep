@@ -15,8 +15,8 @@ const authenticated: Middleware = async ({ store }) => {
     if (need_to_fetch) {
       await store.dispatch("user/AUTH_USER");
     }
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     localStorage.removeItem("login_token");
     await store.dispatch("user/LOGOUT_USER");
   }

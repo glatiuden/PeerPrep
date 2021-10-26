@@ -72,14 +72,12 @@ export default {
     });
 
     this.socket.on("waiting", (data) => {
-      console.log(data);
       if (!!data) {
         this.match_id = data;
       }
     });
 
     this.socket.on("matched", (data) => {
-      console.log(data);
       if (!!data) {
         const match_id = _.get(data, "_id");
         this.SET_MATCH({ data });
