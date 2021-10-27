@@ -40,7 +40,7 @@
             <v-icon small left>mdi-plus</v-icon>New Match
           </v-btn>
         </template>
-        <MatchDashboard @close="() => (dialog = false)" />
+        <MatchDashboard v-if="dialog" @close="() => (dialog = false)" />
       </v-dialog>
     </v-toolbar>
 
@@ -173,12 +173,12 @@ export default {
     },
   },
   methods: {
-    async editMatch(id, status) {
+    async editMatch(id) {
       try {
         await this.GET_MATCH({ match_id: id });
-        this.SET_MATCH_ID({data: id});
-        this.SET_MATCH_STATUS({data: status});
-        this.open_dialog = true;
+        // this.SET_MATCH_ID({ data: id });
+        // this.SET_MATCH_STATUS({ data: status });
+        this.dialog = true;
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error updating match: ${err}.`);

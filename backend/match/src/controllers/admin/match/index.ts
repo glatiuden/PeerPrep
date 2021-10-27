@@ -3,6 +3,7 @@ import getMatchController from "./get-match";
 import deleteMatchController from "./delete-match";
 import hardDeleteMatchController from "./hard-delete-match";
 import getMatchesPaginatedController from "./get-matches-paginated";
+import updateMatchController from "./update-match";
 
 const matchController = Object.freeze({
   getMatchesController,
@@ -10,6 +11,7 @@ const matchController = Object.freeze({
   deleteMatchController,
   hardDeleteMatchController,
   getMatchesPaginatedController,
+  updateMatchController,
 });
 
 export default matchController;
@@ -20,4 +22,5 @@ export {
   deleteMatchController,
   hardDeleteMatchController,
   getMatchesPaginatedController,
+  updateMatchController,
 };
