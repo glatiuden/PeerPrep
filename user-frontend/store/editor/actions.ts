@@ -4,7 +4,6 @@ import { ActionTypes } from "./action-type";
 import { MutationTypes } from "./mutation-type";
 import { EditorState } from "./index";
 import { RootState } from "../index";
-import axios from "axios";
 
 const actions: ActionTree<EditorState, RootState> = {
   /**
@@ -34,7 +33,7 @@ const actions: ActionTree<EditorState, RootState> = {
    */
   async [ActionTypes.CREATE_EDITOR]({ commit }, { editor }) {
     const { data: created_editor } = await this.$axios.$post(
-      `/api/editor`,
+      `/editor/api`,
       editor,
     );
     return created_editor;
@@ -46,28 +45,11 @@ const actions: ActionTree<EditorState, RootState> = {
    */
   async [ActionTypes.EXECUTE_CODE]({ commit }, params = {}) {
     try {
-      const URL = "https://codexweb.netlify.app/.netlify/functions/enforceCode";
-      const programming_language = _.get(params, "programming_language");
-      const data = _.get(params, "content");
-
-      let language;
-      switch (programming_language) {
-        case "cpp":
-          language = "cpp";
-          break;
-        case "python":
-          language = "py";
-          break;
-        case "java":
-          language = "java";
-          break;
-      }
-      const result = await axios.post(URL, {
-        data,
-        language,
-      });
-      console.log(data);
-      return result;
+      const { data: output } = await this.$axios.$post(
+        `/editor/api/execute`,
+        params,
+      );
+      return output;
     } catch (err) {
       console.error(err);
     }

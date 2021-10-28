@@ -55,7 +55,7 @@ async function loginUserController(httpRequest: Request & { context: { validated
       headers,
       statusCode: 200,
       body: {
-        data: user_exists,
+        data: _.omit(user_exists, "password_hash"),
         login_token,
       },
     };

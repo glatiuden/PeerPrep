@@ -22,7 +22,7 @@
             class="font-weight-bold white--text rounded-lg my-2"
             large
             depressed
-            @click="$router.push('/login')"
+            @click="$router.push('/register')"
           >
             Start Your Experience Now
           </v-btn>
@@ -145,6 +145,7 @@
             :large="!is_mobile"
             color="white"
             width="40%"
+            @click="$router.push('/login')"
           >
             Start Now
           </v-btn>

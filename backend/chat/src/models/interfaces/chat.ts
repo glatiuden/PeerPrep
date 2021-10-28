@@ -5,6 +5,7 @@ export default interface IChat {
   match_id: Schema.Types.ObjectId;
   content: {
     user_id: Schema.Types.ObjectId;
+    display_name: string;
     message: string;
     time_sent: Date;
   }[];

@@ -10,6 +10,7 @@ import {
   getChatsController,
   hardDeleteChatController,
   updateChatController,
+  getChatByMatchIdController,
 } from "../controllers/chat";
 
 const chatRouter = express.Router();
@@ -17,6 +18,7 @@ const chatRouter = express.Router();
 chatRouter.post("/", makeValidator(createChatRules), makeExpressCallback(createChatController));
 chatRouter.get("/", makeExpressCallback(getChatsController));
 chatRouter.get("/:chat_id", makeValidator(getChatRules), makeExpressCallback(getChatController));
+chatRouter.get("/match/:match_id", makeExpressCallback(getChatByMatchIdController));
 chatRouter.put("/", makeValidator(updateChatRules), makeExpressCallback(updateChatController));
 chatRouter.delete("/:chat_id", makeValidator(deleteChatRules), makeExpressCallback(deleteChatController));
 chatRouter.delete(

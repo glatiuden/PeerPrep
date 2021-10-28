@@ -30,7 +30,7 @@ const server = app.listen(PORT, () => {
 });
 
 // Initialize sockets & routes
-// makeSockets(server, corsOptions);
+makeSockets(server, corsOptions);
 app.use("/editor/api", apiRouter);
 app.use("/editor/admin", adminRouter);
 app.get("/editor", function (req, res) {

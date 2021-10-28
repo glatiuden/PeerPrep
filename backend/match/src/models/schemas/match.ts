@@ -11,13 +11,25 @@ const matchSchema = new Schema(
       enum: ["waiting", "in-progress", "completed", "cancelled"],
       default: "waiting",
     },
-    programming_language: {
-      type: String,
-      trim: true,
-      lowercase: true,
+    mode: { type: String, enum: ["elo", "question"], default: "question" }, // To differentiate between question & elo match
+    match_requirements: {
+      programming_language: { type: String, trim: true, lowercase: true },
+      question_mode: {
+        type: String,
+        trim: true,
+        lowercase: true,
+        enum: ["timed", "otot"],
+        required: true,
+        default: "timed",
+      }, // If ELO match => timed
+      elo_match_pool: { type: Schema.Types.ObjectId, ref: "EloMatchPool", required: true },
     },
-    mode: { type: String, trim: true, lowercase: true, enum: ["timed", "otot"], required: true },
-    is_random: { type: Boolean, default: false },
+    // A small data snapshot to aid the ease of displaying meaningful data on frontend
+    meta: {
+      partner1_display_name: { type: String },
+      partner2_display_name: { type: String },
+      question_title: { type: String },
+    },
     completed_at: { type: Date },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
