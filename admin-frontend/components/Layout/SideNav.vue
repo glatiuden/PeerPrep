@@ -150,15 +150,9 @@ export default {
         },
         {
           id: "match",
-          icon: "mdi-file-document-multiple-outline",
+          icon: "mdi-handshake-outline",
           title: "Matches",
           to: "/match",
-        },
-        {
-          id: "match",
-          icon: "mdi-file-document-multiple-outline",
-          title: "Editors",
-          to: "/editor",
         },
       ],
     };
