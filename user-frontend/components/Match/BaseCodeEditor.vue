@@ -52,11 +52,11 @@
   </div>
 </template>
 <script>
-import { mapGetters, mapMutations } from "vuex";
-import editorMixin from "~/mixins/editor";
+// import editorMixin from "~/mixins/editor";
+import matchMixin from "@/mixins/match";
 
 export default {
-  mixins: [editorMixin],
+  mixins: [matchMixin],
   props: {
     matchId: {
       type: String,
@@ -71,7 +71,6 @@ export default {
   data() {
     return {
       selected_language: "javascript",
-      content: "",
       output: undefined,
       programming_languages: [
         {
@@ -102,11 +101,12 @@ export default {
       ],
     };
   },
-  computed: {
-    ...mapGetters({
-      match: "match/match",
-      codes: "match/codes",
-    }),
+  async fetch() {
+    if (!this.isHistoryMode) {
+      return;
+    }
+    const match_id = this.$route.params.id;
+    await this.GET_EDITOR({ match_id });
   },
   mounted() {
     this.selected_language = _.get(
@@ -134,24 +134,15 @@ export default {
     });
   },
   methods: {
-    ...mapMutations({
-      UPDATE_CODES: "match/UPDATE_CODES",
-    }),
-
-    // async save(text) {
-    //   if (!text) {
-    //     return;
-    //   }
-    //   this.socket.emit("message", {
-    //     match_id: this.matchId,
-    //     payload: text,
-    //   });
-    // },
     /**
      * @description On enter
      */
     save: _.throttle(
       async function (text) {
+        if (this.isHistoryMode) {
+          return;
+        }
+
         if (!text) {
           return;
         }
@@ -191,12 +182,6 @@ export default {
 
     async executeCode() {
       try {
-        this.SET_LOADING({ data: true });
-        const language_object = _.find(
-          this.programming_languages,
-          ({ value }) => value === this.selected_language,
-        );
-
         const result = await this.EXECUTE_CODE({
           code: this.codes,
           language: this.selected_language,

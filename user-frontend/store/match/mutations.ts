@@ -66,6 +66,14 @@ const mutations: MutationTree<MatchState> = {
     state.chat_messages = _.concat(state.chat_messages, [data]);
   },
   /**
+   * @description to update chat messages
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_CHAT_MESSAGES](state, { data }: { data: any[] }) {
+    state.chat_messages = data;
+  },
+  /**
    * @description to update codes
    * @param state
    * @param param1
