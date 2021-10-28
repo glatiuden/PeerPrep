@@ -33,6 +33,7 @@ async function executeCodeController(httpRequest: Request) {
       language: final_language,
       input,
     });
+
     const server_response = await axios.post(
       "https://codexweb.netlify.app/.netlify/functions/enforceCode",
       stringify_data,
@@ -40,7 +41,6 @@ async function executeCodeController(httpRequest: Request) {
         headers,
       },
     );
-    console.log(server_response);
 
     return {
       headers,

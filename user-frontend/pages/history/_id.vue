@@ -13,7 +13,7 @@
           <v-card outlined class="mt-3">
             <v-card-title> Match Details</v-card-title>
             <v-card-text>
-              Partner's Display Name: <b>{{ match.user.display_name }}</b>
+              Partner's Display Name: <b>{{ partner_info.display_name }}</b>
               <br />
               Programming Language:
               <b class="text-capitalize">{{ match.programming_language }}</b>
@@ -29,7 +29,6 @@
 </template>
 <script>
 import systemMixin from "@/mixins/system";
-import editorMixin from "@/mixins/editor";
 import matchMixin from "@/mixins/match";
 
 import BaseChat from "@/components/Match/BaseChat";
@@ -42,7 +41,7 @@ export default {
     BaseCodeEditor,
     BaseQuestion,
   },
-  mixins: [editorMixin, matchMixin, systemMixin],
+  mixins: [matchMixin, systemMixin],
   data() {
     return {
       match_id: undefined,
@@ -62,6 +61,15 @@ export default {
     } finally {
       this.SET_LOADING({ data: false });
     }
+  },
+  computed: {
+    partner_info() {
+      const partner1_id = _.get(this.match, "partner1._id");
+      if (partner1_id === this.user_id) {
+        return this.match.partner1;
+      }
+      return this.match.partner2;
+    },
   },
 };
 </script>

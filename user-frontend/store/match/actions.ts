@@ -55,7 +55,6 @@ const actions: ActionTree<MatchState, RootState> = {
     const { data: updated_match } = await this.$axios.$put(`/match/api`, match);
     return updated_match;
   },
-
   /**
    * @description to end match
    * @param param0
@@ -93,6 +92,48 @@ const actions: ActionTree<MatchState, RootState> = {
       );
     }
     return is_completed;
+  },
+  /**
+   * @description to get editor by match id
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.GET_EDITOR]({ commit }, { match_id }) {
+    const { data: editor } = await this.$axios.$get(
+      `/editor/api/match/${match_id}`,
+    );
+    const content = _.get(editor, "content");
+    commit(MutationTypes.UPDATE_CODES, { data: content });
+    return editor;
+  },
+  /**
+   * @description to get chat by match id
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.GET_CHAT]({ commit }, { match_id }) {
+    const { data: chat } = await this.$axios.$get(
+      `/chat/api/match/${match_id}`,
+    );
+    const content = _.get(chat, "content");
+    commit(MutationTypes.SET_CHAT_MESSAGES, { data: content });
+    return chat;
+  },
+  /**
+   * @description execute user's code
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.EXECUTE_CODE]({ commit }, params = {}) {
+    try {
+      const { data: output } = await this.$axios.$post(
+        `/editor/api/execute`,
+        params,
+      );
+      return output;
+    } catch (err) {
+      console.error(err);
+    }
   },
 };
 

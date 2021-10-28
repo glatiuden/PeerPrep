@@ -77,6 +77,13 @@ export default {
       chat_message: undefined,
     };
   },
+  async fetch() {
+    if (!this.isHistoryMode) {
+      return;
+    }
+    const match_id = this.$route.params.id;
+    await this.GET_CHAT({ match_id });
+  },
   mounted() {
     if (this.isHistoryMode) {
       return;
