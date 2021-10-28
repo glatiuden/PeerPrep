@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title> Edit Match {{ match._id }} </v-card-title>
     <v-divider></v-divider>
-    <v-form v-model="valid" lazy-validation>
+    <v-form v-model="valid">
       <v-card-text>
         <v-container>
           <v-text-field

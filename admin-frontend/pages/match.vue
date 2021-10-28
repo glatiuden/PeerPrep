@@ -4,101 +4,98 @@
     type="table-heading, table-tbody, table-tfoot"
   >
   </v-skeleton-loader>
-  <div v-else class="mx-2">
-    <v-toolbar flat class="transparent">
-      <v-toolbar-title>
-        <h2 class="font-weight-medium">Match Records</h2>
-      </v-toolbar-title>
-    </v-toolbar>
+  <div v-else>
+    <div class="mx-2">
+      <v-toolbar flat class="transparent">
+        <v-toolbar-title>
+          <h2 class="font-weight-medium">Match Records</h2>
+        </v-toolbar-title>
+      </v-toolbar>
 
-    <v-toolbar flat class="transparent my-2">
-      <v-text-field
-        v-model="search"
-        prepend-inner-icon="mdi-magnify"
-        label="Search"
-        single-line
-        outlined
-        dense
-        hide-details
-        class="shrink"
-        style="width: 350px"
-        clearable
-        @input="performSearch"
-      />
-      <v-spacer></v-spacer>
-      <v-dialog v-model="dialog" max-width="500px">
-        <template #activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            outlined
-            class="rounded-lg"
-            large
-            depressed
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon small left>mdi-plus</v-icon>New Match
-          </v-btn>
+      <v-toolbar flat class="transparent my-2">
+        <v-text-field
+          v-model="search"
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+          single-line
+          outlined
+          dense
+          hide-details
+          class="shrink"
+          style="width: 350px"
+          clearable
+          @input="performSearch"
+        />
+        <v-spacer></v-spacer>
+      </v-toolbar>
+
+      <v-data-table
+        :headers="headers"
+        :items="matches"
+        :loading="loading"
+        loading-text="Loading... Please wait"
+        item-key="_id"
+        :sort-by="['created_at']"
+        :sort-desc="[true]"
+        hide-default-footer
+        :items-per-page="15"
+      >
+        <template #body.prepend="{ headers }">
+          <td :colspan="headers.length">
+            <v-divider></v-divider>
+          </td>
         </template>
-        <MatchDashboard v-if="dialog" @close="() => (dialog = false)" />
-      </v-dialog>
-    </v-toolbar>
 
-    <v-data-table
-      :headers="headers"
-      :items="matches"
-      :loading="loading"
-      loading-text="Loading... Please wait"
-      item-key="_id"
-      :sort-by="['created_at']"
-      :sort-desc="[true]"
-      hide-default-footer
-      :items-per-page="15"
-    >
-      <template #body.prepend="{ headers }">
-        <td :colspan="headers.length">
-          <v-divider></v-divider>
-        </td>
-      </template>
+        <template #item.meta.question_title="{ item }">
+          <div
+            v-if="item.meta && item.meta.question_title"
+            @click="$router.push(`/history/${item._id}`)"
+          >
+            {{ item.meta.question_title }}
+          </div>
+          <div v-else>No Question Selected</div>
+        </template>
 
-      <template #item.created_at="{ item }">
-        <div class="d-flex">
-          Created on
-          {{ formatDate(item.created_at, "DD MMMM YYYY, hh:mm A") }}
-        </div>
-      </template>
+        <template #item.meta.partner1_display_name="{ item }">
+          {{ getNames(item.meta) }}
+        </template>
 
-      <template #item.content="{ item }">
-        <code>
-          {{ item.content }}
-        </code>
-      </template>
+        <template #item.created_at="{ item }">
+          <div class="d-flex">
+            Created on
+            {{ formatDate(item.created_at, "DD MMMM YYYY, hh:mm A") }}
+          </div>
+        </template>
 
-      <template #item.actions="{ item }">
-        <v-icon class="mr-2" @click="editMatch(item._id)"
-          >mdi-pencil-outline</v-icon
-        >
-        <v-icon @click="deleteMatch(item)">mdi-delete-forever-outline</v-icon>
-      </template>
+        <template #item.actions="{ item }">
+          <v-icon class="mr-2" @click="editMatch(item._id)"
+            >mdi-pencil-outline</v-icon
+          >
+          <v-icon @click="deleteMatch(item)">mdi-delete-forever-outline</v-icon>
+        </template>
 
-      <template #no-data>No match records found</template>
-    </v-data-table>
+        <template #no-data>No match records found</template>
+      </v-data-table>
 
-    <v-row justify="center" class="my-2">
-      <v-col v-if="pages_exists" cols="4">
-        <v-pagination
-          v-if="matches_pagination.current_page"
-          v-model="page"
-          :length="matches_pagination.total_pages"
-          @input="
-            GET_MATCHES_PAGINATED({
-              query: search,
-              page: $event,
-            })
-          "
-        ></v-pagination>
-      </v-col>
-    </v-row>
+      <v-row justify="center" class="my-2">
+        <v-col v-if="pages_exists" cols="4">
+          <v-pagination
+            v-if="matches_pagination.current_page"
+            v-model="page"
+            :length="matches_pagination.total_pages"
+            @input="
+              GET_MATCHES_PAGINATED({
+                query: search,
+                page: $event,
+              })
+            "
+          ></v-pagination>
+        </v-col>
+      </v-row>
+    </div>
+    <v-dialog v-model="dialog" max-width="500px">
+      <MatchDashboard v-if="dialog" @close="() => (dialog = false)" />
+    </v-dialog>
   </div>
 </template>
 
@@ -117,32 +114,35 @@ export default {
       dialog: false,
       headers: [
         {
-          text: "Match ID",
-          value: "match_id",
+          text: "Match Details",
+          value: "meta.question_title",
           sortable: true,
           class: "data-table-heading",
-          width: 250,
+          width: 300,
         },
         {
-          text: "Programming Language",
-          value: "programming_language",
+          text: "User(s)",
+          value: "meta.partner1_display_name",
           sortable: true,
           class: "data-table-heading",
-          width: 250,
         },
         {
           text: "Status",
           value: "status",
           sortable: true,
           class: "data-table-heading",
-          width: 250,
+        },
+        {
+          text: "Programming Language",
+          value: "match_requirements.programming_language",
+          sortable: true,
+          class: "data-table-heading",
         },
         {
           text: "Created At",
           value: "created_at",
           sortable: false,
           class: "data-table-heading",
-          width: 300,
         },
         {
           text: "Actions",
@@ -161,6 +161,7 @@ export default {
       await this.GET_MATCHES_PAGINATED();
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching match: ${err}.`);
     }
   },
   computed: {
@@ -176,8 +177,6 @@ export default {
     async editMatch(id) {
       try {
         await this.GET_MATCH({ match_id: id });
-        // this.SET_MATCH_ID({ data: id });
-        // this.SET_MATCH_STATUS({ data: status });
         this.dialog = true;
       } catch (err) {
         console.error(err);
@@ -222,6 +221,18 @@ export default {
       1000,
       { leading: true },
     ),
+
+    /**
+     * @description Determines the partner name by checking against own
+     */
+    getNames(meta) {
+      const partner1_display_name = _.get(meta, "partner1_display_name");
+      const partner2_display_name = _.get(meta, "partner2_display_name");
+      if (partner1_display_name && partner2_display_name) {
+        return `${partner1_display_name} & ${partner2_display_name}`;
+      }
+      return "User(s) informatio not found";
+    },
   },
 };
 </script>
@@ -229,10 +240,5 @@ export default {
 <style scoped>
 /deep/ .v-toolbar__content {
   padding: 0px !important;
-}
-
-.pre-formatted {
-  white-space: pre-wrap;
-  word-wrap: break-word;
 }
 </style>
