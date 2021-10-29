@@ -42,5 +42,8 @@ app.use("/match/admin", adminRouter);
 app.get("/match", function (req, res) {
   res.send("Match microservice is running");
 });
+app.get("/", function (req, res) {
+  res.send("Match microservice is running");
+});
 
 export default app;

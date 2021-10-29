@@ -11,15 +11,12 @@ export default class Redis {
     if (Redis.redis_instance) {
       return;
     }
-    // const REDIS_ENDPOINT = process.env.REDIS_ENDPOINT;
-    // if (!REDIS_ENDPOINT) {
-    //   console.warn("Redis Endpoint not found. Redis is not established");
-    //   return;
-    // }
-    // const redis_client = createClient(REDIS_ENDPOINT, { auth_pass: process.env.REDIS_PASSWORD });
-    const redis_client = createClient({
-      port: 6379,
-    });
+    const REDIS_ENDPOINT = process.env.REDIS_ENDPOINT;
+    if (!REDIS_ENDPOINT) {
+      console.warn("Redis Endpoint not found. Redis is not established");
+      return;
+    }
+    const redis_client = createClient(REDIS_ENDPOINT, { auth_pass: process.env.REDIS_PASSWORD });
     redis_client.on("connect", () => {
       console.log("Succesfully connected to Redis");
     });

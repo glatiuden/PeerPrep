@@ -7,11 +7,11 @@ import { findMatch, cancelMatch, getMatch, findEloMatch } from "../services/use-
 
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["websocket", "polling"], cors });
-  // const pubClient = createClient({
-  //   port: 6379,
-  // });
-
   const pubClient = redisClient.redis_client;
+  if (!pubClient) {
+    console.warn("Redis not initialized not found. Socket is not established");
+    return;
+  }
   const subClient = pubClient.duplicate();
   io.adapter(createAdapter({ pubClient, subClient }));
 

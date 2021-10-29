@@ -33,5 +33,8 @@ app.use("/chat/api", router);
 app.get("/chat", function (req, res) {
   res.send("Chat microservice is running");
 });
+app.get("/", function (req, res) {
+  res.send("Chat microservice is running");
+});
 
 export default app;
