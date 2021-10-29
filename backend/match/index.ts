@@ -11,6 +11,7 @@ import adminRouter from "./src/routes/admin";
 import makeRabbit from "./src/configs/make-rabbitmq-rpc";
 import makeSockets from "./src/configs/make-sockets";
 import makeRedis from "./src/configs/make-redis";
+import http from "http";
 
 const app = express();
 const corsOptions = {
@@ -30,9 +31,10 @@ rabbit.createRPCQueue("question");
 rabbit.createRPCQueue("user");
 
 const PORT = process.env.port || 3003;
-const server = app.listen(PORT, () => {
-  console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
-});
+// const server = app.listen(PORT, () => {
+//   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
+// });
+const server = http.createServer(app);
 
 // Initialize routes
 makeSockets(server, corsOptions);
@@ -45,5 +47,7 @@ app.get("/match", function (req, res) {
 app.get("/", function (req, res) {
   res.send("Match microservice is running");
 });
-
+server.listen(PORT, () => {
+  console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
+});
 export default app;

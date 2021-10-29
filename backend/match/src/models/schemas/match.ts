@@ -22,7 +22,7 @@ const matchSchema = new Schema(
         required: true,
         default: "timed",
       }, // If ELO match => timed
-      elo_match_pool: { type: Schema.Types.ObjectId, ref: "EloMatchPool", required: true },
+      elo_match_pool: { type: Schema.Types.ObjectId, ref: "EloMatchPool" },
     },
     // A small data snapshot to aid the ease of displaying meaningful data on frontend
     meta: {
