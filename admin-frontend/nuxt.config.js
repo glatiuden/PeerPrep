@@ -68,7 +68,7 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: process.env.SERVER_URL_STAGING, // Used as fallback if no runtime config is provided
+    baseURL: "https://server-staging.peerprep.tech", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries
