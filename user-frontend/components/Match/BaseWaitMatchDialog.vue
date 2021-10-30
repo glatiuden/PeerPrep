@@ -59,6 +59,7 @@ export default {
   mounted() {
     this.socket = this.$nuxtSocket({
       name: "match",
+      path: "/match/new",
       reconnection: true,
     });
 

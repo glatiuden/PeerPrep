@@ -17,6 +17,7 @@ export default class Redis {
       return;
     }
     const redis_client = createClient(REDIS_ENDPOINT, { auth_pass: process.env.REDIS_PASSWORD });
+    // const redis_client = createClient("10.192.111.99", { port: 6379 });
     redis_client.on("connect", () => {
       console.log("Succesfully connected to Redis");
     });
