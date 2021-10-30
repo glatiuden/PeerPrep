@@ -65,7 +65,6 @@ const actions: ActionTree<AuthState, RootState> = {
       });
 
       localStorage.removeItem("login_token");
-      console.log(localStorage.getItem("login_token"));
       commit(MutationTypes.SET_ADMIN, { data: null });
       commit(MutationTypes.SET_HAS_ADMIN, { data: false });
 

@@ -242,7 +242,6 @@ export default {
         return;
       try {
         this.SET_LOADING({ data: true });
-        console.log(user);
         const res = await this.DELETE_USER({ user_id: user._id });
         this.showSnackbar("Successfully deleted user", "green");
       } catch (err) {

@@ -19,7 +19,6 @@ export const mutations: MutationTree<RootState> = {
    * @param param1
    */
   SET_SHOW_DRAWER(state, { data }: { data: boolean }) {
-    // console.log("data", data);
     state.show_drawer = data;
   },
 };
