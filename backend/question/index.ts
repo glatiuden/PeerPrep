@@ -33,5 +33,8 @@ app.use("/question/admin", adminRouter);
 app.get("/question", function (req, res) {
   res.send("Question microservice is running");
 });
+app.get("/", function (req, res) {
+  res.send("Question microservice is running");
+});
 
 export default app;

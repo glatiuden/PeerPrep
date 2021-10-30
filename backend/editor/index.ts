@@ -36,5 +36,7 @@ app.use("/editor/admin", adminRouter);
 app.get("/editor", function (req, res) {
   res.send("Editor microservice is running");
 });
-
+app.get("/", function (req, res) {
+  res.send("Editor microservice is running");
+});
 export default app;

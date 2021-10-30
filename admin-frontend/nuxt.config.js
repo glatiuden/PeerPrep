@@ -30,6 +30,7 @@ export default {
     "~/plugins/vuetify",
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
+    { src: "@/plugins/avatar", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -67,7 +68,12 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "http://localhost:3006",
+    baseURL:
+      process.env.NODE_ENV === "production"
+        ? process.env.SERVER_URL_PRODUCTION
+        : process.env.NODE_ENV === "staging"
+          ? process.env.SERVER_URL_STAGING
+          : "http://localhost:3006", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries

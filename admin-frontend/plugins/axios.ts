@@ -11,6 +11,9 @@ declare module "@nuxt/types" {
 const plugin: Plugin = ({ $axios, redirect, store }: Context, inject) => {
   $axios.onRequest((config) => {
     console.log("Making request to " + config.url);
+    config.headers.common["Authorization"] = `${localStorage.getItem(
+      "login_token",
+    )}`;
   });
 
   $axios.onError((error) => {
