@@ -22,6 +22,7 @@ export default {
     AppBar,
     AppFooter,
   },
+  middleware: ["authenticated"],
   data() {
     return {
       clipped: false,
