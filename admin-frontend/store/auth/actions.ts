@@ -26,7 +26,6 @@ const actions: ActionTree<AuthState, RootState> = {
     localStorage.setItem("login_token", login_token);
     commit(MutationTypes.SET_ADMIN, { data: user });
     if (user && login_token) {
-      console.log("ok");
       commit(MutationTypes.SET_HAS_ADMIN, { data: true });
     }
     return { login_token, user };
