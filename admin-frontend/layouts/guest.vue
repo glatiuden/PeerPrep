@@ -40,6 +40,6 @@ import systemMixin from "@/mixins/system";
 
 export default {
   mixins: [systemMixin],
-  middleware: ["authenticated"],
+  middleware: ["redirectIfAuthenticated"],
 };
 </script>
