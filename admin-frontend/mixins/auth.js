@@ -6,6 +6,7 @@ export default {
     ...mapGetters({
       loading: "auth/loading",
       admin: "auth/admin",
+      has_admin: "auth/has_admin",
     }),
   },
 
@@ -21,5 +22,9 @@ export default {
       SET_LOADING: "auth/SET_LOADING",
       SET_ADMIN: "auth/SET_ADMIN",
     }),
+
+    getAvatarName({ display_name = "", email = "" } = {}) {
+      return `${display_name}`.trim() || email;
+    },
   },
 };

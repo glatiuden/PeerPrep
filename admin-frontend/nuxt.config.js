@@ -30,6 +30,7 @@ export default {
     "~/plugins/vuetify",
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
+    { src: "@/plugins/avatar", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

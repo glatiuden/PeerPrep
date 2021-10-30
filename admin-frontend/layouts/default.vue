@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <SideNav :drawer="drawer" />
-    <AppBar />
+    <AppBar @update-drawer="drawer = false" />
     <v-main class="background">
       <v-container>
         <nuxt />

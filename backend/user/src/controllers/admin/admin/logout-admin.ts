@@ -1,5 +1,5 @@
 import _ from "lodash";
-import IUser from "../../../models/interfaces/user";
+import IUser, { UserRole } from "../../../models/interfaces/user";
 import { userService, accessTokenService } from "../../../services";
 
 /**
@@ -12,7 +12,7 @@ async function logoutAdminController(httpRequest: { context: { validated: { emai
   };
   try {
     const { email }: IUser = _.get(httpRequest, "context.validated");
-    const admin_exists = await userService.findByEmail({ email });
+    const admin_exists = await userService.findByEmail({ email, role: UserRole.ADMIN });
 
     if (!admin_exists) {
       throw new Error(`Admin by ${email} does not exists.`);

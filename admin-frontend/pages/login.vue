@@ -82,7 +82,7 @@ export default {
     };
   },
   mounted() {
-    if (this.has_user) {
+    if (this.has_admin) {
       this.$router.push("/");
     }
   },
@@ -91,7 +91,7 @@ export default {
       try {
         this.SET_LOADING({ data: true });
         await this.LOGIN(this.login_user);
-        if (this.admin) {
+        if (this.has_admin) {
           this.$notification.success(
             `Welcome back to PeerPrep, ${this.admin.display_name}!`,
           );
@@ -109,6 +109,7 @@ export default {
 </script>
 <style scoped>
 .fill-height {
+  background-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80");
   background-repeat: no-repeat;
   background-size: cover;
 }

@@ -26,6 +26,7 @@ const actions: ActionTree<AuthState, RootState> = {
     localStorage.setItem("login_token", login_token);
     commit(MutationTypes.SET_ADMIN, { data: user });
     if (user && login_token) {
+      console.log("ok");
       commit(MutationTypes.SET_HAS_ADMIN, { data: true });
     }
     return { login_token, user };
@@ -36,17 +37,22 @@ const actions: ActionTree<AuthState, RootState> = {
    * @param param0
    */
   async [ActionTypes.AUTH]({ commit }) {
-    const { data: user } = await this.$axios.$get("/user/admin/admin/auth/");
+    try {
+      const { data: user } = await this.$axios.$get("/user/admin/admin/auth/");
 
-    if (!user) {
-      localStorage.removeItem("login_token");
-      commit(MutationTypes.SET_HAS_ADMIN, { data: false });
-      throw new Error("User is not valid");
+      if (!user) {
+        localStorage.removeItem("login_token");
+        commit(MutationTypes.SET_HAS_ADMIN, { data: false });
+        throw new Error("User is not valid");
+      }
+
+      commit(MutationTypes.SET_ADMIN, { data: user });
+      commit(MutationTypes.SET_HAS_ADMIN, { data: true });
+      return user;
+    } catch (err: any) {
+      const origin = `${window.location.origin}/login`;
+      window.location.replace(origin);
     }
-
-    commit(MutationTypes.SET_ADMIN, { data: user });
-    commit(MutationTypes.SET_HAS_ADMIN, { data: true });
-    return user;
   },
 
   async [ActionTypes.LOGOUT]({ commit, state }) {
@@ -60,6 +66,7 @@ const actions: ActionTree<AuthState, RootState> = {
       });
 
       localStorage.removeItem("login_token");
+      console.log(localStorage.getItem("login_token"));
       commit(MutationTypes.SET_ADMIN, { data: null });
       commit(MutationTypes.SET_HAS_ADMIN, { data: false });
 
