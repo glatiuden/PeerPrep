@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "PeerPrep Admin",
+    title: "PeerPrep Admin Dashboard",
     htmlAttrs: {
       lang: "en",
     },
