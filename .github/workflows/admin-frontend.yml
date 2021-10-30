@@ -23,12 +23,12 @@ jobs:
           run: yarn
 
         - name: Build
-          run: yarn build
+          run: yarn generate
 
         - name: Deploy
           uses: reggionick/s3-deploy@v3
           with:
-            folder: build
+            folder: dist
             bucket: ${{ secrets.S3_ADMIN_STAGING_BUCKET }}
             bucket-region: ${{ secrets.AWS_DEFAULT_REGION }}
             dist-id: ${{ secrets.ADMIN_STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
