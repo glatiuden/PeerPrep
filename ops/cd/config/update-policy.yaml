@@ -5,17 +5,21 @@ metadata:
   name: flux-system
   namespace: flux-system
 spec:
-  checkout:
-    branch: master
-    gitRepositoryRef:
-      name: flux-system
-  commit:
-    authorEmail: vinleon@u.nus.edu
-    authorName: fluxcdbot
-    messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
   interval: 1m0s
-  push:
-    branch: master
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  git:
+    checkout:
+      ref:
+        branch: master
+    commit:
+      author:
+        email: vinleon@u.nus.edu
+        name: fluxcdbot
+      messageTemplate: '{{range .Updated.Images}}{{println .}}{{end}}'
+    push:
+      branch: master
   update:
     path: ./ops/cd
     strategy: Setters
