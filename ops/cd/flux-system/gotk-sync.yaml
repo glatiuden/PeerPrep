@@ -10,7 +10,7 @@ spec:
     branch: master
   secretRef:
     name: flux-system
-  url: ssh://git@github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g22
+  url: https://github.com/CS3219-SE-Principles-and-Patterns/cs3219-project-ay2122-2122-s1-g22.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
