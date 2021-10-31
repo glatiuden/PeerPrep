@@ -108,7 +108,6 @@ export const messageListener = async (
     case messageSync: {
       encoding.writeVarUint(encoder, messageSync);
       syncProtocol.readSyncMessage(decoder, encoder, doc, conn);
-
       if (encoding.length(encoder) > 1) {
         send(doc, conn, encoding.toUint8Array(encoder));
       }
@@ -170,11 +169,8 @@ export const send = (doc: WSSharedDoc, conn: WS, m: Uint8Array): void => {
 };
 
 export const updateHandler = async (update: Uint8Array, origin: any, doc: WSSharedDoc): Promise<void> => {
-  let shouldPersist = false;
-
   if (origin instanceof WS && doc.conns.has(origin)) {
     pub.publishBuffer(doc.name, Buffer.from(update)); // do not await
-    shouldPersist = true;
   }
 
   const encoder = encoding.createEncoder();

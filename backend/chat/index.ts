@@ -8,6 +8,7 @@ import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import router from "./src/routes/chat";
 import makeSockets from "./src/configs/make-sockets";
+import http from "http";
 
 const app = express();
 const corsOptions = {
@@ -24,17 +25,15 @@ makeDb();
 
 // Initialize routes & sockets
 const PORT = process.env.port || 3005;
-const server = app.listen(PORT, () => {
-  console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
-});
+const server = http.createServer(app);
 
 makeSockets(server, corsOptions);
 app.use("/chat/api", router);
-app.get("/chat", function (req, res) {
+app.get(["/", "/chat"], function (req, res) {
   res.send("Chat microservice is running");
 });
-app.get("/", function (req, res) {
-  res.send("Chat microservice is running");
+server.listen(PORT, () => {
+  console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });
 
 export default app;

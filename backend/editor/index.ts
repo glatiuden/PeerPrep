@@ -25,37 +25,33 @@ app.use(makeLogger());
 
 makeDb();
 
+// Initialize sockets & routes
+app.use("/editor/api", apiRouter);
+app.use("/editor/admin", adminRouter);
+app.get(["/", "/editor"], function (req, res) {
+  res.send("Editor microservice is running");
+});
+
 // Initialize routes & sockets
 const PORT = process.env.port || 3004;
-export const server = http.createServer(app);
-export const wss = new WS.Server({ noServer: true });
+const server = http.createServer(app);
+const wss = new WS.Server({ noServer: true });
+
 wss.on("connection", async (ws, req) => {
   await setupWSConnection(ws, req);
 });
 
-server.on("upgrade", (req, socket: any, head) => {
-  // check auth
+server.on("upgrade", (req: any, socket: any, head) => {
   wss.handleUpgrade(req, socket, head, (ws) => {
     wss.emit("connection", ws, req);
   });
-});
-
-// Initialize sockets & routes
-// makeSockets(server, corsOptions);
-app.use("/editor/api", apiRouter);
-app.use("/editor/admin", adminRouter);
-app.get("/editor", function (req, res) {
-  res.send("Editor microservice is running");
-});
-app.get("/", function (req, res) {
-  res.send("Editor microservice is running");
 });
 
 // server.listen(PORT, () => {
 //   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 // });
 
-export const run = async (): Promise<() => Promise<void>> => {
+const run = async (): Promise<() => Promise<void>> => {
   await new Promise<void>((resolve) => {
     server.listen(PORT, () => {
       resolve();
@@ -79,12 +75,6 @@ export const run = async (): Promise<() => Promise<void>> => {
   };
 };
 
-// if (__dirname === `file://${process.argv[1]}`) {
-//   process.on("unhandledRejection", (err) => {
-//     console.error(err);
-//     throw err;
-//   });
-// }
 run().then(() => console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`));
 
 export default app;
