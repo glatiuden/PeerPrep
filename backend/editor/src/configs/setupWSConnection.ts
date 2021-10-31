@@ -170,8 +170,11 @@ export const send = (doc: WSSharedDoc, conn: WS, m: Uint8Array): void => {
 };
 
 export const updateHandler = async (update: Uint8Array, origin: any, doc: WSSharedDoc): Promise<void> => {
+  let shouldPersist = false;
+
   if (origin instanceof WS && doc.conns.has(origin)) {
     pub.publishBuffer(doc.name, Buffer.from(update)); // do not await
+    shouldPersist = true;
   }
 
   const encoder = encoding.createEncoder();

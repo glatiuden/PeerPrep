@@ -1,9 +1,9 @@
 <template>
-  <v-card outlined>
+  <v-card outlined class="white--text mt-3" color="#242424">
     <v-card-title> Question: {{ question.title }} </v-card-title>
-    <v-card-text>
+    <v-card-text class="white--text">
       <p>
-        <v-icon class="mr-1">mdi-code-tags</v-icon>
+        <v-icon color="white" class="mr-1">mdi-code-tags</v-icon>
         <b>Difficulty:</b>
         <v-chip
           small
@@ -14,12 +14,12 @@
         </v-chip>
       </p>
       <p>
-        <v-icon class="mr-1">mdi-book</v-icon>
+        <v-icon color="white" class="mr-1">mdi-book</v-icon>
         <b>Topic:</b>
         <v-chip small color="primary">{{ question.topic }}</v-chip>
       </p>
       <p class="font-weight-bold ma-0">
-        <v-icon class="mr-1">mdi-text-long</v-icon>
+        <v-icon color="white" class="mr-1">mdi-text-long</v-icon>
         Description:
       </p>
       <div class="ml-8">{{ question.description }}</div>

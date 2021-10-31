@@ -1,3 +1,5 @@
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -36,6 +38,7 @@ export default {
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-awesome-countdown", mode: "client", ssr: false },
     { src: "@/plugins/avatar", mode: "client" },
+    { src: "@/plugins/vue-monaco", mode: "client", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -86,7 +89,14 @@ export default {
       },
     },
   },
-
+  // configureWebpack: {
+  //   plugins: [
+  //     new MonacoWebpackPlugin({
+  //       // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+  //       languages: ["javascript", "css", "html", "typescript", "json"],
+  //     }),
+  //   ],
+  // },
   /**
    * For axios configuration
    */
@@ -109,6 +119,11 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^vuetify/],
+    plugins: [
+      new MonacoWebpackPlugin({
+        languages: ["json"],
+      }),
+    ],
   },
 
   server: {

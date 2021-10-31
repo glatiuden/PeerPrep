@@ -4,14 +4,15 @@
     type="table-heading, table-tbody, table-tfoot"
   >
   </v-skeleton-loader>
-  <div v-else class="black py-2 fill-height">
-    <v-row class="fill-height">
-      <v-col md="12" lg="3">
-        <div class="sticky-column mx-5 ml-lg-5">
+  <div v-else>
+    <BaseChat :match-id="match_id" />
+    <v-row class="mx-auto app-max-width my-2">
+      <v-col cols="12" lg="5">
+        <div>
           <BaseQuestion :question="match_question" />
-          <v-card outlined class="mt-3 white--text" color="#242424">
+          <v-card outlined class="mt-3">
             <v-card-title> Match Details</v-card-title>
-            <v-card-text class="white--text">
+            <v-card-text>
               <v-countdown
                 v-if="match.match_requirements.question_mode === 'timed'"
                 :left-time="match_question.recommended_duration * 60000"
@@ -30,20 +31,13 @@
               }}</b>
             </v-card-text>
             <v-card-actions class="mx-2">
-              <v-btn color="error" block depressed @click="endMatch"
-                >End Match</v-btn
-              >
+              <v-btn color="error" depressed @click="endMatch">End Match</v-btn>
             </v-card-actions>
           </v-card>
         </div>
       </v-col>
-      <v-col md="12" lg="6">
-        <BaseCodeEditor :match-id="match_id" class="mx-md-5 mx-lg-0" />
-      </v-col>
-      <v-col md="12" lg="3">
-        <div class="sticky-column mx-5 mr-lg-5">
-          <BaseChat :match-id="match_id" />
-        </div>
+      <v-col cols="12" lg="7">
+        <BaseCodeEditor :match-id="match_id" />
       </v-col>
     </v-row>
   </div>
@@ -111,9 +105,3 @@ export default {
   },
 };
 </script>
-<style>
-.sticky-top {
-  position: sticky;
-  top: 0;
-}
-</style>
