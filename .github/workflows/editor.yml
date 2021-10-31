@@ -15,7 +15,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      ECR_REPOSITORY: match-ms
+      ECR_REPOSITORY: editor-ms
     steps:
       # Checkout first to be in root directory
       - name: Checkout 
