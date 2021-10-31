@@ -1,3 +1,4 @@
 manifest/*/.env
+cd/manifest/*/.env
 terraform
 terraform-google
