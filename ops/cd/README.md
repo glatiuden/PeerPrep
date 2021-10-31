@@ -1,3 +1,4 @@
+```bash
 flux bootstrap github \
   --components-extra=image-reflector-controller,image-automation-controller \
   --owner=CS3219-SE-Principles-and-Patterns \
@@ -5,3 +6,9 @@ flux bootstrap github \
   --path=./ops/cd \
   --branch=master \
   --token-auth
+```
+
+Create Cronjob for fetching ECR credentials
+```bash
+kubectl create job --from=cronjob/gcr-credentials-sync -n flux-system gcr-credentials-sync-init
+```
