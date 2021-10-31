@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-3">
+  <div>
     <v-select
       v-if="false"
       v-model="selected_language"
@@ -14,25 +14,46 @@
       @change="editorInit"
     >
     </v-select>
-    <div id="monaco-editor" ref="editor" />
+    <AceEditor
+      :value="codes"
+      :lang="selected_language"
+      theme="monokai"
+      width="100%"
+      height="595px"
+      :options="{
+        enableBasicAutocompletion: true,
+        enableLiveAutocompletion: true,
+        fontSize: 15,
+        highlightActiveLine: true,
+        enableSnippets: true,
+        showLineNumbers: true,
+        tabSize: 2,
+        showPrintMargin: false,
+        showGutter: true,
+        readOnly: isHistoryMode,
+      }"
+      :commands="[
+        {
+          name: 'save',
+          bindKey: { win: 'Ctrl-s', mac: 'Command-s' },
+          exec: save,
+          readOnly: true,
+        },
+      ]"
+      @input="save($event)"
+      @init="editorInit"
+    />
     <div class="my-3">
       <v-btn color="primary" depressed :loading="loading" @click="executeCode"
         >Run Your Code (Beta)
       </v-btn>
-      <pre
-        v-if="!output"
-        class="pre mt-6"
-      ><v-textarea rows="1" label="Input (If any; else leave blank)" auto-grow hide-details class="custom-label-color" dark></v-textarea></pre>
-      <pre v-else class="pre mt-6"><samp>{{ output }}</samp></pre>
+      <pre v-if="output" class="pre mt-6"><samp>{{ output }}</samp></pre>
     </div>
   </div>
 </template>
 <script>
+// import editorMixin from "~/mixins/editor";
 import matchMixin from "@/mixins/match";
-import * as Y from "yjs";
-import { MonacoBinding } from "y-monaco";
-import loader from "@monaco-editor/loader";
-import { WebsocketProvider } from "y-websocket";
 
 export default {
   mixins: [matchMixin],
@@ -78,7 +99,6 @@ export default {
           language: "py",
         },
       ],
-      ydoc: undefined,
     };
   },
   async fetch() {
@@ -88,7 +108,7 @@ export default {
     const match_id = this.$route.params.id;
     await this.GET_EDITOR({ match_id });
   },
-  async mounted() {
+  mounted() {
     this.selected_language = _.get(
       this.match,
       "match_requirements.programming_language",
@@ -98,45 +118,68 @@ export default {
     if (this.isHistoryMode) {
       return;
     }
-    this.ydoc = new Y.Doc();
-    try {
-      //syncs the ydoc throught WebRTC connection
-      const provider = new WebsocketProvider(
-        "ws://localhost:3004",
-        "monaco",
-        this.ydoc,
-      );
 
-      const type = this.ydoc.getText("monaco");
+    this.socket = this.$nuxtSocket({
+      name: "editor",
+      persist: "editor",
+    });
 
-      const editor_ref = this.$refs.editor;
-      const monaco = await loader.init();
-      const editor = monaco.editor.create(editor_ref, {
-        value: "",
-        language: "javascript",
-        theme: "vs-dark",
-      });
+    this.socket.on("connect", () => {
+      this.socket.emit("room", this.matchId);
+    });
 
-      const awareness = provider.awareness;
-
-      const color = "#bc80bd";
-      awareness.setLocalStateField("user", {
-        name: "John",
-        color: color,
-      });
-
-      const monacoBinding = new MonacoBinding(
-        type,
-        editor.getModel(),
-        new Set([editor]),
-        awareness,
-      );
-      provider.connect();
-    } catch (err) {
-      console.error(err);
-    }
+    this.socket.on("message", (data) => {
+      console.log("Incoming message: ", data);
+      this.UPDATE_CODES({ data });
+    });
   },
   methods: {
+    /**
+     * @description On enter
+     */
+    save: _.throttle(
+      async function (text) {
+        if (this.isHistoryMode) {
+          return;
+        }
+
+        if (!text) {
+          return;
+        }
+        this.socket.emit("message", {
+          match_id: this.matchId,
+          payload: text,
+        });
+      },
+      1000,
+      { leading: true },
+    ),
+
+    editorInit: function () {
+      require("brace/theme/monokai");
+      require("brace/ext/language_tools"); //language extension prerequsite...
+      switch (this.selected_language) {
+        case "java":
+          require("brace/mode/java");
+          require("brace/snippets/java"); //snippet
+          break;
+        case "javascript":
+          require("brace/mode/html");
+          require("brace/mode/javascript"); //language
+          require("brace/snippets/javascript"); //snippet
+          require("brace/mode/less");
+          break;
+        case "c_cpp":
+          require("brace/mode/c_cpp");
+          require("brace/snippets/c_cpp"); //snippet
+          break;
+        case "python":
+          require("brace/mode/python");
+          require("brace/snippets/python"); //snippet
+          break;
+      }
+    },
+
     async executeCode() {
       try {
         const result = await this.EXECUTE_CODE({
@@ -154,7 +197,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .pre {
   padding: 16px;
   border-radius: 4px;
@@ -165,34 +208,5 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #d5d5d5;
-}
-#monaco-editor {
-  height: 600px;
-  /* border: 1px solid #ccc; */
-}
-.yRemoteSelection {
-  background-color: rgb(250, 129, 0, 0.5);
-}
-.yRemoteSelectionHead {
-  position: absolute;
-  border-left: orange solid 2px;
-  border-top: orange solid 2px;
-  border-bottom: orange solid 2px;
-  height: 100%;
-  box-sizing: border-box;
-}
-.yRemoteSelectionHead::after {
-  position: absolute;
-  content: " ";
-  border: 3px solid orange;
-  border-radius: 4px;
-  left: -4px;
-  top: -5px;
-}
-.custom-label-color .v-label {
-  color: white !important;
-}
-.custom-label-color input {
-  color: white !important;
 }
 </style>
