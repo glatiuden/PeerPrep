@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: editor
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms:master-2559205-1635654497 # {"$imagepolicy": "flux-system:editor"}
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms:master-454d3c0-1635657678 # {"$imagepolicy": "flux-system:editor"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
@@ -26,4 +26,4 @@ spec:
             - containerPort: 3004
               protocol: TCP
       imagePullSecrets:
-          - name: regcred
+        - name: regcred
