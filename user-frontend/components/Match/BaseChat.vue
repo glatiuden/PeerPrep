@@ -90,6 +90,7 @@ export default {
     this.socket = this.$nuxtSocket({
       name: "chat",
       persist: "chat",
+      path: "/chat/new",
     });
 
     this.socket.on("connect", () => {

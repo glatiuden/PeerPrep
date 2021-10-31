@@ -25,7 +25,7 @@ export default {
       //   signaling: ["ws://localhost:3002"],
       // });
       const provider = new WebsocketProvider(
-        "ws://localhost:3002/editor",
+        "wss://server-staging.peerprep.tech/editor",
         "monaco",
         this.ydoc,
       );

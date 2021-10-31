@@ -85,8 +85,7 @@ export default {
     if (!this.isHistoryMode) {
       return;
     }
-    const match_id = this.$route.params.id;
-    await this.GET_EDITOR({ match_id });
+    await this.GET_EDITOR({ match_id: this.matchId });
   },
   async mounted() {
     this.selected_language = _.get(
@@ -102,8 +101,8 @@ export default {
     try {
       //syncs the ydoc throught WebRTC connection
       const provider = new WebsocketProvider(
-        "ws://localhost:3004",
-        "monaco",
+        "wss://server-staging.peerprep.tech/editor",
+        this.matchId,
         this.ydoc,
       );
 
