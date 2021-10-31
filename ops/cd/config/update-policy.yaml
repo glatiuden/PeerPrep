@@ -22,4 +22,3 @@ spec:
   update:
     path: ./ops/cd
     strategy: Setters
-    
