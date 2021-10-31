@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: editor
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms:master-2559205-1635654497
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms:master-2559205-1635654497 # {"$imagepolicy": "flux-system:editor"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
