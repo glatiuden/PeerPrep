@@ -38,7 +38,7 @@ const actions: ActionTree<QuestionState, RootState> = {
    * @param param1
    */
   async [ActionTypes.GET_QUESTION_TOPICS]({ commit }) {
-    const { data: topics } = await this.$axios.$get(`/question/admin/topic`);
+    const { data: topics } = await this.$axios.$get(`/question/api/topic`);
     commit(MutationTypes.SET_QUESTION_TOPICS, { data: topics });
     return topics;
   },
