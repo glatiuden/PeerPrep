@@ -89,7 +89,7 @@
           <div>
             <v-btn outlined color="primary" @click="toggleEditing(user)">
               <v-icon v-if="!user.editing" small class="mr-1"
-                >mdi-account-remove</v-icon
+                >mdi-account-edit</v-icon
               >
               {{ user.editing ? "Cancel" : "Edit User" }}
             </v-btn>
@@ -182,7 +182,7 @@ export default {
         (v) => !!v || "Email Address is required",
         (v) => /.+@.+\..+/.test(v) || "Email Address must be valid.",
       ],
-      required: [(v) => !!v || "Password is required"],
+      required: [(v) => !!v || "Field is required"],
       confirm_password_rules: [
         (v) => !!v || "Password is required",
         (v) =>
