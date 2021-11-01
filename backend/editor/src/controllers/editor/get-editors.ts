@@ -1,32 +1,34 @@
-import { editorService } from "../../services";
+import _ from "lodash";
+import { Logger } from "winston";
 
-/**
- * @description Get all editor records
- * @function getEditorsController
- */
-async function getEditorsController(httpRequest: Request) {
-  const headers = {
-    "Content-Type": "application/json",
+import { IGetEditors } from "../../use-cases/editor/get-editors";
+
+export default function makeGetEditorsController({ getEditors, logger }: { getEditors: IGetEditors; logger: Logger }) {
+  return async function getEditorsController() {
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const editors = await getEditors();
+
+      logger.verbose("Editors retrieved", { editors_count: editors.length });
+      return {
+        headers,
+        statusCode: 200,
+        body: {
+          data: editors,
+        },
+      };
+    } catch (err: any) {
+      logger.error(err.message);
+      return {
+        headers,
+        statusCode: 404,
+        body: {
+          errors: err.message,
+        },
+      };
+    }
   };
-
-  try {
-    const editors = await editorService.findAll();
-    return {
-      headers,
-      statusCode: 200,
-      body: {
-        data: editors,
-      },
-    };
-  } catch (err: any) {
-    return {
-      headers,
-      statusCode: 404,
-      body: {
-        errors: err.message,
-      },
-    };
-  }
 }
-
-export default getEditorsController;

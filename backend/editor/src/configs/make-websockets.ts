@@ -10,10 +10,6 @@ import { pub, sub } from "./pubsub";
 
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
-const wsReadyStateClosing = 2 // eslint-disable-line
-const wsReadyStateClosed = 3 // eslint-disable-line
-
-const updatesLimit = 50;
 
 export interface DBUpdate {
   id: string;
@@ -23,9 +19,7 @@ export interface DBUpdate {
 
 export const messageSync = 0;
 export const messageAwareness = 1;
-
 export const pingTimeout = 30000;
-
 export const docs = new Map<string, WSSharedDoc>();
 
 export function cleanup() {
@@ -100,7 +94,6 @@ export const messageListener = async (
   doc: WSSharedDoc,
   message: Uint8Array,
 ): Promise<void> => {
-  // TODO: authenticate request
   const encoder = encoding.createEncoder();
   const decoder = decoding.createDecoder(message);
   const messageType = decoding.readVarUint(decoder);

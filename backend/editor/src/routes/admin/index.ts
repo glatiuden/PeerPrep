@@ -1,8 +1,18 @@
 import express from "express";
-import editorRouter from "./editor";
+import makeExpressCallback from "../../express-callback";
+import makeValidator from "../../middlewares/validator-middleware";
 
-const router = express.Router();
+import { deleteEditorRules, getEditorRules } from "../../controllers/editor/validators";
+import { deleteEditorController, getEditorController, hardDeleteEditorController } from "../../controllers/editor";
 
-router.use("/editor", editorRouter);
+const editorRouter = express.Router();
 
-export default router;
+editorRouter.get("/:editor_id", makeValidator(getEditorRules), makeExpressCallback(getEditorController));
+editorRouter.delete("/:editor_id", makeValidator(deleteEditorRules), makeExpressCallback(deleteEditorController));
+editorRouter.delete(
+  "/hard-delete/:editor_id",
+  makeValidator(deleteEditorRules),
+  makeExpressCallback(hardDeleteEditorController),
+);
+
+export default editorRouter;
