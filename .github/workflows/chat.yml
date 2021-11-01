@@ -12,7 +12,18 @@ defaults:
     working-directory: ./backend/chat
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+      
+    - run: yarn install
+    - run: yarn test:unit
+    - run: yarn test:api
+
   build-and-push:
+    needs: test
     runs-on: ubuntu-latest
     env:
       ECR_REPOSITORY: chat-ms
