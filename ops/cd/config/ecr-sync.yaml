@@ -94,12 +94,12 @@ spec:
                 --docker-server="$ECR_REGISTRY" \
                 --docker-username=AWS \
                 --docker-password="$(</token/ecr-token)" \
-                -o yaml | kubectl apply -f -              
-            - |-
-              kubectl create secret docker-registry regcred \
+                -o yaml | kubectl apply -f - &&
+                kubectl create secret docker-registry regcred \
                 --dry-run=client \
                 --docker-server="$ECR_REGISTRY" \
                 --docker-username=AWS \
                 --docker-password="$(</token/ecr-token)" \
                 --namespace=peerprep
                 -o yaml | kubectl apply -f -              
+                
