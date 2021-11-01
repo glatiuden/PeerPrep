@@ -7,7 +7,7 @@ import IChat from "../entities/interfaces/chat";
 
 export default function makeChatService({ chatDbModel }: { chatDbModel: mongoose.Model<IChat & mongoose.Document> }) {
   return new (class MongooseChatDb implements IChatDb {
-    async insert(insertPayload: Partial<Chat>): Promise<Chat | null> {
+    async insert(insertPayload: Partial<IChat>): Promise<Chat | null> {
       const result = await chatDbModel.create([insertPayload]);
       const updated = await chatDbModel.findOne({ _id: result[0]?._id });
       if (updated) {
@@ -42,7 +42,7 @@ export default function makeChatService({ chatDbModel }: { chatDbModel: mongoose
       return null;
     }
 
-    async update(updatePayload: Partial<Chat>): Promise<Chat | null> {
+    async update(updatePayload: Partial<IChat>): Promise<Chat | null> {
       await chatDbModel.findOneAndUpdate({ _id: updatePayload._id }, updatePayload);
       const updated = await chatDbModel.findById({ _id: updatePayload._id });
       if (updated) {

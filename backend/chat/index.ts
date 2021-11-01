@@ -9,6 +9,7 @@ import makeDb from "./src/configs/make-db";
 import router from "./src/routes/chat";
 import makeSockets from "./src/configs/make-sockets";
 import http from "http";
+import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
 
 const app = express();
 const corsOptions = {
@@ -17,7 +18,7 @@ const corsOptions = {
   allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
 };
 
-app.use(cors(corsOptions));
+app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
 app.use(makeLogger());
 

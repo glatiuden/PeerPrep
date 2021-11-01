@@ -1,16 +1,16 @@
 import { Schema } from "mongoose";
 
+const contentSchema = new Schema({
+  user_id: { type: Schema.Types.ObjectId, default: "" },
+  display_name: { type: String },
+  message: { type: String, default: "" },
+  time_sent: { type: Date },
+});
+
 const chatSchema = new Schema(
   {
     match_id: { type: Schema.Types.ObjectId, trim: true, unique: true },
-    content: [
-      {
-        user_id: { type: Schema.Types.ObjectId, default: "" },
-        display_name: { type: String },
-        message: { type: String, default: "" },
-        time_sent: { type: Date },
-      },
-    ],
+    content: [contentSchema],
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },

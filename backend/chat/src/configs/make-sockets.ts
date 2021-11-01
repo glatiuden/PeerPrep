@@ -5,7 +5,7 @@ import { logger } from "./logs";
 import { ChatDb } from "../data-access";
 
 export default function makeSockets(server, cors) {
-  const io = new Server(server, { transports: ["polling"], cors, path: "/chat/new" });
+  const io = new Server(server, { transports: ["polling"], path: "/chat/new" });
   const pubClient = createClient("//redis-12661.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:12661", {
     auth_pass: "N4llYIJfuTY48DLszrrow9JGPdWRX19B",
   });
