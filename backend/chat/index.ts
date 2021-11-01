@@ -21,13 +21,12 @@ const corsOptions = {
 app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
 
-makeDb();
-
 // Initialize routes & sockets
 const PORT = process.env.port || 3005;
 const server = http.createServer(app);
 
 if (process.env.NODE_ENV !== "test") {
+  makeDb();
   makeSockets(server, corsOptions);
   app.use(makeLogger());
 }

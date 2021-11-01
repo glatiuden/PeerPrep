@@ -1,10 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
+import fs from "fs";
 import path from "path";
-
-const mongodb = async () => {
-  return await MongoMemoryServer.create();
-};
 
 const globalConfigPath = path.join(__dirname, "globalConfigMongo.json");
 
@@ -12,16 +9,23 @@ const globalConfigPath = path.join(__dirname, "globalConfigMongo.json");
  * Connect to the in-memory database.
  */
 async function connect() {
-  const uri = (await mongodb()).getUri();
-
   const mongooseOpts = {
     useNewUrlParser: true,
     autoReconnect: true,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 1000,
   };
-
-  await mongoose.connect(uri);
+  const mongoServer = global.__MONGOINSTANCE || new MongoMemoryServer();
+  const is_not_connected = mongoose.connection.readyState == 0;
+  if (is_not_connected) {
+    const URI = process.env.MONGO_URI || (await mongoServer.getUri());
+    try {
+      await mongoose.connect(URI);
+    } catch (err) {
+      console.log("Failed to connect to MongoDB");
+      process.exit(0);
+    }
+  }
 }
 
 /**
@@ -30,7 +34,7 @@ async function connect() {
 const closeDatabase = async () => {
   await mongoose.connection.dropDatabase();
   await mongoose.connection.close();
-  await (await mongodb()).stop();
+  await global.__MONGOINSTANCE.stop();
 };
 
 /**
@@ -45,4 +49,4 @@ const clearDatabase = async () => {
   }
 };
 
-export { connect, closeDatabase, clearDatabase, globalConfigPath, mongodb };
+export { connect, closeDatabase, clearDatabase, globalConfigPath };

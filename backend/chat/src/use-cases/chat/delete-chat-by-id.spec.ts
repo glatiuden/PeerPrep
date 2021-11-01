@@ -23,10 +23,9 @@ describe("deleteChatById", () => {
     const chatDb = makeChatDb({ chatDbModel });
     const mock_chat = makeFakeChat();
     const deleteChatById = makeDeleteChatById({ chatDb });
-    const action = async () => {
-      await deleteChatById({ id: mock_chat._id });
-    };
-    expect(action()).rejects.toThrowError(new RangeError(`Chat ${mock_chat._id} not found.`));
+    expect(deleteChatById({ id: mock_chat._id })).rejects.toThrowError(
+      new RangeError(`Chat ${mock_chat._id} not found.`),
+    );
   });
 
   test("should delete chat by id", async () => {

@@ -1,18 +1,15 @@
-import { mongodb, connect } from "./jest-mongo";
+import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose from "mongoose";
 
-module.exports = async () => {
-  if (!(await mongodb()).instanceInfo) {
-    await connect();
-  }
-
-  const mongoConfig = {
-    mongoDBName: "jest",
-    mongoUri: (await mongodb()).getUri(),
-  };
-
-  // Write global config to disk because all tests run in different contexts.
-  // fs.writeFileSync(globalConfigPath, JSON.stringify(mongoConfig));
-
-  // Set reference to mongod in order to close the server during teardown.
-  global.__MONGODB__ = mongodb;
+export = async function globalSetup() {
+  // Config to decided if an mongodb-memory-server instance should be used
+  // it's needed in global space, because we don't want to create a new instance every test-suite
+  const instance = await MongoMemoryServer.create();
+  const uri = instance.getUri();
+  (global as any).__MONGOINSTANCE = instance;
+  process.env.MONGO_URI = uri.slice(0, uri.lastIndexOf("/"));
+  // The following is to make sure the database is clean before an test starts
+  await mongoose.connect(`${process.env.MONGO_URI}/test`, {});
+  await mongoose.connection.db.dropDatabase();
+  await mongoose.disconnect();
 };

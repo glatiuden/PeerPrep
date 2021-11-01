@@ -13,5 +13,6 @@ module.exports = {
   modulePathIgnorePatterns: ["/__mocks__/", "/dist/"],
   globalSetup: "./__tests__/__fixtures__/jest-setup.ts",
   globalTeardown: "./__tests__/__fixtures__/jest-teardown.ts",
+  setupFilesAfterEnv: ["./__tests__/__fixtures__/jest-mongo.ts"],
   testEnvironment: "node",
 };

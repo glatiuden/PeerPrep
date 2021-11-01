@@ -1,9 +1,7 @@
-import { clearDatabase, closeDatabase } from "./jest-mongo";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
-module.exports = async function ({ watch, watchAll }: { watch?: () => {}; watchAll?: () => {} } = {}) {
-  if (!watch && !watchAll) {
-    await clearDatabase();
-    await closeDatabase();
-    await global.__MONGODB__.stop();
-  }
+export = async function globalTeardown() {
+  // Config to decided if an mongodb-memory-server instance should be used
+  const instance: MongoMemoryServer = (global as any).__MONGOINSTANCE;
+  await instance.stop();
 };
