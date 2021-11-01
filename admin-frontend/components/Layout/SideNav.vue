@@ -1,10 +1,11 @@
 <template>
   <v-navigation-drawer
-    v-model="drawer"
+    v-model="local_show_drawer"
     class="soft-box-shadow"
     :clipped="false"
     fixed
     app
+    @
   >
     <v-list dense nav>
       <v-list-item three-line class="align-left">
@@ -112,7 +113,7 @@
 
     <template #append>
       <div class="pa-2">
-        <v-btn color="primary" depressed large block>
+        <v-btn color="primary" depressed large block @click="LOGOUT()">
           <v-icon left>mdi-logout</v-icon>Logout
         </v-btn>
       </div>
@@ -122,12 +123,19 @@
 
 <script>
 import systemMixin from "@/mixins/system";
+import authMixin from "@/mixins/auth";
 
 export default {
-  mixins: [systemMixin],
+  mixins: [systemMixin, authMixin],
+  props: {
+    drawer: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      drawer: true,
+      local_show_drawer: true,
       src: "",
       nav_items: [
         {
@@ -156,6 +164,14 @@ export default {
         },
       ],
     };
+  },
+  watch: {
+    local_show_drawer(data) {
+      this.SET_SHOW_DRAWER({ data });
+    },
+    show_drawer(data) {
+      this.local_show_drawer = data;
+    },
   },
 };
 </script>

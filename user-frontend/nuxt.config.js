@@ -1,3 +1,5 @@
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -36,6 +38,7 @@ export default {
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-awesome-countdown", mode: "client", ssr: false },
     { src: "@/plugins/avatar", mode: "client" },
+    { src: "@/plugins/vue-monaco", mode: "client", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -58,15 +61,15 @@ export default {
       {
         name: "editor",
         default: true,
-        url: "http://localhost:3004",
+        url: "https://server-staging.peerprep.tech/editor",
       },
       {
         name: "chat",
-        url: "http://localhost:3005",
+        url: "https://server-staging.peerprep.tech/chat",
       },
       {
         name: "match",
-        url: "http://localhost:3003",
+        url: "https://server-staging.peerprep.tech/match",
       },
     ],
   },
@@ -86,16 +89,19 @@ export default {
       },
     },
   },
-
+  // configureWebpack: {
+  //   plugins: [
+  //     new MonacoWebpackPlugin({
+  //       // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+  //       languages: ["javascript", "css", "html", "typescript", "json"],
+  //     }),
+  //   ],
+  // },
   /**
    * For axios configuration
    */
   axios: {
-    baseURL:
-      process.env.NODE_ENV === "production" ||
-        process.env.NODE_ENV === "staging"
-        ? process.env.BASE_URL
-        : "http://localhost:3006", // Used as fallback if no runtime config is provided
+    baseURL: "https://server-staging.peerprep.tech", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries
@@ -109,6 +115,11 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^vuetify/],
+    plugins: [
+      new MonacoWebpackPlugin({
+        languages: ["json"],
+      }),
+    ],
   },
 
   server: {

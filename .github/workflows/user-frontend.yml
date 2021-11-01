@@ -1,0 +1,37 @@
+name: Build and Deploy User Frontend
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'user-frontend/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Install dependencies
+          working-directory: ./user-frontend
+          run: yarn
+
+        - name: Build
+          working-directory: ./user-frontend
+          run: yarn generate
+
+        - name: Deploy
+          uses: reggionick/s3-deploy@v3
+          with:
+            folder: ./user-frontend/dist
+            bucket: ${{ secrets.S3_USER_STAGING_BUCKET }}
+            bucket-region: ${{ secrets.AWS_DEFAULT_REGION }}
+            dist-id: ${{ secrets.USER_STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+            invalidation: /*
+            delete-removed: true
+            no-cache: true
+            private: true

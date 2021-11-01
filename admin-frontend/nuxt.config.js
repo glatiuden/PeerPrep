@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "PeerPrep Admin",
+    title: "PeerPrep Admin Dashboard",
     htmlAttrs: {
       lang: "en",
     },
@@ -30,6 +30,7 @@ export default {
     "~/plugins/vuetify",
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
+    { src: "@/plugins/avatar", mode: "client" },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -67,7 +68,7 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "http://localhost:3006",
+    baseURL: "https://server-staging.peerprep.tech", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries

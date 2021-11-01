@@ -37,5 +37,8 @@ app.use("/user/admin", adminRouter);
 app.get("/user", function (req, res) {
   res.send("User Microservice is running");
 });
+app.get("/", function (req, res) {
+  res.send("User Microservice is running");
+});
 
 export default app;

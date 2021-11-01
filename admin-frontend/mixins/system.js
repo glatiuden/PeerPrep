@@ -1,7 +1,12 @@
 import _ from "lodash";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   computed: {
+    ...mapGetters({
+      show_drawer: "show_drawer",
+    }),
+
     /**
      * @description return true if xs;
      */
@@ -50,6 +55,9 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      SET_SHOW_DRAWER: "SET_SHOW_DRAWER",
+    }),
     /**
      * @description scroll to element of the indicated ID
      */

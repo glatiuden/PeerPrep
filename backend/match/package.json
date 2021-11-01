@@ -19,6 +19,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.7.8",
     "@types/pager__jackrabbit": "^4.8.2",
+    "@types/redis": "^2.8.32",
     "@types/superagent": "^4.1.12",
     "@types/validatorjs": "^3.15.0",
     "@typescript-eslint/eslint-plugin": "^4.31.2",

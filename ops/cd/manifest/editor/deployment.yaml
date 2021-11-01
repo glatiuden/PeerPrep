@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: editor
+  labels:
+    app: editor
+  namespace: peerprep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: editor
+  template:
+    metadata:
+      labels:
+        app: editor
+    spec:
+      containers:
+        - name: editor
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms:master-e3364c8-1635682433 # {"$imagepolicy": "flux-system:editor"}
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: editor-env
+          ports:
+            - containerPort: 3004
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred
