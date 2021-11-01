@@ -22,7 +22,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use(makeLogger());
+if (process.env.NODE_ENV !== "test") {
+  app.use(makeLogger());
+}
 
 makeDb();
 new makeRedis();
