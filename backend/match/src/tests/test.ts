@@ -29,7 +29,7 @@ describe("/match/admin", () =>  {
       const res = await chai.request(app).get("/match/admin");
       should.exist(res.body);
       res.should.have.status(200);
-      expect(res.body).to.be.a.equal("object");
+      expect(res.body).to.be.a("object");
       match_id = _.get(res.body, "data._id");
     });
   });
