@@ -24,7 +24,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 makeRabbit();
 makeDb();
-const PORT = process.env.port || 3006;
+const PORT = process.env.port || 3002;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });
