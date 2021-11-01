@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: chat
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms:master-e3364c8-1635682427 # {"$imagepolicy": "flux-system:chat"}
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms:master-b03b84d-1635783395 # {"$imagepolicy": "flux-system:chat"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
@@ -26,4 +26,4 @@ spec:
             - containerPort: 3005
               protocol: TCP
       imagePullSecrets:
-          - name: regcred
+        - name: regcred
