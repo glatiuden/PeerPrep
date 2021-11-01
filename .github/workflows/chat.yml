@@ -19,8 +19,7 @@ jobs:
       uses: actions/checkout@v2
       
     - run: yarn install
-    - run: yarn test:unit
-    - run: yarn test:api
+    - run: yarn test:once
 
 #   build-and-push:
 #     needs: test
