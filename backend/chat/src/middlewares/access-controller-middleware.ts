@@ -1,0 +1,55 @@
+import { Request, Response, NextFunction } from "express";
+import _ from "lodash";
+
+export default function accessControlMiddleware(req: Request, res: Response, next: NextFunction): void {
+  // Website you wish to allow to connect
+  // req.headers["access-control-allow-origin"] ||
+  const origin = getAccessControlAllowOrigin(req);
+  res.setHeader("Access-Control-Allow-Origin", origin);
+
+  // Request methods you wish to allow
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+
+  // Request headers you wish to allow
+  res.setHeader("Access-Control-Allow-Headers", "X-Requested-With,content-type");
+
+  // Pass to next layer of middleware
+  next();
+}
+
+function getAccessControlAllowOrigin(req: Request): string {
+  const allowed_origins = [
+    "https://staging.peerprep.tech",
+    "https://admin-staging.peerprep.tech",
+    "https://peerprep.tech",
+    "https://admin.peerprep.tech",
+  ];
+  const origin = _.get(req, "headers.origin");
+  const is_allowed = allowed_origins.includes(origin);
+
+  if (is_allowed) {
+    return origin;
+  }
+
+  if (process.env.ACCESS_CONTROL_ALLOW_ORIGIN) {
+    // return process.env.ACCESS_CONTROL_ALLOW_ORIGIN;
+    const access_control_allow_origin_array = process.env.ACCESS_CONTROL_ALLOW_ORIGIN.split(",");
+    let first_allowed_origin = "";
+    const is_allowed = access_control_allow_origin_array.some((allowed_origin) => {
+      const origin_allowed = allowed_origin.includes(origin) || allowed_origin === "*";
+      if (origin_allowed) {
+        first_allowed_origin = allowed_origin;
+      }
+
+      return origin_allowed;
+    });
+
+    if (is_allowed) {
+      return first_allowed_origin;
+    }
+  }
+
+  return process.env.DASHBOARD_URL && process.env.NODE_ENV === "production"
+    ? process.env.DASHBOARD_URL
+    : "http://localhost:8082";
+}

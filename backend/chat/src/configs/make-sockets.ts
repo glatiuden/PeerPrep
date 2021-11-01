@@ -2,10 +2,10 @@ import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
 import { createClient } from "redis";
 import { logger } from "./logs";
-import { chatService } from "../services";
+import { ChatDb } from "../data-access";
 
 export default function makeSockets(server, cors) {
-  const io = new Server(server, { transports: ["polling"], cors, path: "/chat/new" });
+  const io = new Server(server, { transports: ["polling"], path: "/chat/new" });
   const pubClient = createClient("//redis-12661.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:12661", {
     auth_pass: "N4llYIJfuTY48DLszrrow9JGPdWRX19B",
   });
@@ -31,7 +31,7 @@ export default function makeSockets(server, cors) {
 
     socket.on("end_session", async (payload) => {
       const { match_id, content } = payload;
-      await chatService.insert({
+      await ChatDb.insert({
         match_id,
         content,
       });

@@ -1,41 +1,44 @@
 import _ from "lodash";
+import { Request } from "express";
+import { Logger } from "winston";
 
-import IChat from "../../models/interfaces/chat";
+import IChat from "../../entities/interfaces/chat";
+import { IUpdateChat } from "../../use-cases/chat/update-chat";
 
-import { chatService } from "../../services";
+export default function makeUpdateChatController({ updateChat, logger }: { updateChat: IUpdateChat; logger: Logger }) {
+  return async function updateChatController(
+    httpRequest: Request & { context: { validated: { chatDetails: IChat } } },
+  ) {
+    const headers = {
+      "Content-Type": "application/json",
+    };
 
-/**
- * @description Update existing chat record in database
- * @function updateChatController
- */
-async function updateChatController(httpRequest: Request & { context: { validated: Partial<IChat> } }) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
+    try {
+      const chatDetails: IChat = _.get(httpRequest, "context.validated");
+      const { _id: chat_id } = chatDetails; // the chat's ID
 
-  try {
-    const chatDetails: IChat = _.get(httpRequest, "context.validated");
-    const updated_chat = await chatService.update(chatDetails);
-    if (!updated_chat) {
-      throw new Error(`Chat was not updated.`);
+      const updated_chat = await updateChat({ chatDetails });
+      if (!updated_chat) {
+        throw new Error(`Chat by ${chat_id} unable to update.`);
+      }
+
+      logger.verbose("Chat updated", { chat_id });
+      return {
+        headers,
+        statusCode: 200,
+        body: {
+          data: updated_chat,
+        },
+      };
+    } catch (err: any) {
+      logger.error(err.message);
+      return {
+        headers,
+        statusCode: 404,
+        body: {
+          errors: err.message,
+        },
+      };
     }
-
-    return {
-      headers,
-      statusCode: 200,
-      body: {
-        data: updated_chat,
-      },
-    };
-  } catch (err: any) {
-    return {
-      headers,
-      statusCode: 404,
-      body: {
-        errors: err.message,
-      },
-    };
-  }
+  };
 }
-
-export default updateChatController;
