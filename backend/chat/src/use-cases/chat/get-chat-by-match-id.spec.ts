@@ -3,15 +3,13 @@ import _ from "lodash";
 import makeFakeChat from "../../../__tests__/__fixtures__/make-fake-chat";
 import { connect, clearDatabase } from "../../../__tests__/__fixtures__/jest-mongo";
 
+import Chat from "../../entities/chat";
 import makeChatDb from "../../data-access/make-chat-db";
 import { chatDbModel } from "../../data-access/models";
-import Chat from "../../entities/chat";
-
 import makeCreateChat from "./create-chat";
-import makeUpdateChat from "./update-chat";
-import makeGetChatById from "./get-chat-by-id";
+import makeGetChatByMatchId from "./get-chat-by-match-id";
 
-describe("updateChat", () => {
+describe("getChatByMatchId", () => {
   beforeAll(async () => {
     await connect();
   });
@@ -19,7 +17,7 @@ describe("updateChat", () => {
   afterAll(async () => {
     await clearDatabase();
   });
-  test("should return the updated chat", async () => {
+  test("should return the existing chat by match id", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const createChat = makeCreateChat({ chatDb });
     const mock_chat = await makeFakeChat();
@@ -28,21 +26,19 @@ describe("updateChat", () => {
     const expected = new Chat(mock_chat);
     expect(_.omit(result, ["_id", "content"])).toEqual(_.omit(expected, ["_id", "content"]));
 
-    const getChatByEmail = makeGetChatById({ chatDb });
-    const fetch_result = await getChatByEmail({ id: mock_chat._id });
+    const getChatByMatchId = makeGetChatByMatchId({ chatDb });
+    const fetch_result = await getChatByMatchId({ match_id: String(mock_chat.match_id) });
     expect(_.omit(fetch_result, ["_id", "content"])).toEqual(_.omit(fetch_result, ["_id", "content"]));
+  });
 
-    const second_mock_chat = await makeFakeChat();
-    const updateChat = makeUpdateChat({ chatDb });
+  test("should return null if chat does not exist", async () => {
+    const chatDb = makeChatDb({ chatDbModel });
+    const mock_chat = await makeFakeChat();
 
-    const updated_chat = Object.assign({}, mock_chat, {
-      match_id: second_mock_chat.match_id,
-    });
+    const getChatByMatchId = makeGetChatByMatchId({ chatDb });
+    const fetch_result = await getChatByMatchId({ match_id: String(mock_chat.match_id) });
+    const expected = null;
 
-    const updated_result = await updateChat({ chatDetails: _.omit(updated_chat, "content") });
-    const expected_update = new Chat(updated_chat);
-    expect(_.omit(updated_result, ["_id", "content", "updated_at"])).toEqual(
-      _.omit(expected_update, "_id", "content", "updated_at"),
-    );
+    expect(_.omit(fetch_result, "_id")).toEqual(_.omit(expected, "_id"));
   });
 });

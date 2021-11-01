@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
 
 const contentSchema = new Schema({
-  user_id: { type: Schema.Types.ObjectId, default: "" },
-  display_name: { type: String },
+  user_id: { type: String, default: "", trim: true },
+  display_name: { type: String, trim: true },
   message: { type: String, default: "" },
   time_sent: { type: Date },
 });
