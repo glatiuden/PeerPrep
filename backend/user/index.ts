@@ -20,7 +20,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use(makeLogger());
+if (process.env.NODE_ENV !== "test") {
+  app.use(makeLogger());
+}
 makeRabbit();
 makeDb();
 const PORT = process.env.port || 3001;
