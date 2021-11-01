@@ -1,39 +1,47 @@
 import _ from "lodash";
+import { Logger } from "winston";
 
-import { chatService } from "../../services";
+import { IHardDeleteChatById } from "../../use-cases/chat/hard-delete-chat-by-id";
 
-/**
- * @description Hard delete existing chat record in database by ID
- * @function hardDeleteChatController
- */
-async function hardDeleteChatController(httpRequest: Request & { context: { validated: { chat_id: string } } }) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
+export default function makeHardDeleteChatController({
+  hardDeleteChatById,
+  logger,
+}: {
+  hardDeleteChatById: IHardDeleteChatById;
+  logger: Logger;
+}) {
+  return async function hardDeleteChatController(
+    httpRequest: Request & { context: { validated: { chat_id: string } } },
+  ) {
+    const headers = {
+      "Content-Type": "application/json",
+    };
 
-  try {
-    const { chat_id }: { chat_id: string } = _.get(httpRequest, "context.validated");
-    const is_deleted = await chatService.hardDelete({ id: chat_id });
-    if (!is_deleted) {
-      throw new Error(`Chat by ${chat_id} is unable to hard delete.`);
+    try {
+      const { chat_id }: { chat_id: string } = _.get(httpRequest, "context.validated");
+
+      const is_deleted = await hardDeleteChatById({ id: chat_id });
+      if (!is_deleted) {
+        throw new Error(`Chat by ${chat_id} unable to delete.`);
+      }
+
+      logger.verbose("Chat hard-deleted", { chat_id: chat_id });
+      return {
+        headers,
+        statusCode: 200,
+        body: {
+          is_deleted,
+        },
+      };
+    } catch (err: any) {
+      logger.error(err.message);
+      return {
+        headers,
+        statusCode: 404,
+        body: {
+          errors: err.message,
+        },
+      };
     }
-
-    return {
-      headers,
-      statusCode: 200,
-      body: {
-        is_deleted,
-      },
-    };
-  } catch (err: any) {
-    return {
-      headers,
-      statusCode: 404,
-      body: {
-        errors: err.message,
-      },
-    };
-  }
+  };
 }
-
-export default hardDeleteChatController;

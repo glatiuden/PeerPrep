@@ -2,7 +2,7 @@ import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
 import { createClient } from "redis";
 import { logger } from "./logs";
-import { chatService } from "../services";
+import { ChatDb } from "../data-access";
 
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["polling"], cors, path: "/chat/new" });
@@ -31,7 +31,7 @@ export default function makeSockets(server, cors) {
 
     socket.on("end_session", async (payload) => {
       const { match_id, content } = payload;
-      await chatService.insert({
+      await ChatDb.insert({
         match_id,
         content,
       });
