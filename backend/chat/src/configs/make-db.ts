@@ -19,6 +19,7 @@ export async function makeDatabaseURL(): Promise<string> {
   if (process.env.NODE_ENV === "test") {
     return (await mongodb()).getUri();
   }
+
   const DATABASE_URL =
     process.env.DATABASE_URL ||
     `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`;
