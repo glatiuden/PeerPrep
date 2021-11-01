@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: user
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms:master-7d1d2a7-1635741059 # {"$imagepolicy": "flux-system:user"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
