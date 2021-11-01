@@ -211,7 +211,6 @@ describe("/user/admin", () => {
 
 describe("/user/api", () => {
   let user: any;
-
   before(async () => {
     user = await chai.request(app).post("/user/admin/user/").set("content-type", "application/json").send({
       display_name: "user",
