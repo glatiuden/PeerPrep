@@ -114,36 +114,36 @@ describe("/user/admin", () => {
       expect(res.body).to.include.all.keys(['errors']);
     });
   });
-  // describe(("POST /admin"), () => {
-  //   it("should create admin", async () => {
-  //     const res = await chai.request(app)
-  //       .post("/user/admin/admin/")
-  //       .set("content-type", "application/json")
-  //       .send({
-  //         "display_name": "test",
-  //         "email": "test@email.com",
-  //         "password": "123456"
-  //       });
+  describe(("POST /admin"), () => {
+    it("should create admin", async () => {
+      const res = await chai.request(app)
+        .post("/user/admin/admin/")
+        .set("content-type", "application/json")
+        .send({
+          "display_name": "test",
+          "email": "test@email.com",
+          "password": "123456"
+        });
 
-  //     expect(res).to.have.status(200);
-  //     expect(res).to.be.a('object');
-  //     expect(res.body).to.have.property('data')
-  //       .which.includes.all.keys(['_id', 'display_name', 'email', 'password_hash', 'role', 'elo', 'created_at', 'updated_at']);
-  //   });
-  //   it("should not create admin", async () => {
-  //     const res = await chai.request(app)
-  //       .post("/user/admin/admin/")
-  //       .set("content-type", "application/json")
-  //       .send({
-  //         "display_name": "thisdoesntmatter",
-  //         "email": "test@email.com",
-  //         "password": "randompassword"
-  //       });
-  //     expect(res).to.have.status(404);
-  //     expect(res).to.be.a('object');
-  //     expect(res.body).to.include.all.keys(['errors']);
-  //   });
-  // });
+      expect(res).to.have.status(200);
+      expect(res).to.be.a('object');
+      expect(res.body).to.have.property('data')
+        .which.includes.all.keys(['_id', 'display_name', 'email', 'password_hash', 'role', 'elo', 'created_at', 'updated_at']);
+    });
+    it("should not create admin", async () => {
+      const res = await chai.request(app)
+        .post("/user/admin/admin/")
+        .set("content-type", "application/json")
+        .send({
+          "display_name": "thisdoesntmatter",
+          "email": "test@email.com",
+          "password": "randompassword"
+        });
+      expect(res).to.have.status(404);
+      expect(res).to.be.a('object');
+      expect(res.body).to.include.all.keys(['errors']);
+    });
+  });
   describe(("POST /admin/login"), () => {
     it("should login admin", async () => {
       const res = await chai.request(app).post("/user/admin/admin/login")

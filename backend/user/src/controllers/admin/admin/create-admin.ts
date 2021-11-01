@@ -17,11 +17,18 @@ async function createAdminController(httpRequest: Request & { context: { validat
     const adminDetails: Omit<IUser, "_id"> & { password: string } = _.get(httpRequest, "context.validated");
     const admin_exist = await userService.findByEmail({
       email: adminDetails.email,
-      role: UserRole.ADMIN,
+      role: UserRole.ADMIN
+    })
+    const account_exists = await userService.findByEmailExists({
+      email: adminDetails.email
     });
-
+    
     if (admin_exist) {
       throw Error("Admin already existed. Please login instead.");
+    }
+
+    if (account_exists?.deleted_at) {
+      const deleted = await userService.hardDelete({ id: account_exists._id });
     }
 
     const password_hash = await hashPassword({
