@@ -21,7 +21,7 @@ describe("hardDeleteChatById", () => {
 
   test("should throw error", async () => {
     const chatDb = makeChatDb({ chatDbModel });
-    const mock_chat = await makeFakeChat();
+    const mock_chat = makeFakeChat();
     const hardDeleteChatById = makeHardDeleteChatById({ chatDb });
     const action = async () => {
       await hardDeleteChatById({ id: mock_chat._id });
@@ -32,7 +32,7 @@ describe("hardDeleteChatById", () => {
   test("should delete chat by id", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const createChat = makeCreateChat({ chatDb });
-    const mock_chat = await makeFakeChat();
+    const mock_chat = makeFakeChat();
 
     const result = await createChat({ chatDetails: mock_chat });
     const expected = new Chat(mock_chat);

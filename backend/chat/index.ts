@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
-import router from "./src/routes/chat";
+import router from "./src/routes";
 import makeSockets from "./src/configs/make-sockets";
 import http from "http";
 import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
@@ -20,7 +20,6 @@ const corsOptions = {
 
 app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
-app.use(makeLogger());
 
 makeDb();
 
@@ -28,7 +27,10 @@ makeDb();
 const PORT = process.env.port || 3005;
 const server = http.createServer(app);
 
-makeSockets(server, corsOptions);
+if (process.env.NODE_ENV !== "test") {
+  makeSockets(server, corsOptions);
+  app.use(makeLogger());
+}
 app.use("/chat/api", router);
 app.get(["/", "/chat"], function (req, res) {
   res.send("Chat microservice is running");

@@ -20,7 +20,7 @@ describe("getChatById", () => {
   test("should return the existing chat", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const createChat = makeCreateChat({ chatDb });
-    const mock_chat = await makeFakeChat();
+    const mock_chat = makeFakeChat();
 
     const result = await createChat({ chatDetails: mock_chat });
     const expected = new Chat(mock_chat);
@@ -33,7 +33,7 @@ describe("getChatById", () => {
 
   test("should return null if chat does not exist", async () => {
     const chatDb = makeChatDb({ chatDbModel });
-    const mock_chat = await makeFakeChat();
+    const mock_chat = makeFakeChat();
 
     const getChatById = makeGetChatById({ chatDb });
     const fetch_result = await getChatById({ id: mock_chat._id });

@@ -22,7 +22,7 @@ describe("updateChat", () => {
   test("should return the updated chat", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const createChat = makeCreateChat({ chatDb });
-    const mock_chat = await makeFakeChat();
+    const mock_chat = makeFakeChat();
 
     const result = await createChat({ chatDetails: mock_chat });
     const expected = new Chat(mock_chat);
@@ -32,7 +32,7 @@ describe("updateChat", () => {
     const fetch_result = await getChatByEmail({ id: mock_chat._id });
     expect(_.omit(fetch_result, ["_id", "content"])).toEqual(_.omit(fetch_result, ["_id", "content"]));
 
-    const second_mock_chat = await makeFakeChat();
+    const second_mock_chat = makeFakeChat();
     const updateChat = makeUpdateChat({ chatDb });
 
     const updated_chat = Object.assign({}, mock_chat, {

@@ -19,7 +19,7 @@ describe("createChat", () => {
   test("should return the created chat passed into function", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const createChat = makeCreateChat({ chatDb });
-    const mock_chat = await makeFakeChat();
+    const mock_chat = makeFakeChat();
 
     const result = await createChat({ chatDetails: mock_chat });
     const expected = new Chat(mock_chat);

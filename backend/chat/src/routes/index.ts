@@ -1,8 +1,20 @@
 import express from "express";
-import chatRouter from "./chat";
+import makeExpressCallback from "../express-callback";
+import makeValidator from "../middlewares/validator-middleware";
 
-const router = express.Router();
+import { createChatRules, getChatRules, updateChatRules } from "../controllers/chat/validators";
+import {
+  createChatController,
+  getChatController,
+  updateChatController,
+  getChatByMatchIdController,
+} from "../controllers/chat";
 
-router.use("/chat", chatRouter);
+const chatRouter = express.Router();
 
-export default router;
+chatRouter.post("/", makeValidator(createChatRules), makeExpressCallback(createChatController));
+chatRouter.get("/:chat_id", makeValidator(getChatRules), makeExpressCallback(getChatController));
+chatRouter.get("/match/:match_id", makeExpressCallback(getChatByMatchIdController));
+chatRouter.put("/", makeValidator(updateChatRules), makeExpressCallback(updateChatController));
+
+export default chatRouter;
