@@ -1,8 +1,19 @@
 import express from "express";
-import editorRouter from "./editor";
+import makeExpressCallback from "../../express-callback";
+import makeValidator from "../../middlewares/validator-middleware";
 
-const router = express.Router();
+import { createEditorRules, getEditorRules } from "../../controllers/editor/validators";
+import {
+  createEditorController,
+  getEditorController,
+  executeCodeController,
+  getEditorByMatchIdController,
+} from "../../controllers/editor";
 
-router.use("/editor", editorRouter);
+const editorRouter = express.Router();
 
-export default router;
+editorRouter.post("/", makeValidator(createEditorRules), makeExpressCallback(createEditorController));
+editorRouter.get("/match/:match_id", makeExpressCallback(getEditorByMatchIdController));
+editorRouter.get("/:editor_id", makeValidator(getEditorRules), makeExpressCallback(getEditorController));
+editorRouter.post("/execute", makeExpressCallback(executeCodeController));
+export default editorRouter;

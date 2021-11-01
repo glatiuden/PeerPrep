@@ -1,7 +1,7 @@
 import _ from "lodash";
-import app from "../index";
-import makeFakeChat from "../__tests__/__fixtures__/make-fake-chat";
-import { connect, clearDatabase } from "../__tests__/__fixtures__/jest-mongo";
+import app from "../../index";
+import makeFakeChat from "../__fixtures__/make-fake-chat";
+import { connect, clearDatabase } from "../__fixtures__/jest-mongo";
 import request from "supertest";
 
 const api = request(app);
