@@ -12,6 +12,15 @@ defaults:
     working-directory: ./backend/editor
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+      
+    - run: yarn install
+    - run: yarn test:once
+    
   build-and-push:
     runs-on: ubuntu-latest
     env:
@@ -26,7 +35,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-southeast-1
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
 
       - name: Log in to AWS ECR
         id: login-ecr
@@ -40,16 +49,8 @@ jobs:
 
       - name: Build Docker Image
         id: build-image
-        run: docker build -t $ECR_REPOSITORY .
-
-#       - name: Tag Docker image with latest
-#         id: tag-image-latest
-#         run: docker tag $ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION_TAG .
         
-      - name: Tag Docker image with Github SHA
-        id: tag-image-sha
-        run: docker tag $ECR_REPOSITORY $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION_TAG
-
       - name: Push image(s) to AWS ECR 
         id: push-image
         run: docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
