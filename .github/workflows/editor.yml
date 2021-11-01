@@ -22,6 +22,7 @@ jobs:
     - run: yarn test:once
     
   build-and-push:
+    needs: test
     runs-on: ubuntu-latest
     env:
       ECR_REPOSITORY: editor-ms
