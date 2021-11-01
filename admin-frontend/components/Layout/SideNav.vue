@@ -170,7 +170,6 @@ export default {
       this.SET_SHOW_DRAWER({ data });
     },
     show_drawer(data) {
-      console.log(data);
       this.local_show_drawer = data;
     },
   },

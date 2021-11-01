@@ -14,6 +14,9 @@ async function makeDb() {
 }
 
 export function makeDatabaseURL(): string {
+  if (process.env.NODE_ENV === 'test'){
+    return `mongodb://127.0.0.1:27017/test`;
+  }
   const {
     MONGO_USERNAME = "admin",
     MONGO_PASSWORD = "CfP5yievMjLAncX4",

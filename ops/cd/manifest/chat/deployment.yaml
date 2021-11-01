@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: editor
+  name: chat
   labels:
-    app: editor
+    app: chat
   namespace: peerprep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: editor
+      app: chat
   template:
     metadata:
       labels:
-        app: editor
+        app: chat
     spec:
       containers:
-        - name: editor
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms
+        - name: chat
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms:master-e3364c8-1635682427 # {"$imagepolicy": "flux-system:chat"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
-                name: editor-env
+                name: chat-env
           ports:
-            - containerPort: 3004
+            - containerPort: 3005
               protocol: TCP
       imagePullSecrets:
           - name: regcred

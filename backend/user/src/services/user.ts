@@ -30,6 +30,15 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
       return null;
     }
 
+    async findByEmailExists({ email }: { email: string; }): Promise<IUser | null> {
+      const query_conditions = { email };
+      const existing = await userDbModel.findOne(query_conditions);
+      if (existing) {
+        return existing;
+      }
+      return null;
+    }
+
     async findAll(): Promise<IUser[]> {
       const query_conditions = { deleted_at: undefined };
       const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
@@ -40,7 +49,6 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     }
 
     async findAllByUserIds({ user_ids }: { user_ids: string[] }): Promise<IUser[]> {
-      console.log(user_ids);
       const query_conditions = { deleted_at: undefined, _id: { $in: user_ids } };
       const existing = await userDbModel.find(query_conditions).sort({ updated_at: "desc" });
       if (existing) {
@@ -71,7 +79,6 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
       return null;
     }
 
-    // TODO: Check if this is necessary.
     async reset(): Promise<boolean> {
       const result = await userDbModel.deleteMany({});
       return result.deletedCount > 0;

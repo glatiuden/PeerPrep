@@ -33,7 +33,7 @@ async function logoutUserController(httpRequest: { context: { validated: { email
       headers,
       statusCode: 404,
       body: {
-        error: err.message,
+        errors: err.message,
       },
     };
   }

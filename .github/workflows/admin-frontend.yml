@@ -1,0 +1,37 @@
+name: Build and Deploy Admin Frontend
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'admin-frontend/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Install dependencies
+          working-directory: ./admin-frontend
+          run: yarn
+
+        - name: Build
+          working-directory: ./admin-frontend
+          run: yarn generate
+
+        - name: Deploy
+          uses: reggionick/s3-deploy@v3
+          with:
+            folder: ./admin-frontend/dist
+            bucket: ${{ secrets.S3_ADMIN_STAGING_BUCKET }}
+            bucket-region: ${{ secrets.AWS_DEFAULT_REGION }}
+            dist-id: ${{ secrets.ADMIN_STAGING_CLOUDFRONT_DISTRIBUTION_ID }}
+            invalidation: /*
+            delete-removed: true
+            no-cache: true
+            private: true
