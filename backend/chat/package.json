@@ -9,7 +9,6 @@
     "serve": "NODE_ENV=production ts-node  --log-error -- index.ts",
     "test": "jest --config jest.config.js --watch --runInBand --detectOpenHandles --verbose",
     "test:once": "NODE_ENV=test jest --config jest.config.js --runInBand --forceExit",
-    "test:api": "NODE_ENV=test env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit --timeout 10000 -r ts-node/register './src/tests/*.ts'",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "author": "",
