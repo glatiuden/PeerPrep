@@ -7,7 +7,7 @@
     "start": "nodemon",
     "dev": "nodemon",
     "serve": "NODE_ENV=production ts-node  --log-error -- index.ts",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --exit --timeout 10000 -r ts-node/register './src/tests/*.ts'",
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' &&NODE_ENV=test mocha --exit --timeout 10000 -r ts-node/register './src/tests/*.ts'",
     "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "author": "",
