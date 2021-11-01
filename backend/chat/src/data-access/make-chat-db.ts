@@ -53,8 +53,9 @@ export default function makeChatService({ chatDbModel }: { chatDbModel: mongoose
 
     async delete({ id }: { id: string }): Promise<Chat | null> {
       const existing = await chatDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() });
-      if (existing) {
-        return new Chat(existing);
+      const updated = await chatDbModel.findById({ _id: existing._id });
+      if (updated) {
+        return new Chat(updated);
       }
       return null;
     }

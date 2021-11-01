@@ -18,7 +18,7 @@ describe("getChats", () => {
     await clearDatabase();
   });
 
-  test("should return null if chat does not exist", async () => {
+  test("should return null", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const getChats = makeGetChats({ chatDb });
     const fetch_result = await getChats();
@@ -26,6 +26,7 @@ describe("getChats", () => {
 
     expect(fetch_result).toEqual(expected);
   });
+
   test("should return the existing chat", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const createChat = makeCreateChat({ chatDb });
@@ -46,6 +47,7 @@ describe("getChats", () => {
       ]),
     );
   });
+
   test("should contain 1 item as inserted by previous test case", async () => {
     const chatDb = makeChatDb({ chatDbModel });
     const getChats = makeGetChats({ chatDb });
