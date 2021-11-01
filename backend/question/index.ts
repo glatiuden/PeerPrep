@@ -19,10 +19,12 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
-app.use(makeLogger());
+if (process.env.NODE_ENV !== "test") {
+    app.use(makeLogger());
+}
 makeRabbit();
 makeDb();
-const PORT = process.env.port || 3002;
+const PORT = process.env.port || 3006;
 app.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });

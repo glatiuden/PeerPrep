@@ -14,6 +14,7 @@ import {
   getQuestionController,
   getQuestionsController,
   hardDeleteQuestionController,
+  resetQuestionsController,
   updateQuestionController,
 } from "../../controllers/admin/question";
 
@@ -23,6 +24,7 @@ questionRouter.post("/", makeValidator(createQuestionRules), makeExpressCallback
 questionRouter.get("/", makeExpressCallback(getQuestionsController));
 questionRouter.get("/:question_id", makeValidator(getQuestionRules), makeExpressCallback(getQuestionController));
 questionRouter.put("/", makeValidator(updateQuestionRules), makeExpressCallback(updateQuestionController));
+questionRouter.delete("/reset", makeExpressCallback(resetQuestionsController));
 questionRouter.delete(
   "/:question_id",
   makeValidator(deleteQuestionRules),

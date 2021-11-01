@@ -14,16 +14,32 @@ async function makeDb() {
 }
 
 export function makeDatabaseURL(): string {
-  const {
-    MONGO_USERNAME = "cs3219g22",
-    MONGO_PASSWORD = "WYrXKg3eHA0MJGM0",
-    MONGO_CLUSTER = "cluster0.sylvh",
-    MONGO_DB = "question-service",
-  } = process.env;
-  const DATABASE_URL =
-    process.env.DATABASE_URL ||
-    `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`;
-  return DATABASE_URL;
+  if (process.env.NODE_ENV === 'test') {
+    const {
+      MONGO_USERNAME = "cs3219g22",
+      MONGO_PASSWORD = "WYrXKg3eHA0MJGM0",
+      MONGO_CLUSTER = "cluster0.cru6y",
+      MONGO_DB = "test",
+    } = process.env;
+
+    const DATABASE_URL =
+      process.env.DATABASE_URL ||
+      `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`;
+    return DATABASE_URL;
+  } else {
+    const {
+      MONGO_USERNAME = "cs3219g22",
+      MONGO_PASSWORD = "WYrXKg3eHA0MJGM0",
+      MONGO_CLUSTER = "cluster0.sylvh",
+      MONGO_DB = "question-service",
+    } = process.env;
+
+    const DATABASE_URL =
+      process.env.DATABASE_URL ||
+      `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`;
+    return DATABASE_URL;
+  }
+
 }
 
 export function makeDatabaseOptions() {

@@ -167,5 +167,10 @@ export default function makeQuestionService({
       }
       return null;
     }
+
+    async reset(): Promise<boolean> {
+      const result = await questionDbModel.deleteMany({});
+      return result.deletedCount > 0;
+    }
   })();
 }
