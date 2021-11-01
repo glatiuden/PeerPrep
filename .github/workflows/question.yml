@@ -1,0 +1,68 @@
+name: Question Microservice CI
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'backend/question/**'
+
+defaults:
+  run:
+    working-directory: ./backend/question
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js 
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+
+    - name: Start MongoDB
+      uses: supercharge/mongodb-github-action@1.6.0
+      with:
+        mongodb-version: 4.4
+
+    - run: yarn install
+
+    - run: yarn test
+        
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      ECR_REPOSITORY: question-ms
+    steps:
+      # Checkout first to be in root directory
+      - name: Checkout 
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Log in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+          
+      - name: Set the AWS ECR Registry as environment variable
+        run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+
+      - name: Create and set version tag as environment variable
+        run: echo "VERSION_TAG=${GITHUB_REF##*/}-${GITHUB_SHA::7}-$(date +%s)" >> $GITHUB_ENV
+
+      - name: Build Docker Image
+        id: build-image
+        run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$VERSION_TAG .
+        
+      - name: Push image(s) to AWS ECR 
+        id: push-image
+        run: docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
