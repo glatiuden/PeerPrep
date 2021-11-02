@@ -5,7 +5,7 @@ export default interface IMatch {
   partner1_id: string; // Used to fetch user info
   partner2_id: string; // Used to fetch user info
   question_id: string; // Used to fetch question info
-  status: MatchStatus; // Waiting | In-Progress | Completed -> Status to enqueue the match
+  status: MatchStatus; // Waiting | In-Progress | Completed | Cancelled -> Status to enqueue the match
   mode: MatchMode;
   match_requirements: {
     programming_language?: string;

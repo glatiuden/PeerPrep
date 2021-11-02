@@ -26,9 +26,7 @@ app.use(makeLogger());
 
 makeDb();
 new makeRedis();
-const rabbit = new makeRabbit();
-rabbit.createRPCQueue("question");
-rabbit.createRPCQueue("user");
+new makeRabbit();
 
 const PORT = process.env.port || 3003;
 // const server = app.listen(PORT, () => {

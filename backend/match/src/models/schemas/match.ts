@@ -20,8 +20,8 @@ const matchSchema = new Schema(
         lowercase: true,
         enum: ["timed", "otot"],
         required: true,
-        default: "timed",
-      }, // If ELO match => timed
+        default: "timed", // If ELO match => timed
+      },
       elo_match_pool: { type: Schema.Types.ObjectId, ref: "EloMatchPool" },
     },
     // A small data snapshot to aid the ease of displaying meaningful data on frontend
@@ -29,6 +29,8 @@ const matchSchema = new Schema(
       partner1_display_name: { type: String },
       partner2_display_name: { type: String },
       question_title: { type: String },
+      parter1_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
+      partner2_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
     },
     completed_at: { type: Date },
     deleted_at: { type: Date },

@@ -4,6 +4,7 @@ import jackrabbit, { Exchange, Queue } from "@pager/jackrabbit";
 export default class RabbitMQRPC {
   private static rpc_queues: Queue[] = [];
   private static exchange: Exchange;
+  private static publisher: Exchange;
 
   constructor() {
     const rabbit_url = process.env.RABBIT_URL;
@@ -15,6 +16,7 @@ export default class RabbitMQRPC {
     const rabbit = jackrabbit(rabbit_url);
     console.log("Setup RabbitMQ RPC...");
     RabbitMQRPC.exchange = rabbit.default();
+    RabbitMQRPC.publisher = rabbit.fanout();
     RabbitMQRPC.rpc_queues = []; // Instantiate static array
   }
 
@@ -36,6 +38,15 @@ export default class RabbitMQRPC {
 
     new RabbitMQRPC();
     return RabbitMQRPC.exchange;
+  }
+
+  static getPublisher(): Exchange {
+    if (!_.isNil(RabbitMQRPC.publisher)) {
+      return RabbitMQRPC.publisher;
+    }
+
+    new RabbitMQRPC();
+    return RabbitMQRPC.publisher;
   }
 
   static getQueues(): Queue[] {
