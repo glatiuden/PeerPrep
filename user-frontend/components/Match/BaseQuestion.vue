@@ -52,8 +52,38 @@
         </div>
       </v-expand-transition>
 
+      <!-- Constraints -->
+      <v-card-actions v-if="question_constraints.length > 0">
+        <v-btn text color="white" @click="show_constraints = !show_constraints"
+          >{{ show_constraints ? "Hide" : "Show" }} Constraints</v-btn
+        >
+        <v-spacer></v-spacer>
+        <v-btn icon @click="show_constraints = !show_constraints">
+          <v-icon color="white">
+            {{ show_constraints ? "mdi-chevron-up" : "mdi-chevron-down" }}
+          </v-icon>
+        </v-btn>
+      </v-card-actions>
+
+      <v-expand-transition>
+        <div v-show="show_constraints">
+          <v-card-text class="py-1">
+            <code class="example">
+              <ul>
+                <li
+                  v-for="(constraint, index) in question_constraints"
+                  :key="index"
+                >
+                  {{ constraint }}
+                </li>
+              </ul>
+            </code>
+          </v-card-text>
+        </div>
+      </v-expand-transition>
+
       <!-- Hints -->
-      <v-card-actions v-if="question_hints.length > 0">
+      <v-card-actions v-if="question_hints.length > 0" class="py-0">
         <v-btn text color="white" @click="show_hints = !show_hints"
           >{{ show_hints ? "Hide" : "Show" }} Hints</v-btn
         >
@@ -93,6 +123,7 @@ export default {
     return {
       show_examples: false,
       show_hints: false,
+      show_constraints: false,
     };
   },
   computed: {
@@ -103,6 +134,10 @@ export default {
     question_hints() {
       const hints = _.get(this.question, "hints", []);
       return _.compact(hints);
+    },
+    question_constraints() {
+      const constraints = _.get(this.question, "constraints", []);
+      return _.compact(constraints);
     },
   },
   methods: {
