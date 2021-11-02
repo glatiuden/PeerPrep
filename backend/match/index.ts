@@ -22,17 +22,16 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+makeDb();
+
+const PORT = process.env.port || 3003;
+const server = http.createServer(app);
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
   new makeRedis();
   new makeRabbit();
   makeSockets(server, corsOptions);
 }
-
-makeDb();
-
-const PORT = process.env.port || 3003;
-const server = http.createServer(app);
 
 // Initialize routes
 app.use("/match/api", apiRouter);
