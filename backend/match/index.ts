@@ -27,10 +27,10 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 makeDb();
-new makeRedis();
-const rabbit = new makeRabbit();
-rabbit.createRPCQueue("question");
-rabbit.createRPCQueue("user");
+// new makeRedis();
+// const rabbit = new makeRabbit();
+//rabbit.createRPCQueue("question");
+//rabbit.createRPCQueue("user");
 
 const PORT = process.env.port || 3003;
 // const server = app.listen(PORT, () => {
@@ -39,7 +39,7 @@ const PORT = process.env.port || 3003;
 const server = http.createServer(app);
 
 // Initialize routes
-makeSockets(server, corsOptions);
+//makeSockets(server, corsOptions);
 app.use("/match/api", apiRouter);
 app.use("/match/admin", adminRouter);
 
