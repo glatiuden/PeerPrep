@@ -1,4 +1,4 @@
-import RabbitMQRPQ from "../configs/make-rabbitmq-rpc";
+import { rpcClient, pubsubClient } from "../configs/make-rabbitmq";
 import { matchDbModel, eloMatchPoolDbModel, ratingDbModel } from "../models";
 
 import makeEditorService from "./match";
@@ -11,8 +11,8 @@ const matchService = makeEditorService({ matchDbModel });
 const eloMatchPoolService = makeEloMatchPoolService({ eloMatchPoolDbModel });
 const ratingService = makeRatingService({ ratingDbModel });
 
-const questionService = makeQuestionService({ exchange: RabbitMQRPQ.getExchange() });
-const userService = makeUserService({ exchange: RabbitMQRPQ.getExchange(), publisher: RabbitMQRPQ.getPublisher() });
+const questionService = makeQuestionService({ rpcClient });
+const userService = makeUserService({ rpcClient, pubsubClient });
 
 export default Object.freeze({ matchService, eloMatchPoolService, questionService, userService, ratingService });
 

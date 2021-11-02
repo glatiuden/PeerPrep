@@ -15,7 +15,7 @@ export default function makeRabbitMQ() {
 
   // Pub/Sub
   const consumer = rabbit.fanout();
-  const logs = consumer.queue({ exclusive: true });
+  const logs = consumer.queue({ exclusive: true, prefetch: 1 });
   logs.consume(onPubSubConsume, { noAck: true });
   async function onPubSubConsume(data) {
     const request_type = _.get(data, "request_type");

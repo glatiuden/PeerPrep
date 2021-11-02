@@ -8,7 +8,7 @@ import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
-import makeRabbit from "./src/configs/make-rabbitmq-rpc";
+import makeRabbitMQ from "./src/configs/make-rabbitmq";
 import makeSockets from "./src/configs/make-sockets";
 import makeRedis from "./src/configs/make-redis";
 import http from "http";
@@ -26,7 +26,7 @@ app.use(makeLogger());
 
 makeDb();
 new makeRedis();
-new makeRabbit();
+new makeRabbitMQ();
 
 const PORT = process.env.port || 3003;
 // const server = app.listen(PORT, () => {

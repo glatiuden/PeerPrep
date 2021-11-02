@@ -2,7 +2,7 @@
 
 import { Exchange } from "@pager/jackrabbit";
 
-export default function makeUserService({ exchange, publisher }: { exchange: Exchange; publisher: Exchange }) {
+export default function makeUserService({ rpcClient, pubsubClient }: { rpcClient: Exchange; pubsubClient: Exchange }) {
   const requestor = "match";
 
   return new (class UserRPC {
@@ -13,7 +13,7 @@ export default function makeUserService({ exchange, publisher }: { exchange: Exc
      */
     async findById({ user_id }: { user_id: string }): Promise<any> {
       return new Promise((resolve, reject) => {
-        exchange.publish(
+        rpcClient.publish(
           { requestor, request_type: "findById", user_id },
           {
             key: "user",
@@ -35,7 +35,7 @@ export default function makeUserService({ exchange, publisher }: { exchange: Exc
      */
     async findByIds({ user_ids }: { user_ids: string[] }): Promise<any> {
       return new Promise((resolve, reject) => {
-        exchange.publish(
+        rpcClient.publish(
           { requestor, request_type: "findByIds", user_ids },
           {
             key: "user",
@@ -55,7 +55,7 @@ export default function makeUserService({ exchange, publisher }: { exchange: Exc
      * @param { user_id, elo }
      */
     updateUserElo({ user_id, elo }: { user_id: string; elo: number }) {
-      publisher.publish({ request_type: "updateUserElo", user_id, elo });
+      pubsubClient.publish({ request_type: "updateUserElo", user_id, elo });
     }
   })();
 }

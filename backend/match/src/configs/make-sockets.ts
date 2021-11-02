@@ -17,7 +17,7 @@ export default function makeSockets(server, cors) {
   const nsp = io.of("/match");
 
   if (nsp) {
-    console.log("Successfully connected to sockets");
+    console.log("Successfully connected to Socket.IO");
   }
 
   nsp.on("connection", (socket: Socket) => {

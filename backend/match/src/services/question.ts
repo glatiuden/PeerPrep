@@ -2,13 +2,13 @@
 
 import { Exchange } from "@pager/jackrabbit";
 
-export default function makeQuestionService({ exchange }: { exchange: Exchange }) {
+export default function makeQuestionService({ rpcClient }: { rpcClient: Exchange }) {
   const requestor = "match";
 
   return new (class QuestionRPC {
     async findById({ id }: { id: string }): Promise<any> {
       return new Promise((resolve, reject) => {
-        exchange.publish(
+        rpcClient.publish(
           { requestor, request_type: "findById", question_id: id },
           {
             key: "question",
@@ -24,7 +24,7 @@ export default function makeQuestionService({ exchange }: { exchange: Exchange }
     }
     async findByDifficultyAndTopic({ difficulty, topic }: { difficulty: string; topic?: string }): Promise<any> {
       return new Promise((resolve, reject) => {
-        exchange.publish(
+        rpcClient.publish(
           { requestor, request_type: "findByDifficultyAndTopic", difficulty, topic },
           {
             key: "question",
