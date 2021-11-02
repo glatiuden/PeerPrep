@@ -7,6 +7,7 @@ import makeGetEditors from "./get-editors";
 import makeUpdateEditor from "./update-editor";
 import makeDeleteEditorById from "./delete-editor-by-id";
 import makeHardDeleteEditorById from "./hard-delete-editor-by-id";
+import makeCreateOrUpdateEditor from "./create-or-update-editor";
 
 /**
  * @description Use case to create a new editor
@@ -50,6 +51,12 @@ const deleteEditorById = makeDeleteEditorById({ editorDb: EditorDb });
  */
 const hardDeleteEditorById = makeHardDeleteEditorById({ editorDb: EditorDb });
 
+/**
+ * @description Unit of work to create or update editor
+ * @function createOrUpdateEditor
+ */
+const createOrUpdateEditor = makeCreateOrUpdateEditor({ createEditor, updateEditor, getEditorByMatchId });
+
 const editorServices = Object.freeze({
   createEditor,
   getEditorById,
@@ -58,6 +65,7 @@ const editorServices = Object.freeze({
   updateEditor,
   deleteEditorById,
   hardDeleteEditorById,
+  createOrUpdateEditor,
 });
 
 export default editorServices;
@@ -69,4 +77,5 @@ export {
   updateEditor,
   deleteEditorById,
   hardDeleteEditorById,
+  createOrUpdateEditor,
 };

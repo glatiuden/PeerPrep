@@ -7,6 +7,7 @@ import * as mutex from "lib0/mutex";
 import * as encoding from "lib0/encoding";
 import * as decoding from "lib0/decoding";
 import { pub, sub } from "./pubsub";
+import { createOrUpdateEditor } from "../use-cases/editor";
 
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
@@ -58,7 +59,15 @@ export default async function setupWSConnection(conn: WS, req: http.IncomingMess
     }
   }, pingTimeout);
 
-  conn.on("close", () => {
+  conn.on("close", async () => {
+    const content = doc.getText("monaco").toJSON() || "";
+    if (content) {
+      await createOrUpdateEditor({
+        match_id: docname,
+        content: content,
+      });
+    }
+
     closeConn(doc, conn);
     clearInterval(pingInterval);
   });

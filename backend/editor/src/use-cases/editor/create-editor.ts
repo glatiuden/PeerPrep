@@ -3,7 +3,7 @@ import IEditor from "../../entities/interfaces/editor";
 import IEditorDb from "../../data-access/interfaces/editor-db";
 
 interface ICreateEditorData {
-  editorDetails: Omit<IEditor, "_id">;
+  editorDetails: Partial<IEditor>;
 }
 
 export type ICreateEditor = ({ editorDetails }: ICreateEditorData) => Promise<Editor | null>;

@@ -3,7 +3,7 @@ import { Types } from "mongoose";
 
 export default class Editor implements IEditor {
   public readonly _id: string;
-  public readonly match_id: Types.ObjectId;
+  public readonly match_id: string;
   public readonly content: string;
   public readonly deleted_at?: Date;
   public readonly created_at: Date;
