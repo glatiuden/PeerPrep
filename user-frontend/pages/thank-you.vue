@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <v-skeleton-loader
+    v-if="loading"
+    type="table-heading, table-tbody, table-tfoot"
+  >
+  </v-skeleton-loader>
+  <div v-else>
     <v-banner single-line color="light_primary">
       <v-row justify="center" align="center">
         <v-col cols="12" md="3" lg="2">
@@ -117,21 +122,24 @@ import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategory
 import userMixin from "@/mixins/user";
 import questionMixin from "@/mixins/question";
 import matchMixin from "@/mixins/match";
+import systemMixin from "@/mixins/system";
 
 export default {
   name: "ThankYou",
-  mixins: [userMixin, questionMixin, matchMixin],
+  mixins: [userMixin, questionMixin, matchMixin, systemMixin],
   data() {
     return {
       lottieOptions: { animationData: completedLottie, loop: true },
       elo_rating: 0,
       match_question: undefined,
+      invalid: false,
     };
   },
   async fetch() {
     try {
       this.SET_LOADING({ data: true });
-      this.match_id = localStorage.getItem("match_id") || this.$route.params.id; // Either from localStorage or URL params
+      console.log(localStorage.getItem("match_id"));
+      this.match_id = localStorage.getItem("match_id");
       // If match is not in store, retrieve from server
       if (!this.match) {
         await this.GET_MATCH({ match_id: this.match_id });

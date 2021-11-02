@@ -66,18 +66,18 @@ const actions: ActionTree<MatchState, RootState> = {
     });
 
     if (is_completed) {
-      dispatch(
-        "$nuxtSocket/emit",
-        {
-          label: "editor",
-          evt: "end_session",
-          msg: {
-            match_id,
-            content: state.codes,
-          },
-        },
-        { root: true },
-      );
+      // dispatch(
+      //   "$nuxtSocket/emit",
+      //   {
+      //     label: "editor",
+      //     evt: "end_session",
+      //     msg: {
+      //       match_id,
+      //       content: state.codes,
+      //     },
+      //   },
+      //   { root: true },
+      // );
       dispatch(
         "$nuxtSocket/emit",
         {
