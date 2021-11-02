@@ -3,9 +3,10 @@ import { createAdapter } from "socket.io-redis";
 import { createClient } from "redis";
 import { logger } from "./logs";
 import { ChatDb } from "../data-access";
+import { corsOptions } from "../middlewares/access-controller-middleware";
 
-export default function makeSockets(server, cors) {
-  const io = new Server(server, { transports: ["polling"], path: "/chat/new" });
+export default function makeSockets(server) {
+  const io = new Server(server, { transports: ["polling"], cors: corsOptions, path: "/chat/new" });
   const pubClient = createClient("//redis-12661.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:12661", {
     auth_pass: "N4llYIJfuTY48DLszrrow9JGPdWRX19B",
   });

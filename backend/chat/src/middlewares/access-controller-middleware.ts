@@ -6,7 +6,7 @@ export default function accessControlMiddleware(req: Request, res: Response, nex
   // req.headers["access-control-allow-origin"] ||
   const origin = getAccessControlAllowOrigin(req);
   res.setHeader("Access-Control-Allow-Origin", origin);
-
+  corsOptions.origin = origin;
   // Request methods you wish to allow
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
 
@@ -16,6 +16,12 @@ export default function accessControlMiddleware(req: Request, res: Response, nex
   // Pass to next layer of middleware
   next();
 }
+
+export const corsOptions = {
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
+};
 
 function getAccessControlAllowOrigin(req: Request): string {
   const allowed_origins = [

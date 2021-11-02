@@ -27,7 +27,7 @@ const server = http.createServer(app);
 
 if (process.env.NODE_ENV !== "test") {
   makeDb();
-  makeSockets(server, corsOptions);
+  makeSockets(server);
   app.use(makeLogger());
 }
 app.use("/chat/api", router);
