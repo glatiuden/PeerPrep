@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: question
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms:master-e8e8147-1635829207 # {"$imagepolicy": "flux-system:question"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
