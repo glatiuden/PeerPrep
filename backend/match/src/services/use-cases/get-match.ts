@@ -12,7 +12,7 @@ export default async function getMatch(match_id: string) {
   const redis_key = `record-${match_id}`;
   try {
     const data_exist_in_cache = await redisClient.getAsync(redis_key);
-    if (!!data_exist_in_cache) {
+    if (data_exist_in_cache) {
       logger.verbose(`Redis: Match ${match_id} found in cache! Returning...`);
       return JSON.parse(data_exist_in_cache);
     }
@@ -27,7 +27,8 @@ export default async function getMatch(match_id: string) {
     const partner1 = _.get(users, "[0]");
     const partner2 = _.get(users, "[1]");
 
-    if (_.isEmpty(match.meta)) {
+    const has_no_meta = _.isEmpty(match.meta);
+    if (has_no_meta) {
       match = await matchService.update({
         _id: match._id,
         meta: {

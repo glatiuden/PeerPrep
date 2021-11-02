@@ -1,5 +1,4 @@
-import _ from "lodash";
-import mongoose from "mongoose";
+import mongoose, { ClientSession } from "mongoose";
 
 import IEloMatchPool, { EloMatchPoolStatus } from "../models/interfaces/elo-match-pool";
 
@@ -9,9 +8,15 @@ export default function makeEloMatchPoolService({
   eloMatchPoolDbModel: mongoose.Model<IEloMatchPool & mongoose.Document>;
 }) {
   return new (class MongooseMatchDb {
-    async insert(insertPayload: Partial<IEloMatchPool>): Promise<IEloMatchPool | null> {
-      const result = await eloMatchPoolDbModel.create([insertPayload]);
-      const updated = await eloMatchPoolDbModel.findOne({ _id: result[0]?._id });
+    async insert(
+      insertPayload: Partial<IEloMatchPool>,
+      { session = undefined }: { session?: ClientSession | undefined } = {},
+    ): Promise<IEloMatchPool | null> {
+      const result = await eloMatchPoolDbModel.create([insertPayload], { session });
+      const updated = await eloMatchPoolDbModel
+        .findOne({ _id: result[0]?._id })
+        .session(session || null)
+        .lean();
       if (updated) {
         return updated;
       }
@@ -26,7 +31,7 @@ export default function makeEloMatchPoolService({
       topic,
     }: {
       user_id: string;
-      user_elo;
+      user_elo: number;
       programming_language: string;
       difficulty: string;
       topic?: string;
@@ -37,6 +42,7 @@ export default function makeEloMatchPoolService({
         programming_language,
         difficulty,
         deleted_at: undefined,
+        u1: { $gt: user_elo - 100, $lt: user_elo + 100 },
       };
 
       if (topic) {
@@ -67,9 +73,15 @@ export default function makeEloMatchPoolService({
       return [];
     }
 
-    async update(payload: Partial<IEloMatchPool>): Promise<IEloMatchPool | null> {
-      await eloMatchPoolDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await eloMatchPoolDbModel.findById({ _id: payload._id });
+    async update(
+      payload: Partial<IEloMatchPool>,
+      { session = undefined }: { session?: ClientSession | undefined } = {},
+    ): Promise<IEloMatchPool | null> {
+      await eloMatchPoolDbModel.findOneAndUpdate({ _id: payload._id }, payload, { session });
+      const updated = await eloMatchPoolDbModel
+        .findById({ _id: payload._id })
+        .session(session || null)
+        .lean();
       if (updated) {
         return updated;
       }
