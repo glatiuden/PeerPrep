@@ -47,7 +47,7 @@
     <v-card-text class="my-3">
       <v-form v-model="valid">
         <div class="my-3">
-          <h3>Match Options</h3>
+          <h3>Practice Mode Match</h3>
           <p class="text-caption">
             Please select the following options so we can best match you to a
             suitable partner!

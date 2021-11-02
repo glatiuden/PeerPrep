@@ -2,14 +2,19 @@
   <div class="mt-3">
     <div id="monaco-editor" ref="editor" />
     <div class="my-3">
-      <v-btn color="primary" depressed :loading="loading" @click="executeCode"
-        >Run Your Code (Beta)
-      </v-btn>
       <pre
-        v-if="!code_output"
-        class="pre mt-6"
-      ><v-textarea v-model="code_input" rows="1" label="Input (If any; else leave blank)" auto-grow hide-details class="custom-label-color" dark></v-textarea></pre>
-      <pre v-else class="pre mt-6"><samp>{{ code_output }}</samp></pre>
+        class="pre"
+      >Run Your Code<v-textarea v-model="code_input" dense rows="1" label="Input (If any; else leave blank)" 
+        auto-grow hide-details class="custom-label-color" 
+        dark append-outer-icon="mdi-play"
+        :loading="execute_code_loading" @click:append-outer="executeCode" @keyup.enter="executeCode"></v-textarea></pre>
+      <!-- <v-btn color="primary" depressed :loading="loading" @click="executeCode"
+        >Run Your Code
+      </v-btn> -->
+      <pre
+        v-if="code_output"
+        class="pre mt-6 py-6"
+      ><samp>{{ code_output }}</samp></pre>
     </div>
   </div>
 </template>
@@ -68,6 +73,7 @@ export default {
       ],
       ydoc: undefined,
       provider: undefined,
+      execute_code_loading: false,
     };
   },
   async fetch() {
@@ -126,8 +132,9 @@ export default {
   methods: {
     async executeCode() {
       try {
+        this.execute_code_loading = true;
         const result = await this.EXECUTE_CODE({
-          code: this.codes,
+          code: this.ydoc.getText("monaco").toJSON(),
           language: this.selected_language,
           input: this.code_input,
         });
@@ -136,7 +143,7 @@ export default {
         console.error(err);
         this.$notification.error(`Encountered error executing code: ${err}`);
       } finally {
-        this.SET_LOADING({ data: false });
+        this.execute_code_loading = false;
       }
     },
   },

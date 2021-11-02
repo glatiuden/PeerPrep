@@ -27,7 +27,7 @@ export default async function getMatch(match_id: string) {
     const partner1 = _.get(users, "[0]");
     const partner2 = _.get(users, "[1]");
 
-    const has_no_meta = _.isEmpty(match.meta);
+    const has_no_meta = !_.get(match, "meta") || _.isEqual(match.meta, {});
     if (has_no_meta) {
       match = await matchService.update({
         _id: match._id,
