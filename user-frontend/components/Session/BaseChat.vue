@@ -13,12 +13,12 @@
           :key="index"
           class="message mb-1"
           :class="{
-            'message-out': message.user_id === user._id,
-            'message-in': message.user_id !== user._id,
+            'message-out': message.user_id === user_id,
+            'message-in': message.user_id !== user_id,
           }"
         >
-          <small
-            >{{ message.display_name }} @
+          <small>
+            {{ message.display_name }} @
             {{ $moment(message.time_sent).format("hh:mm A") }}</small
           ><br />
           {{ message.message }}
@@ -47,7 +47,7 @@ import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 import matchMixin from "@/mixins/match";
 
-import BaseVideoChat from "@/components/Match/BaseVideoChat";
+import BaseVideoChat from "@/components/Session/BaseVideoChat";
 
 export default {
   name: "BaseChat",
@@ -103,6 +103,9 @@ export default {
     });
   },
   methods: {
+    /**
+     * @description Dynamically computes the chat dialog size
+     */
     chat_div_height() {
       if (this.is_video_on) {
         return this.chat_height - 430;
@@ -122,7 +125,7 @@ export default {
       }
 
       const message = {
-        user_id: this.user._id,
+        user_id: this.user_id,
         display_name: this.user.display_name,
         message: this.chat_message,
         time_sent: this.$moment(),
@@ -140,16 +143,6 @@ export default {
 </script>
 
 <style>
-.message-group {
-  height: 58vh !important;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-.receive {
-  background-color: #182533;
-}
-
 .send {
   background-color: #407fff;
 }
@@ -178,9 +171,5 @@ export default {
   background: #f1f0f0;
   color: black;
   margin-left: 5%;
-}
-
-.scrollable {
-  overflow: auto;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseProfile v-if="has_user" />
+    <BaseDashboard v-if="has_user" />
     <BaseLanding v-else class="pt-6" />
   </div>
 </template>
@@ -10,11 +10,11 @@ import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 
 import BaseLanding from "@/components/Index/BaseLanding";
-import BaseProfile from "@/components/Profile/BaseProfile";
+import BaseDashboard from "@/components/Profile/BaseDashboard";
 
 export default {
   name: "Index",
-  components: { BaseLanding, BaseProfile },
+  components: { BaseLanding, BaseDashboard },
   mixins: [systemMixin, userMixin],
 };
 </script>

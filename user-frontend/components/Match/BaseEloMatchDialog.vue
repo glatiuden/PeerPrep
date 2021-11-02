@@ -1,5 +1,8 @@
 <template>
-  <v-card v-if="!loading">
+  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </div>
+  <v-card v-else>
     <v-card-title> Match Up </v-card-title>
     <v-divider></v-divider>
     <v-card-subtitle class="py-2">

@@ -1,5 +1,8 @@
 <template>
-  <v-card v-if="!loading">
+  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </div>
+  <v-card v-else>
     <v-divider></v-divider>
     <v-card-text class="my-3 text-center">
       <div v-if="is_timer_ended">
@@ -46,7 +49,7 @@ import matchMixin from "@/mixins/match";
 import systemMixin from "@/mixins/system";
 
 export default {
-  name: "BaseQuestionDialog",
+  name: "BaseWaitMatchDialog",
   mixins: [matchMixin, systemMixin],
   data() {
     return {
@@ -64,7 +67,6 @@ export default {
     });
 
     const match_mode = _.get(this.match, "mode", "question");
-
     this.socket.on("connect", () => {
       this.$notification.success(
         `Successfully created a match! We will notify and start the session once there is a match!`,
