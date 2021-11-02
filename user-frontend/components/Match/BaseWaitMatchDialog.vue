@@ -86,7 +86,12 @@ export default {
         this.SET_MATCH({ data });
         this.SET_OPEN_MATCHING_DIALOG({ data: false });
         localStorage.setItem("match_id", match_id);
-        this.$router.push(`/match/${match_id}`);
+        this.$notification.success(
+          `A match has been found! You will be redirected in 3 seconds...`,
+        );
+        setTimeout(() => {
+          this.$router.push(`/session/${match_id}`);
+        }, 3000);
       }
     });
   },

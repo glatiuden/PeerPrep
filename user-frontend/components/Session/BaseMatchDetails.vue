@@ -80,13 +80,14 @@ export default {
     time_left() {
       const updated_at = _.get(this.match, "updated_at");
       const recommended_duration = _.get(
-        this.match_question,
-        "recommended_duration",
+        this.match,
+        "question.recommended_duration",
       );
       const end_time = this.$moment(updated_at).add(
         recommended_duration,
         "minutes",
       );
+
       const time_left = end_time.diff(this.$moment(), "milliseconds");
       return time_left;
     },

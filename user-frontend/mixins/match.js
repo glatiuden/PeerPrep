@@ -25,6 +25,7 @@ export default {
       GET_CHAT: "match/GET_CHAT",
       GET_EDITOR: "match/GET_EDITOR",
       EXECUTE_CODE: "match/EXECUTE_CODE",
+      CREATE_RATING: "match/CREATE_RATING",
     }),
 
     ...mapMutations({

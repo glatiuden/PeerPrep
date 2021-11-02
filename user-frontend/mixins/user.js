@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       elo_rankings: [
+        { elo: 0, text: "Unranked" },
         {
           elo: 1000,
           text: "Novice",

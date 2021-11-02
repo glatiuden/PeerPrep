@@ -72,6 +72,7 @@
               :items="question_topics"
               persistent-hint
               hide-details="auto"
+              clearable
             >
             </v-select>
           </v-col>
@@ -140,7 +141,7 @@ export default {
   },
   async fetch() {
     try {
-      if (!this.question_topics) {
+      if (_.isEmpty(this.question_topics)) {
         await this.GET_QUESTION_TOPICS();
       }
     } catch (err) {

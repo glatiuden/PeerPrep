@@ -43,7 +43,7 @@ export default {
   computed: {
     user_percentage() {
       const percentage =
-        (this.next_tier.elo - this.user.elo) / this.next_tier.elo;
+        1 - (this.next_tier.elo - this.user.elo) / this.next_tier.elo;
       return percentage * 100;
     },
     current_tier() {
@@ -51,6 +51,7 @@ export default {
         this.elo_rankings,
         ({ elo }) => elo <= this.user.elo,
       );
+
       return current_tier;
     },
     next_tier() {

@@ -9,7 +9,10 @@
       <v-col md="12" lg="3">
         <div class="sticky-column mx-5 ml-lg-5">
           <BaseQuestionDetails :question="match_question" />
-          <BaseMatchDetails :is-history-mode="is_history_mode" />
+          <BaseMatchDetails
+            :is-history-mode="is_history_mode"
+            @end-match="endMatch"
+          />
         </div>
       </v-col>
       <v-col md="12" lg="6">

@@ -135,6 +135,22 @@ const actions: ActionTree<MatchState, RootState> = {
       console.error(err);
     }
   },
+  /**
+   * @description create ratings
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.CREATE_RATING]({ commit }, params = {}) {
+    try {
+      const { data: rating } = await this.$axios.$post(
+        `/match/api/rating`,
+        params,
+      );
+      return rating;
+    } catch (err) {
+      console.error(err);
+    }
+  },
 };
 
 export default actions;

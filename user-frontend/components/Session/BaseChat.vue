@@ -31,7 +31,6 @@
         class="pt-0 white--text"
         rows="1"
         hide-details
-        auto-grow
         append-outer-icon="mdi-send"
         color="white"
         @click:append-outer="sendMessage"

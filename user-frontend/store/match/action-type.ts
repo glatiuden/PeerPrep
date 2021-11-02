@@ -7,4 +7,5 @@ export enum ActionTypes {
   GET_CHAT = "GET_CHAT",
   GET_EDITOR = "GET_EDITOR",
   EXECUTE_CODE = "EXECUTE_CODE",
+  CREATE_RATING = "CREATE_RATING",
 }
