@@ -94,6 +94,7 @@ export default {
       value: this.codes,
       language: this.selected_language,
       theme: "vs-dark",
+      readOnly: this.isHistoryMode,
     });
 
     // If is view history -> disable sockets on initializing.

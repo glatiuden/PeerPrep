@@ -33,6 +33,7 @@
         hide-details
         append-outer-icon="mdi-send"
         color="white"
+        :disabled="isHistoryMode"
         @click:append-outer="sendMessage"
         @keyup.enter="sendMessage"
       >

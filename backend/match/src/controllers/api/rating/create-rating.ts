@@ -34,7 +34,7 @@ async function createRatingController(httpRequest: Request & { context: { valida
     let receiver_id = partner1_id;
     let is_partner1 = true;
 
-    if (receiver_id !== user_id) {
+    if (user_id === partner1_id) {
       receiver_id = partner2_id;
       is_partner1 = false;
     }

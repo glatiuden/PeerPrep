@@ -36,7 +36,7 @@
               color="primary"
               large
               depressed
-              @click="$router.push(`/history/${match._id}`)"
+              @click="$router.push(`/session/${match._id}?history=true`)"
               >View Match History</v-btn
             >
           </div>
@@ -52,7 +52,7 @@
           ><samp>{{ match_question.solution }}</samp></pre>
         </v-col>
         <v-col cols="12" md="6">
-          <div v-if="hide_ratings">
+          <template v-if="hide_ratings">
             <h2 class="text-center my-3">Featured Topics</h2>
             <v-row align-content="start" align="stretch">
               <v-col
@@ -63,8 +63,8 @@
                 <BaseQuestionCategoryCard :topic="topic" :index="index" />
               </v-col>
             </v-row>
-          </div>
-          <div v-else>
+          </template>
+          <template v-else>
             <h2 class="text-center my-3">Rate your Partner! 😄</h2>
             <v-card
               class="
@@ -109,7 +109,7 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
-          </div>
+          </template>
         </v-col>
       </v-row>
     </div>
@@ -117,14 +117,17 @@
 </template>
 <script>
 import completedLottie from "@/assets/completed-lottie.json";
-import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
+
+import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 import questionMixin from "@/mixins/question";
 import matchMixin from "@/mixins/match";
-import systemMixin from "@/mixins/system";
+
+import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 
 export default {
   name: "ThankYou",
+  components: { BaseQuestionCategoryCard },
   mixins: [userMixin, questionMixin, matchMixin, systemMixin],
   data() {
     return {
