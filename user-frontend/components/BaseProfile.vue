@@ -51,7 +51,11 @@
 
     <v-divider></v-divider>
     <v-list class="pt-0">
-      <v-list-item :dense="is_mobile" class="menu-item clickable">
+      <v-list-item
+        :dense="is_mobile"
+        class="menu-item clickable"
+        @click="$router.push('/')"
+      >
         <v-list-item-icon class="mr-4">
           <v-icon>mdi-face-man-profile</v-icon>
         </v-list-item-icon>

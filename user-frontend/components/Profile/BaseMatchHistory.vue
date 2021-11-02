@@ -119,16 +119,25 @@
       hide-default-footer
       :items-per-page="15"
       class="soft-box-shadow"
+      @click:row="$router.push(`/session/${$event._id}?history=true`)"
     >
       <template #item.meta.question_title="{ item }">
-        <div
-          v-if="item.meta && item.meta.question_title"
-          @click="$router.push(`/history/${item._id}`)"
-        >
+        <div v-if="item.meta && item.meta.question_title">
           {{ item.meta.question_title }} <br />
           (with {{ getPartnerName(item.meta) }})
         </div>
         <div v-else>No Question Selected</div>
+      </template>
+
+      <template #item.mode="{ item }">
+        <v-chip class="white--text" :color="mode_chip_colors[item.mode]">
+          <v-icon left small>{{
+            item.mode === "elo"
+              ? "mdi-shield-sword-outline"
+              : "mdi-chat-question-outline"
+          }}</v-icon>
+          {{ item.mode }}
+        </v-chip>
       </template>
 
       <template #item.status="{ item }">

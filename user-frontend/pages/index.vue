@@ -10,7 +10,7 @@ import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 
 import BaseLanding from "@/components/Index/BaseLanding";
-import BaseDashboard from "@/components/Profile/BaseDashboard";
+import BaseDashboard from "@/components/Index/BaseDashboard";
 
 export default {
   name: "Index",

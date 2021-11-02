@@ -1,19 +1,5 @@
 <template>
   <div class="mt-3">
-    <v-select
-      v-if="false"
-      v-model="selected_language"
-      label="Programming Language"
-      :items="programming_languages"
-      outlined
-      dense
-      hide-details="auto"
-      item-text="text"
-      item-value="value"
-      disabled
-      @change="editorInit"
-    >
-    </v-select>
     <div id="monaco-editor" ref="editor" />
     <div class="my-3">
       <v-btn color="primary" depressed :loading="loading" @click="executeCode"
@@ -28,11 +14,12 @@
   </div>
 </template>
 <script>
-import matchMixin from "@/mixins/match";
 import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
-import loader from "@monaco-editor/loader";
 import { WebsocketProvider } from "y-websocket";
+
+import loader from "@monaco-editor/loader";
+import matchMixin from "@/mixins/match";
 
 export default {
   mixins: [matchMixin],
@@ -87,13 +74,27 @@ export default {
     if (!this.isHistoryMode) {
       return;
     }
-    await this.GET_EDITOR({ match_id: this.matchId });
+
+    try {
+      await this.GET_EDITOR({ match_id: this.matchId });
+    } catch (err) {
+      console.error(err);
+      this.$notification.error(`Encountered error fetching editor: ${err}`);
+    }
   },
   async mounted() {
     this.selected_language = _.get(
       this.match,
       "match_requirements.programming_language",
     );
+
+    const editor_ref = this.$refs.editor;
+    const monaco = await loader.init();
+    const editor = monaco.editor.create(editor_ref, {
+      value: this.codes,
+      language: this.selected_language,
+      theme: "vs-dark",
+    });
 
     // If is view history -> disable sockets on initializing.
     if (this.isHistoryMode) {
@@ -109,14 +110,6 @@ export default {
       );
 
       const type = this.ydoc.getText("monaco");
-
-      const editor_ref = this.$refs.editor;
-      const monaco = await loader.init();
-      const editor = monaco.editor.create(editor_ref, {
-        value: "",
-        language: this.selected_language,
-        theme: "vs-dark",
-      });
       const awareness = this.provider.awareness;
       new MonacoBinding(type, editor.getModel(), new Set([editor]), awareness);
       this.provider.connect();
@@ -137,7 +130,6 @@ export default {
           language: this.selected_language,
           input: this.code_input,
         });
-        console.log(result);
         this.code_output = _.get(result, "output");
       } catch (err) {
         console.error(err);

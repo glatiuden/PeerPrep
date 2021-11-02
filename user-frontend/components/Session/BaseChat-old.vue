@@ -55,7 +55,7 @@ import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 import matchMixin from "@/mixins/match";
 
-import BaseVideoChat from "@/components/Match/BaseVideoChat";
+import BaseVideoChat from "@/components/Session/BaseVideoChat";
 
 export default {
   name: "BaseChat",

@@ -9,15 +9,19 @@
       <v-col md="12" lg="3">
         <div class="sticky-column mx-5 ml-lg-5">
           <BaseQuestionDetails :question="match_question" />
-          <BaseMatchDetails @end-match="endMatch" />
+          <BaseMatchDetails :is-history-mode="is_history_mode" />
         </div>
       </v-col>
       <v-col md="12" lg="6">
-        <BaseCodeEditor :match-id="match_id" class="mx-md-5 mx-lg-0" />
+        <BaseCodeEditor
+          :match-id="match_id"
+          class="mx-md-5 mx-lg-0"
+          :is-history-mode="is_history_mode"
+        />
       </v-col>
       <v-col md="12" lg="3">
         <div class="sticky-column mx-5 mr-lg-5">
-          <BaseChat :match-id="match_id" />
+          <BaseChat :match-id="match_id" :is-history-mode="is_history_mode" />
         </div>
       </v-col>
     </v-row>
@@ -41,27 +45,28 @@ export default {
     BaseCodeEditor,
   },
   mixins: [matchMixin, systemMixin],
-  beforeRouteLeave(to, from, next) {
-    if (this.match_ended) {
-      next();
-      return;
-    }
+  // beforeRouteLeave(to, from, next) {
+  //   if (this.match_ended) {
+  //     next();
+  //     return;
+  //   }
 
-    const answer = confirm(
-      "Do you really want to leave? Your match is still ongoing!",
-    );
+  //   const answer = confirm(
+  //     "Do you really want to leave? Your match is still ongoing!",
+  //   );
 
-    if (answer) {
-      this.endMatch();
-    } else {
-      next(false);
-    }
-  },
+  //   if (answer) {
+  //     this.endMatch();
+  //   } else {
+  //     next(false);
+  //   }
+  // },
   data() {
     return {
       match_id: undefined,
       match_question: undefined,
       match_ended: false,
+      is_history_mode: false,
     };
   },
   async fetch() {
@@ -75,6 +80,8 @@ export default {
       }
       // Set it to data to be passed to question component
       this.match_question = _.get(this.match, "question");
+
+      this.is_history_mode = Boolean(this.$route.query.history);
       // this.checkIsValidMatch();
     } catch (err) {
       console.error(err);

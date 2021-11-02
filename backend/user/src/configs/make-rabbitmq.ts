@@ -29,7 +29,7 @@ export default function makeRabbitMQ() {
           elo: current_user?.elo + elo,
           updated_at: new Date(),
         });
-        console.log("User: Updated user's elo via Pub/sub");
+        logger.verbose("User MS: Updated user's elo via Pub/sub");
         break;
       }
     }
@@ -57,7 +57,7 @@ export default function makeRabbitMQ() {
       }
     }
 
-    logger.verbose("RPC: Sending back result...", { result });
+    logger.verbose("RPC: Sending back result...", { request_type });
     reply({ result });
   };
   rpc.consume(onRequest);
