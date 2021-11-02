@@ -2,7 +2,11 @@
   <div>
     <BaseVideoChat v-if="!isHistoryMode" :match-id="matchId" />
     <v-divider></v-divider>
-    <v-sheet class="fill-height" :height="chat_div_height()">
+    <v-sheet
+      class="fill-height"
+      style="overflow: auto"
+      :height="chat_div_height()"
+    >
       <section ref="chatArea" class="chat-area">
         <p
           v-for="(message, index) in chat_messages"
@@ -109,6 +113,14 @@ export default {
      * @description Send message
      */
     sendMessage() {
+      if (
+        _.isNil(this.chat_message) ||
+        _.isEmpty(this.chat_message) ||
+        this.chat_message === "\n"
+      ) {
+        return;
+      }
+
       const message = {
         user_id: this.user._id,
         display_name: this.user.display_name,
