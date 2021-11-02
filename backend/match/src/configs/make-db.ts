@@ -14,15 +14,11 @@ async function makeDb() {
 }
 
 export function makeDatabaseURL(): string {
-  const {
-    MONGO_USERNAME = "admin",
-    MONGO_PASSWORD = "3YHYkUdqNUMykugo",
-    MONGO_CLUSTER = "cluster0.l5ldk",
-    MONGO_DB = "cs3219-otot-task-b",
-  } = process.env;
-  const DATABASE_URL =
-    process.env.DATABASE_URL ||
-    `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_CLUSTER}.mongodb.net/${MONGO_DB}?retryWrites=true&w=majority`;
+  let DATABASE_URL = process.env.DATABASE_URL || "";
+  if (process.env.NODE_ENV === "test") {
+    DATABASE_URL =
+      "mongodb+srv://cs3219g22:WYrXKg3eHA0MJGM0@cluster0.cru6y.mongodb.net/match-service?retryWrites=true&w=majority";
+  }
   return DATABASE_URL;
 }
 
