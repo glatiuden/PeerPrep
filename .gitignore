@@ -1,6 +1,2 @@
-
-backend/match/.env
-node_modules/
-yarn.lock
-
-ops/cd/manifest/editor/.env
+backend/*/.env
+ops/cd/manifest/*/.env
