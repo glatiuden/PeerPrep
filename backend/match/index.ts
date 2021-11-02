@@ -24,22 +24,17 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
+  new makeRedis();
+  new makeRabbit();
+  makeSockets(server, corsOptions);
 }
 
 makeDb();
-// new makeRedis();
-// const rabbit = new makeRabbit();
-//rabbit.createRPCQueue("question");
-//rabbit.createRPCQueue("user");
 
 const PORT = process.env.port || 3003;
-// const server = app.listen(PORT, () => {
-//   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
-// });
 const server = http.createServer(app);
 
 // Initialize routes
-//makeSockets(server, corsOptions);
 app.use("/match/api", apiRouter);
 app.use("/match/admin", adminRouter);
 
