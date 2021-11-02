@@ -11,6 +11,7 @@ export default {
       chat_messages: "match/chat_messages",
       codes: "match/codes",
       open_matching_dialog: "match/open_matching_dialog",
+      is_video_on: "match/is_video_on",
     }),
   },
 
@@ -33,6 +34,7 @@ export default {
       SET_MATCH: "match/SET_MATCH",
       UPDATE_CHAT_MESSAGES: "match/UPDATE_CHAT_MESSAGES",
       SET_CHAT_MESSAGES: "match/SET_CHAT_MESSAGES",
+      SET_IS_VIDEO_ON: "match/SET_IS_VIDEO_ON",
     }),
   },
 };

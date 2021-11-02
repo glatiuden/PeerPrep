@@ -23,54 +23,58 @@
         Description:
       </p>
       <div class="ml-8">{{ question.description }}</div>
-      <!-- <span>
-        <v-icon class="mr-1">mdi-book</v-icon>
-        <b>Examples:</b>
-      </span>
-      <div class="ma-2">
-        <div v-for="(example, index) in question.examples" :key="index">
-          <code style="display: block">
-            <b>Input: </b> {{ example.input }}
-            <br />
-            <b>Output: </b> {{ example.output }}
-          </code>
-          <br v-if="index !== question.examples.length - 1" />
-        </div>
-      </div> -->
-      <v-card-actions v-if="question.examples.length > 0">
-        <v-btn text @click="show = !show"
-          >{{ show ? "Hide" : "Show" }} Examples</v-btn
+
+      <!-- Examples -->
+      <v-card-actions v-if="question_examples.length > 0">
+        <v-btn text color="white" @click="show_examples = !show_examples"
+          >{{ show_examples ? "Hide" : "Show" }} Examples</v-btn
         >
         <v-spacer></v-spacer>
-        <v-btn icon @click="show = !show">
-          <v-icon>
-            {{ show ? "mdi-chevron-up" : "mdi-chevron-down" }}
+        <v-btn icon @click="show_examples = !show_examples">
+          <v-icon color="white">
+            {{ show_examples ? "mdi-chevron-up" : "mdi-chevron-down" }}
           </v-icon>
         </v-btn>
       </v-card-actions>
 
       <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
-          <v-card-text>
-            <template v-if="question.examples.length > 0">
-              <div v-for="(example, index) in question.examples" :key="index">
-                <code style="display: block">
-                  <b>Input: </b> {{ example.input }}
-                  <br />
-                  <b>Output: </b> {{ example.output }}
-                </code>
-                <br v-if="index !== question.examples.length - 1" />
-              </div>
-            </template>
-            <p v-else>No examples available!</p>
+        <div v-show="show_examples">
+          <v-card-text class="py-1">
+            <div v-for="(example, index) in question_examples" :key="index">
+              <code class="example">
+                <b>Input: </b> {{ example.input }}
+                <br />
+                <b>Output: </b> {{ example.output }}
+              </code>
+              <br v-if="index !== question_examples.length - 1" />
+            </div>
+          </v-card-text>
+        </div>
+      </v-expand-transition>
+
+      <!-- Hints -->
+      <v-card-actions v-if="question_hints.length > 0">
+        <v-btn text color="white" @click="show_hints = !show_hints"
+          >{{ show_hints ? "Hide" : "Show" }} Hints</v-btn
+        >
+        <v-spacer></v-spacer>
+        <v-btn icon @click="show_hints = !show_hints">
+          <v-icon color="white">
+            {{ show_hints ? "mdi-chevron-up" : "mdi-chevron-down" }}
+          </v-icon>
+        </v-btn>
+      </v-card-actions>
+
+      <v-expand-transition>
+        <div v-show="show_hints">
+          <v-card-text class="py-1">
+            <div v-for="(hint, index) in question_hints" :key="index">
+              <p>{{ hint }}</p>
+            </div>
           </v-card-text>
         </div>
       </v-expand-transition>
     </v-card-text>
-    <!-- <v-card-actions class="pb-3">
-      <v-btn color="primary" depressed>Show Hint</v-btn>
-    </v-card-actions> -->
   </v-card>
 </template>
 <script>
@@ -87,8 +91,19 @@ export default {
   },
   data() {
     return {
-      show: false,
+      show_examples: false,
+      show_hints: false,
     };
+  },
+  computed: {
+    question_examples() {
+      const examples = _.get(this.question, "examples", []);
+      return _.compact(examples);
+    },
+    question_hints() {
+      const hints = _.get(this.question, "hints", []);
+      return _.compact(hints);
+    },
   },
   methods: {
     async endMatch() {
@@ -106,3 +121,9 @@ export default {
   },
 };
 </script>
+<style>
+.example {
+  display: block;
+  background-color: #383b40 !important;
+}
+</style>

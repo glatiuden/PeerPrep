@@ -2,7 +2,7 @@
   <div>
     <BaseVideoChat v-if="!isHistoryMode" :match-id="matchId" />
     <v-divider></v-divider>
-    <v-sheet class="fill-height" :height="chat_div_height">
+    <v-sheet class="fill-height" :height="chat_div_height()">
       <section ref="chatArea" class="chat-area">
         <p
           v-for="(message, index) in chat_messages"
@@ -64,7 +64,6 @@ export default {
     return {
       chat_message: undefined,
       chat_height: window.innerHeight,
-      is_video_on: false,
     };
   },
   async fetch() {
@@ -73,14 +72,6 @@ export default {
     }
     const match_id = this.$route.params.id;
     await this.GET_CHAT({ match_id });
-  },
-  computed: {
-    chat_div_height() {
-      if (this.is_video_on) {
-        return this.chat_height - 500;
-      }
-      return this.chat_height - 250;
-    },
   },
   mounted() {
     if (this.isHistoryMode) {
@@ -108,6 +99,12 @@ export default {
     });
   },
   methods: {
+    chat_div_height() {
+      if (this.is_video_on) {
+        return this.chat_height - 430;
+      }
+      return this.chat_height - 250;
+    },
     /**
      * @description Send message
      */

@@ -6,12 +6,12 @@
       <Lottie
         class="my-auto"
         :options="lottie_options"
-        :width="200"
-        :height="200"
+        :width="150"
+        :height="150"
       />
       <p class="text-center">
         Questions are randomly assigned according to the level of difficulty you
-        have selected. Upon completion, your partner will rate your performance
+        have selected. Upon completion, your partner will rate your performance,
         and you will gain points.
       </p>
     </v-card-subtitle>
@@ -34,14 +34,24 @@
                   <template #activator="{ on, attrs }">
                     <div v-bind="attrs" v-on="on">Easy</div>
                   </template>
-                  Recommended for Beginners
+                  Recommended for Novice
                 </v-tooltip>
               </v-btn>
               <v-btn class="rounded ml-1 white--text" value="medium" dark>
-                Medium
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <div v-bind="attrs" v-on="on">Medium</div>
+                  </template>
+                  Recommended for Competent
+                </v-tooltip>
               </v-btn>
               <v-btn class="rounded ml-1 white--text" value="hard" dark>
-                Hard
+                <v-tooltip bottom>
+                  <template #activator="{ on, attrs }">
+                    <div v-bind="attrs" v-on="on">Hard</div>
+                  </template>
+                  Recommended for Expert
+                </v-tooltip>
               </v-btn>
             </v-btn-toggle>
           </v-col>
@@ -49,7 +59,7 @@
             <b>Topic</b><br />
             <small
               >Optionally, you may chose a topic. However, it may result in
-              longer waiting time.</small
+              lower probability of matching.</small
             >
             <v-select
               v-model="selected_topic"

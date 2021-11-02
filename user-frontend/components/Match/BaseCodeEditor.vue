@@ -20,10 +20,10 @@
         >Run Your Code (Beta)
       </v-btn>
       <pre
-        v-if="!output"
+        v-if="!code_output"
         class="pre mt-6"
-      ><v-textarea rows="1" label="Input (If any; else leave blank)" auto-grow hide-details class="custom-label-color" dark></v-textarea></pre>
-      <pre v-else class="pre mt-6"><samp>{{ output }}</samp></pre>
+      ><v-textarea v-model="code_input" rows="1" label="Input (If any; else leave blank)" auto-grow hide-details class="custom-label-color" dark></v-textarea></pre>
+      <pre v-else class="pre mt-6"><samp>{{ code_output }}</samp></pre>
     </div>
   </div>
 </template>
@@ -50,16 +50,17 @@ export default {
   data() {
     return {
       selected_language: "javascript",
-      output: undefined,
+      code_output: undefined,
+      code_input: undefined,
       programming_languages: [
         {
           text: "C",
-          value: "c_cpp",
-          language: "c",
+          value: "cpp",
+          language: "cpp",
         },
         {
           text: "C++",
-          value: "c_cpp",
+          value: "cpp",
           language: "cpp",
         },
         {
@@ -79,6 +80,7 @@ export default {
         },
       ],
       ydoc: undefined,
+      provider: undefined,
     };
   },
   async fetch() {
@@ -97,11 +99,11 @@ export default {
     if (this.isHistoryMode) {
       return;
     }
+
     this.ydoc = new Y.Doc();
     try {
-      //syncs the ydoc throught WebRTC connection
-      const provider = new WebsocketProvider(
-        "wss://server-staging.peerprep.tech/editor",
+      this.provider = new WebsocketProvider(
+        "ws://localhost:3004",
         this.matchId,
         this.ydoc,
       );
@@ -112,27 +114,19 @@ export default {
       const monaco = await loader.init();
       const editor = monaco.editor.create(editor_ref, {
         value: "",
-        language: "javascript",
+        language: this.selected_language,
         theme: "vs-dark",
       });
-
-      const awareness = provider.awareness;
-
-      const color = "#bc80bd";
-      awareness.setLocalStateField("user", {
-        name: "John",
-        color: color,
-      });
-
-      const monacoBinding = new MonacoBinding(
-        type,
-        editor.getModel(),
-        new Set([editor]),
-        awareness,
-      );
-      provider.connect();
+      const awareness = this.provider.awareness;
+      new MonacoBinding(type, editor.getModel(), new Set([editor]), awareness);
+      this.provider.connect();
     } catch (err) {
       console.error(err);
+    }
+  },
+  destroyed() {
+    if (this.provider) {
+      this.provider.disconnect();
     }
   },
   methods: {
@@ -141,8 +135,10 @@ export default {
         const result = await this.EXECUTE_CODE({
           code: this.codes,
           language: this.selected_language,
+          input: this.code_input,
         });
-        this.output = _.get(result, "output");
+        console.log(result);
+        this.code_output = _.get(result, "output");
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error executing code: ${err}`);
@@ -154,24 +150,14 @@ export default {
 };
 </script>
 <style>
-.pre {
-  padding: 16px;
-  border-radius: 4px;
-  background-color: #383b40;
-  overflow: auto;
-  font-family: droid sans mono, inconsolata, menlo, consolas,
-    bitstream vera sans mono, courier, monospace;
-  font-size: 14px;
-  line-height: 20px;
-  color: #d5d5d5;
-}
 #monaco-editor {
   height: 600px;
-  /* border: 1px solid #ccc; */
 }
+
 .yRemoteSelection {
   background-color: rgb(250, 129, 0, 0.5);
 }
+
 .yRemoteSelectionHead {
   position: absolute;
   border-left: orange solid 2px;
@@ -180,6 +166,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
 }
+
 .yRemoteSelectionHead::after {
   position: absolute;
   content: " ";
@@ -188,9 +175,11 @@ export default {
   left: -4px;
   top: -5px;
 }
+
 .custom-label-color .v-label {
   color: white !important;
 }
+
 .custom-label-color input {
   color: white !important;
 }

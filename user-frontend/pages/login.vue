@@ -41,7 +41,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="email_rules"
                   />
                 </v-col>
@@ -57,7 +57,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="password_rules"
                   >
                     <template #append>

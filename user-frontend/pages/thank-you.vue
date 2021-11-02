@@ -2,7 +2,7 @@
   <div>
     <v-banner single-line color="light_primary">
       <v-row justify="center" align="center">
-        <v-col cols="2">
+        <v-col cols="12" md="3" lg="2">
           <Lottie
             class="my-auto"
             :options="lottieOptions"
@@ -10,12 +10,15 @@
             :height="300"
           />
         </v-col>
-        <v-col cols="3" class="my-auto">
-          <h1 class="my-3">Great Job, {{ user.display_name }}!</h1>
+        <v-col align="center" cols="12" md="3" class="my-auto">
+          <h1 class="my-3">
+            <span class="font-weight-medium">Great Job,</span>
+            <span class="primary--text">{{ user.display_name }}!</span>
+          </h1>
           <h4 class="my-4 font-weight-medium">
             You have just completed a technical challenge!
           </h4>
-          <div class="d-flex my-3">
+          <div class="my-3">
             <v-btn
               outlined
               color="primary"
@@ -28,18 +31,18 @@
               color="primary"
               large
               depressed
-              @click="$router.push(`/history/${match_id}`)"
+              @click="$router.push(`/history/${match._id}`)"
               >View Match History</v-btn
             >
           </div>
         </v-col>
       </v-row>
     </v-banner>
-    <div class="app-max-width mx-auto">
-      <v-row>
-        <v-col cols="6">
-          <h2 class="text-center my-3">Featured Topics</h2>
-          <v-row align-content="start" align="stretch">
+    <div class="app-max-width mx-auto mt-2 px-6">
+      <v-row align="stretch">
+        <v-col cols="12" md="6">
+          <!-- <h2 class="text-center my-3">Featured Topics</h2> -->
+          <!-- <v-row align-content="start" align="stretch">
             <v-col
               v-for="(topic, index) in question_topics"
               :key="index"
@@ -51,40 +54,52 @@
                 @perform-filter="performFilter"
               />
             </v-col>
-          </v-row>
+          </v-row> -->
+          <h2 class="text-center my-3">Sample Solution</h2>
+          <pre
+            class="pre fill-height my-2"
+          ><samp>{{ match_question.solution }}</samp></pre>
         </v-col>
-        <v-col cols="6">
-          <h2 class="text-center my-3">Rate your partner! 😄</h2>
-
-          <v-card class="pa-3 my-4 soft-box-shadow">
+        <v-col cols="12" md="6">
+          <h2 class="text-center my-3">Rate your Partner! 😄</h2>
+          <v-card
+            class="
+              d-flex
+              flex-column
+              pa-3
+              soft-box-shadow
+              rounded-lg
+              fill-height
+            "
+          >
             <v-card-subtitle class="text-center my-2">
-              By rating your partner, we will have a better idea where is your
-              partner position and it will help us to match users better in the
-              future!
+              Please help us by rating your partner! This allows us to improve
+              our matching criteria. <br />It will help us to match users with
+              higher compatibility in the future!
             </v-card-subtitle>
             <v-card-text class="text-center">
-              <div class="ma-0 ma-sm-4 my-4 my-sm-8">
-                <span class="text-h6">
-                  1 is the lowest satisfaction, 5 is highest satisfaction
-                </span>
-                <v-rating
-                  v-model="elo_rating"
-                  class="text-center"
-                  color="yellow darken-3"
-                  background-color="grey lighten-1"
-                  empty-icon="$ratingFull"
-                  half-increments
-                  hover
-                  large
-                ></v-rating>
-              </div>
+              <span class="text-h6">
+                1 is the lowest satisfaction, 5 is highest satisfaction
+              </span>
+              <v-rating
+                v-model="elo_rating"
+                class="text-center"
+                color="yellow darken-3"
+                background-color="grey lighten-1"
+                empty-icon="$ratingFull"
+                half-increments
+                hover
+                large
+              ></v-rating>
             </v-card-text>
+            <v-spacer></v-spacer>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
                 color="success"
                 :disabled="invalid"
                 :loading="loading"
+                depressed
                 @click="$emit('proceed-ratings')"
               >
                 Submit <v-icon right>mdi-send-outline</v-icon>
@@ -101,22 +116,33 @@ import completedLottie from "@/assets/completed-lottie.json";
 import BaseQuestionCategoryCard from "@/components/Question/BaseQuestionCategoryCard";
 import userMixin from "@/mixins/user";
 import questionMixin from "@/mixins/question";
+import matchMixin from "@/mixins/match";
 
 export default {
   name: "ThankYou",
-  components: { BaseQuestionCategoryCard },
-  mixins: [userMixin, questionMixin],
+  mixins: [userMixin, questionMixin, matchMixin],
   data() {
     return {
       lottieOptions: { animationData: completedLottie, loop: true },
       elo_rating: 0,
+      match_question: undefined,
     };
   },
   async fetch() {
     try {
-      await this.GET_QUESTION_TOPICS();
+      this.SET_LOADING({ data: true });
+      this.match_id = localStorage.getItem("match_id") || this.$route.params.id; // Either from localStorage or URL params
+      // If match is not in store, retrieve from server
+      if (!this.match) {
+        await this.GET_MATCH({ match_id: this.match_id });
+      }
+      this.match_question = _.get(this.match, "question"); // Set it to data to be passed to question component
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching match: ${err}`);
+    } finally {
+      this.SET_LOADING({ data: false });
+      // localStorage.removeItem("match_id");
     }
   },
 };

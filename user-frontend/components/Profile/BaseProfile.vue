@@ -3,8 +3,8 @@
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </div>
   <div v-else class="fill-height">
-    <div class="mb-6 light_primary rounded-lg pa-10">
-      <div class="mx-auto app-max-width px-4">
+    <div class="mb-6 light_primary rounded-lg py-10 px-6 px-lg-0">
+      <div class="mx-auto app-max-width px-0">
         <h1>
           <span class="font-weight-medium"> Welcome back to PeerPrep,</span>
           {{ user.display_name }}
@@ -25,21 +25,23 @@
         </v-chip-group>
       </div>
     </div>
-    <v-row class="mx-auto app-max-width" justify="start" align="start">
-      <v-col cols="12" sm="12" md="12" lg="3" xl="3">
-        <v-row class="d-flex flex-column">
-          <v-col>
-            <BaseAvatar />
-          </v-col>
-          <v-col>
-            <BaseElo />
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="12" sm="12" md="12" lg="9" xl="9">
-        <BaseMatchHistory />
-      </v-col>
-    </v-row>
+    <div class="mx-auto app-max-width px-6 px-lg-0">
+      <v-row justify="start" align="start">
+        <v-col cols="12" sm="12" md="12" lg="3" xl="3">
+          <v-row class="d-flex flex-column">
+            <v-col>
+              <BaseAvatar />
+            </v-col>
+            <v-col>
+              <BaseElo />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12" sm="12" md="12" lg="9" xl="9">
+          <BaseMatchHistory />
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 

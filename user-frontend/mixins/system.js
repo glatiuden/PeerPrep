@@ -8,6 +8,10 @@ export default {
         medium: "orange",
         hard: "red",
       },
+      mode_chip_colors: {
+        elo: "error",
+        question: "success",
+      },
     };
   },
   computed: {

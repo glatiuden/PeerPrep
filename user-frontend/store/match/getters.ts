@@ -12,6 +12,7 @@ export const getters: GetterTree<MatchState, RootState> = {
   matches_pagination: (state) => state.matches_pagination,
   chat_messages: (state) => state.chat_messages,
   codes: (state) => state.codes,
+  is_video_on: (state) => state.is_video_on,
 };
 
 export default getters;

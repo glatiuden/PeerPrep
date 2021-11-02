@@ -32,3 +32,15 @@
   max-height: 760px;
   overflow-y: auto;
 }
+
+.pre {
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #383b40;
+  overflow: auto;
+  font-family: droid sans mono, inconsolata, menlo, consolas,
+    bitstream vera sans mono, courier, monospace;
+  font-size: 14px;
+  line-height: 20px;
+  color: #d5d5d5;
+}
