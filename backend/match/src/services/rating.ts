@@ -1,5 +1,5 @@
 import _ from "lodash";
-import mongoose, { ClientSession } from "mongoose";
+import mongoose, { ClientSession, Types } from "mongoose";
 
 import IRating from "../models/interfaces/rating";
 
@@ -42,12 +42,33 @@ export default function makeRatingService({
     }
 
     async findAllByReceiverId({ receiver_id }: { receiver_id: string }): Promise<IRating[]> {
-      const query_conditions = { receiver_id, deleted_at: undefined };
+      const query_conditions = { receiver_id: new Types.ObjectId(receiver_id) as any, deleted_at: undefined };
       const existing = await ratingDbModel.find(query_conditions).sort({ updated_at: "desc" });
       if (existing) {
         return existing;
       }
       return [];
+    }
+
+    async findAverageRatingByReceiverId({ receiver_id }: { receiver_id: string }): Promise<number> {
+      const query_conditions = { receiver_id: new Types.ObjectId(receiver_id), deleted_at: undefined };
+      const receiver_average_ratings = await ratingDbModel.aggregate([
+        [
+          {
+            $match: query_conditions,
+          },
+          {
+            $group: {
+              _id: null,
+              avg_rating: { $avg: "$rating" },
+            },
+          },
+        ],
+      ]);
+      if (!_.isEmpty(receiver_average_ratings)) {
+        return receiver_average_ratings[0].avg_rating;
+      }
+      return 0;
     }
 
     async update(

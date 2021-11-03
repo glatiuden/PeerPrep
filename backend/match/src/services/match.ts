@@ -215,6 +215,8 @@ export default function makeMatchService({
         .sort({
           updated_at: "desc",
         })
+        .populate({ path: "meta.parter1_rating", select: "-__v" })
+        .populate({ path: "meta.partner2_rating", select: "-__v" })
         .lean({ virtuals: true });
 
       const total_count = await matchDbModel.countDocuments(query_conditions);

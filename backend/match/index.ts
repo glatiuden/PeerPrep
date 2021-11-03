@@ -29,7 +29,7 @@ const server = http.createServer(app);
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
   new makeRedis();
-  new makeRabbit();
+  new makeRabbitMQ();
   makeSockets(server, corsOptions);
 }
 
