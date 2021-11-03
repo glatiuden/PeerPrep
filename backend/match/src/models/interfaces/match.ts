@@ -14,9 +14,9 @@ export default interface IMatch {
   };
   // A small data snapshot to aid the ease of displaying meaningful data on frontend
   meta: {
-    partner1_display_name: string;
-    partner2_display_name: string;
-    question_title: string;
+    partner1_display_name?: string;
+    partner2_display_name?: string;
+    question_title?: string;
   };
   completed_at?: Date;
   deleted_at?: Date;
