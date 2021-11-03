@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: chat
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms:master-a07d045-1635792251 # {"$imagepolicy": "flux-system:chat"}
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms:master-7ab8b7c-1635957331 # {"$imagepolicy": "flux-system:chat"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
