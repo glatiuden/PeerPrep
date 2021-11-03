@@ -3,7 +3,31 @@
     <v-card-title class="text-uppercase text-body-1 font-weight-bold d-flex">
       <v-icon color="#FF9529" left>mdi-star-circle</v-icon>
       Average Ratings
-      <v-spacer></v-spacer>
+      <v-btn
+        icon
+        class="text--secondary"
+        color="#0560AD"
+        @click="open_info_dialog = !open_info_dialog"
+      >
+        <v-icon color="#0560AD">mdi-information</v-icon>
+      </v-btn>
+      <v-dialog v-model="open_info_dialog" max-width="600" max-height="400">
+        <v-card>
+          <v-card-title class="justify-center text-h6">
+            What are Ratings?
+          </v-card-title>
+          <v-card-text>
+            <ul>
+              <li>Ratings are given at the end of every Elo match up</li>
+              <li>Upon completion, you will gain <b>50 points</b></li>
+              <li>
+                According to how many stars you are given for your performance,
+                you will gain <b>0 ~ 50 additional points</b>
+              </li>
+            </ul>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-card-title>
     <v-card-text class="pb-5">
       <v-card
@@ -36,6 +60,7 @@ export default {
   data() {
     return {
       rating: 0,
+      open_info_dialog: false,
     };
   },
   async fetch() {

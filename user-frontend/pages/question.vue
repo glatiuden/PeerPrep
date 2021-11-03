@@ -41,7 +41,7 @@
                   <li>
                     Questions on PeerPrep are curated from popular online
                     competitive programming platforms such as Leetcode and
-                    Hackerrank.
+                    HackerRank, otherwise stated.
                   </li>
                   <li>We do not own any of the questions and solutions.</li>
                 </ul>
