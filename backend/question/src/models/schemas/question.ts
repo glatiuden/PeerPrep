@@ -16,6 +16,7 @@ const questionSchema = new mongoose.Schema(
     ],
     constraints: [{ type: String, trim: true }], // Array of strings
     solution: { type: String, default: "" },
+    number_of_attempts: { type: Number, default: 0 },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },

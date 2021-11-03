@@ -18,6 +18,7 @@ export default interface IMatch {
     partner2_display_name?: string;
     question_title?: string;
   };
+  matched_at?: Date;
   completed_at?: Date;
   deleted_at?: Date;
   created_at: Date;

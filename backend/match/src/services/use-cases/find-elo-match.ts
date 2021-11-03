@@ -37,6 +37,7 @@ export default async function findEloMatch(payload: IEloMatchPool) {
 
     elo_match_pool_id = _.get(ideal_elo_match, "_id");
     const random_question = await questionService.findByDifficultyAndTopic({ difficulty, topic });
+    const question_id = _.get(random_question, "_id");
 
     // Update the pool to updated so no user can match with this person
     await eloMatchPoolService.update(
@@ -54,7 +55,7 @@ export default async function findEloMatch(payload: IEloMatchPool) {
       {
         partner1_id: partner1_id,
         partner2_id: user_id,
-        question_id: random_question._id,
+        question_id,
         mode: MatchMode.ELO,
         match_requirements: {
           programming_language,
@@ -62,11 +63,12 @@ export default async function findEloMatch(payload: IEloMatchPool) {
           elo_match_pool: ideal_elo_match,
         },
         status: MatchStatus.IN_PROGRESS,
+        matched_at: new Date(),
+        updated_at: new Date(),
       },
       { session },
     );
-
-    // Update the pool to updated
+    questionService.updateQuestionAttemptCount({ question_id });
     await session.commitTransaction();
     const match_id = _.get(created_match, "_id");
     return { status: "matched", elo_match_pool_id, match_id };

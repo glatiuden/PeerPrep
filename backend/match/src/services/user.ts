@@ -1,4 +1,4 @@
-// Retrieve user information via RPC
+// Message Queue Client to communicate with User MS
 
 import { Exchange } from "@pager/jackrabbit";
 

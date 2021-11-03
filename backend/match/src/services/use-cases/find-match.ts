@@ -3,13 +3,13 @@ import mongoose from "mongoose";
 import { logger } from "../../configs/logs";
 
 import IMatch, { MatchMode, MatchStatus, QuestionMode } from "../../models/interfaces/match";
-import { matchService } from "../index";
+import { matchService, questionService } from "../index";
 
 /**
  * @description If there is a match that meets the requirement -> update. Else create new record.
  * @function findMatch
  */
-export default async function findMatch(payload: Partial<IMatch> & { user_id: string }) {
+export default async function findMatch(payload: Partial<IMatch> & { question_id: string } & { user_id: string }) {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -18,7 +18,7 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
       user_id,
       question_id,
       match_requirements,
-    }: { user_id: string; question_id?: string; match_requirements?: any } = payload;
+    }: { user_id: string; question_id: string; match_requirements?: any } = payload;
 
     const { programming_language, question_mode }: { programming_language: string; question_mode?: QuestionMode } =
       match_requirements;
@@ -44,6 +44,7 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
         },
         { session },
       );
+
       if (!match_details) {
         throw Error("Match not created");
       }
@@ -59,10 +60,12 @@ export default async function findMatch(payload: Partial<IMatch> & { user_id: st
         _id: match_id,
         partner2_id: user_id,
         status: MatchStatus.IN_PROGRESS,
+        matched_at: new Date(),
         updated_at: new Date(),
       },
       { session },
     );
+    questionService.updateQuestionAttemptCount({ question_id });
     await session.commitTransaction();
     return { status: "matched", match_id };
   } catch (err) {

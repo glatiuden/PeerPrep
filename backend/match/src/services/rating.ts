@@ -53,18 +53,17 @@ export default function makeRatingService({
     async findAverageRatingByReceiverId({ receiver_id }: { receiver_id: string }): Promise<number> {
       const query_conditions = { receiver_id: new Types.ObjectId(receiver_id), deleted_at: undefined };
       const receiver_average_ratings = await ratingDbModel.aggregate([
-        [
-          {
-            $match: query_conditions,
+        {
+          $match: query_conditions,
+        },
+        {
+          $group: {
+            _id: null,
+            avg_rating: { $avg: "$rating" },
           },
-          {
-            $group: {
-              _id: null,
-              avg_rating: { $avg: "$rating" },
-            },
-          },
-        ],
+        },
       ]);
+
       if (!_.isEmpty(receiver_average_ratings)) {
         return receiver_average_ratings[0].avg_rating;
       }

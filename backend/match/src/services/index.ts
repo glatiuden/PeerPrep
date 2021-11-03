@@ -11,7 +11,7 @@ const matchService = makeEditorService({ matchDbModel });
 const eloMatchPoolService = makeEloMatchPoolService({ eloMatchPoolDbModel });
 const ratingService = makeRatingService({ ratingDbModel });
 
-const questionService = makeQuestionService({ rpcClient });
+const questionService = makeQuestionService({ rpcClient, pubsubClient });
 const userService = makeUserService({ rpcClient, pubsubClient });
 
 export default Object.freeze({ matchService, eloMatchPoolService, questionService, userService, ratingService });

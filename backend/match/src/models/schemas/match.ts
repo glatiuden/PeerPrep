@@ -32,6 +32,7 @@ const matchSchema = new Schema(
       parter1_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
       partner2_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
     },
+    matched_at: { type: Date },
     completed_at: { type: Date },
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },

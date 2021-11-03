@@ -146,6 +146,25 @@ export default function makeQuestionService({
       return topics;
     }
 
+    async findFeaturedTopics(): Promise<Partial<IQuestion>[]> {
+      const query_conditions = { deleted_at: undefined, topic: { $ne: undefined } };
+      const featured_topics = await questionDbModel.aggregate([
+        {
+          $match: query_conditions,
+        },
+        {
+          $group: {
+            _id: "$topic",
+            count: { $sum: 1 },
+            number_of_attempts: { $first: "$number_of_attempts" },
+          },
+        },
+        { $sort: { number_of_attempts: 1 } },
+        { $limit: 3 },
+      ]);
+      return featured_topics;
+    }
+
     async update(payload: Partial<IQuestion>): Promise<IQuestion | null> {
       await questionDbModel.findOneAndUpdate({ _id: payload._id }, payload);
       const updated = await questionDbModel.findById({ _id: payload._id });

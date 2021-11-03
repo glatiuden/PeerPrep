@@ -9,6 +9,7 @@ export default interface IQuestion {
   examples: Example[];
   constraints: string[];
   solution: string;
+  number_of_attempts: number;
   deleted_at?: Date;
   created_at: Date;
   updated_at: Date;

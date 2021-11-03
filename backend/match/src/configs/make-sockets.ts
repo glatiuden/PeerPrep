@@ -3,7 +3,7 @@ import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
 import { logger } from "./logs";
 import { redisClient } from "./make-redis";
-import { findMatch, cancelMatch, getMatch, findEloMatch } from "../services/use-cases";
+import { findMatch, cancelMatch, getMatch, findEloMatch, cancelEloMatch } from "../services/use-cases";
 
 export default function makeSockets(server, cors) {
   const io = new Server(server, { transports: ["polling"], cors, path: "/match/new" });
@@ -61,11 +61,19 @@ export default function makeSockets(server, cors) {
       }
     });
 
-    socket.on("cancel", async (match_id) => {
+    socket.on("question_cancel", async (match_id) => {
       logger.verbose("Match is cancelling...", { match_id });
       const is_cancelled = await cancelMatch(match_id);
       if (is_cancelled) {
         nsp.in(match_id).socketsLeave(match_id);
+      }
+    });
+
+    socket.on("elo_cancel", async (elo_match_pool_id) => {
+      logger.verbose("Match is cancelling...", { elo_match_pool_id });
+      const is_cancelled = await cancelEloMatch(elo_match_pool_id);
+      if (is_cancelled) {
+        nsp.in(elo_match_pool_id).socketsLeave(elo_match_pool_id);
       }
     });
   });

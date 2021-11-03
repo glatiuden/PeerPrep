@@ -8,12 +8,14 @@ import {
   getQuestionsPaginatedController,
   getQuestionTopicsController,
   resetQuestionsController,
+  getFeaturedQuestionTopicsController,
 } from "../../controllers/api/question";
 
 const questionRouter = express.Router();
 
 questionRouter.get("/", makeExpressCallback(getQuestionsPaginatedController));
 questionRouter.get("/topic", makeExpressCallback(getQuestionTopicsController));
+questionRouter.get("/featured", makeExpressCallback(getFeaturedQuestionTopicsController));
 questionRouter.get("/:question_id", makeValidator(getQuestionRules), makeExpressCallback(getQuestionController));
 questionRouter.delete("/reset", makeExpressCallback(resetQuestionsController));
 
