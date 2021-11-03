@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: match
-          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms:master-1a02f8d-1635873320 # {"$imagepolicy": "flux-system:match"}
+          image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms:master-7ab8b7c-1635957305 # {"$imagepolicy": "flux-system:match"}
           imagePullPolicy: Always
           envFrom:
             - secretRef:
@@ -26,4 +26,4 @@ spec:
             - containerPort: 3003
               protocol: TCP
       imagePullSecrets:
-          - name: regcred
+        - name: regcred
