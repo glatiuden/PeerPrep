@@ -66,18 +66,18 @@ const actions: ActionTree<MatchState, RootState> = {
     });
 
     if (is_completed) {
-      dispatch(
-        "$nuxtSocket/emit",
-        {
-          label: "editor",
-          evt: "end_session",
-          msg: {
-            match_id,
-            content: state.codes,
-          },
-        },
-        { root: true },
-      );
+      // dispatch(
+      //   "$nuxtSocket/emit",
+      //   {
+      //     label: "editor",
+      //     evt: "end_session",
+      //     msg: {
+      //       match_id,
+      //       content: state.codes,
+      //     },
+      //   },
+      //   { root: true },
+      // );
       dispatch(
         "$nuxtSocket/emit",
         {
@@ -131,6 +131,37 @@ const actions: ActionTree<MatchState, RootState> = {
         params,
       );
       return output;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+  /**
+   * @description create ratings
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.CREATE_RATING]({ commit }, params = {}) {
+    try {
+      const { data: rating } = await this.$axios.$post(
+        `/match/api/rating`,
+        params,
+      );
+      return rating;
+    } catch (err) {
+      console.error(err);
+    }
+  },
+  /**
+   * @description get average rating
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.GET_AVERAGE_RATING]({ commit }, { receiver_id }) {
+    try {
+      const { data: rating } = await this.$axios.$get(
+        `/match/api/rating/${receiver_id}`,
+      );
+      return rating;
     } catch (err) {
       console.error(err);
     }

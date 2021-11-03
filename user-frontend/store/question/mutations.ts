@@ -65,6 +65,14 @@ const mutations: MutationTree<QuestionState> = {
   [MutationTypes.SET_SELECTED_TOPICS](state, { data }: { data: any[] }) {
     state.selected_topics = data;
   },
+  /**
+   * @description to set featured topics
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_FEATURED_TOPICS](state, { data }: { data: any[] }) {
+    state.featured_topics = data;
+  },
 };
 
 export default mutations;

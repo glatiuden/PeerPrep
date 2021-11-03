@@ -1,6 +1,9 @@
 <template>
-  <v-card v-if="!loading">
-    <v-card-title> {{ question.title }} </v-card-title>
+  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </div>
+  <v-card v-else>
+    <v-card-title>Question: {{ question.title }} </v-card-title>
     <v-divider></v-divider>
     <v-card-text class="my-3">
       <v-row>
@@ -28,9 +31,9 @@
           <div class="ml-8">{{ question.description }}</div>
         </v-col>
         <v-col>
-          <p class="font-weight-bold">Examples:</p>
-          <template v-if="question.examples.length > 0">
-            <div v-for="(example, index) in question.examples" :key="index">
+          <template v-if="question_examples.length > 0">
+            <p class="font-weight-bold">Examples:</p>
+            <div v-for="(example, index) in question_examples" :key="index">
               <code style="display: block">
                 <b>Input: </b> {{ example.input }}
                 <br />
@@ -40,6 +43,20 @@
             </div>
           </template>
           <p v-else>No examples available!</p>
+
+          <template v-if="question_constraints.length > 0">
+            <p class="font-weight-bold">Constraints:</p>
+            <code style="display: block">
+              <ul>
+                <li
+                  v-for="(constraint, index) in question_constraints"
+                  :key="index"
+                >
+                  {{ constraint }}
+                </li>
+              </ul>
+            </code>
+          </template>
         </v-col>
       </v-row>
     </v-card-text>
@@ -47,28 +64,28 @@
     <v-card-text class="my-3">
       <v-form v-model="valid">
         <div class="my-3">
-          <h3>Match Options</h3>
+          <h3>Practice Mode Match</h3>
           <p class="text-caption">
             Please select the following options so we can best match you to a
             suitable partner!
           </p>
         </div>
         <v-row>
-          <v-col>
+          <v-col cols="12" md="6">
             <div class="mx-1">Preferred Programming Language</div>
             <v-select
               v-model="selected_programming_language"
               outlined
               class="rounded-0"
               dense
-              :items="['Java', 'JavaScript', 'C++', 'C', 'Python']"
+              :items="programming_languages"
               hint="Please choose a language that you wish to work on. You will not be able to change after the match starts."
               persistent-hint
               :rules="select_rules"
             >
             </v-select>
           </v-col>
-          <v-col>
+          <v-col cols="12" md="6">
             <div class="mx-1">Preferred Mode</div>
             <v-btn-toggle
               v-model="selected_mode"
@@ -78,7 +95,7 @@
               mandatory
             >
               <v-btn class="rounded ml-1 white--text" value="timed" dark>
-                Time Mode ({{ question.recommended_duration || 0 }} min)
+                Timed Mode ({{ question.recommended_duration || 0 }} min)
               </v-btn>
               <v-btn class="rounded ml-1 white--text" value="otot" dark>
                 OTOT Mode
@@ -90,7 +107,6 @@
     </v-card-text>
     <v-divider></v-divider>
     <v-card-actions>
-      <!-- <small> 1 pair are solving the problem, 2 in queue... </small> -->
       <v-spacer></v-spacer>
       <v-btn color="error" text :loading="loading" @click="closeDialog">
         Close
@@ -124,6 +140,17 @@ export default {
       valid: false,
       select_rules: [(v) => !!v || "Please select at least one option"],
     };
+  },
+  computed: {
+    question_examples() {
+      const examples = _.get(this.question, "examples", []);
+      return _.compact(examples);
+    },
+    question_constraints() {
+      const constraints = _.get(this.question, "constraints", []);
+      console.log(constraints);
+      return _.compact(constraints);
+    },
   },
   methods: {
     async startMatch() {

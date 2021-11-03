@@ -3,10 +3,10 @@
     :class="`rounded-lg fill-height card-background-${index} d-flex flex-column`"
   >
     <v-card-title class="white--text text-h5 font-weight-bold">
-      {{ topic }}
+      {{ topic_name }}
     </v-card-title>
     <v-card-subtitle class="white--text">
-      Challenge yourself to {{ topic }} questions!
+      {{ topic_description }}
     </v-card-subtitle>
 
     <v-spacer></v-spacer>
@@ -15,11 +15,11 @@
     <v-card-text class="white">
       <v-row class="text-center">
         <v-col cols="4">
-          <h3>6</h3>
+          <h3>{{ topic.count }}</h3>
           questions
         </v-col>
         <v-col cols="4">
-          <h3>10</h3>
+          <h3>{{ topic.number_of_attempts || 0 }}</h3>
           attempts
         </v-col>
         <v-col cols="4" class="my-auto">
@@ -40,7 +40,7 @@ export default {
   mixins: [questionMixin],
   props: {
     topic: {
-      type: String,
+      type: Object,
       required: true,
     },
     index: {
@@ -48,10 +48,21 @@ export default {
       required: true,
     },
   },
+  computed: {
+    topic_name() {
+      return _.get(this.topic, "_id");
+    },
+    topic_description() {
+      return (
+        this.question_descriptions[this.topic._id] ||
+        `  Challenge yourself to ${this.topic._id} questions!`
+      );
+    },
+  },
   methods: {
     clickFilter() {
       this.SET_SELECTED_TOPICS({
-        data: _.uniq([...this.selected_topics, this.topic]),
+        data: _.uniq([...this.selected_topics, this.topic._id]),
       });
       this.$emit("perform-filter");
     },

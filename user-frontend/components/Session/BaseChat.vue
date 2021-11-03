@@ -1,53 +1,45 @@
 <template>
-  <v-navigation-drawer
-    :permanent="!small_screen && !is_medium_screen"
-    right
-    app
-    clipped
-  >
-    <template #prepend>
-      <h4 class="text-center my-3">Match Chat</h4>
-      <BaseVideoChat v-if="!isHistoryMode" :match-id="matchId" />
-      <v-divider></v-divider>
-    </template>
-    <v-sheet>
-      <div>
-        <section ref="chatArea" class="chat-area">
-          <p
-            v-for="(message, index) in chat_messages"
-            :key="index"
-            class="message mb-1"
-            :class="{
-              'message-out': message.user_id === user._id,
-              'message-in': message.user_id !== user._id,
-            }"
-          >
-            <small
-              >{{ message.display_name }} @
-              {{ $moment(message.time_sent).format("hh:mm A") }}</small
-            ><br />
-            {{ message.message }}
-          </p>
-        </section>
-      </div>
-    </v-sheet>
-    <template v-if="!isHistoryMode" #append class="mt-2">
-      <div class="d-flex pa-3 send">
-        <v-textarea
-          v-model="chat_message"
-          class="pt-0 white--text"
-          rows="1"
-          hide-details
-          auto-grow
-          append-outer-icon="mdi-send"
-          color="white"
-          @click:append-outer="sendMessage"
-          @keyup.enter="sendMessage"
+  <div>
+    <BaseVideoChat v-if="!isHistoryMode" :match-id="matchId" />
+    <v-divider></v-divider>
+    <v-sheet
+      class="fill-height"
+      style="overflow: auto"
+      :height="chat_div_height()"
+    >
+      <section ref="chatArea" class="chat-area">
+        <p
+          v-for="(message, index) in chat_messages"
+          :key="index"
+          class="message mb-1"
+          :class="{
+            'message-out': message.user_id === user_id,
+            'message-in': message.user_id !== user_id,
+          }"
         >
-        </v-textarea>
-      </div>
-    </template>
-  </v-navigation-drawer>
+          <small>
+            {{ message.display_name }} @
+            {{ $moment(message.time_sent).format("hh:mm A") }}</small
+          ><br />
+          {{ message.message }}
+        </p>
+      </section>
+    </v-sheet>
+    <div class="d-flex pa-3 send rounded-b-lg">
+      <v-textarea
+        v-model="chat_message"
+        class="pt-0 white--text"
+        rows="1"
+        hide-details
+        append-outer-icon="mdi-send"
+        color="white"
+        :disabled="isHistoryMode"
+        @click:append-outer="sendMessage"
+        @keyup.enter="sendMessage"
+      >
+      </v-textarea>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -55,7 +47,7 @@ import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
 import matchMixin from "@/mixins/match";
 
-import BaseVideoChat from "@/components/Match/BaseVideoChat";
+import BaseVideoChat from "@/components/Session/BaseVideoChat";
 
 export default {
   name: "BaseChat",
@@ -75,6 +67,7 @@ export default {
   data() {
     return {
       chat_message: undefined,
+      chat_height: window.innerHeight,
     };
   },
   async fetch() {
@@ -92,6 +85,7 @@ export default {
     this.socket = this.$nuxtSocket({
       name: "chat",
       persist: "chat",
+      path: "/chat/new",
     });
 
     this.socket.on("connect", () => {
@@ -110,11 +104,28 @@ export default {
   },
   methods: {
     /**
+     * @description Dynamically computes the chat dialog size
+     */
+    chat_div_height() {
+      if (this.is_video_on) {
+        return this.chat_height - 430;
+      }
+      return this.chat_height - 250;
+    },
+    /**
      * @description Send message
      */
     sendMessage() {
+      if (
+        _.isNil(this.chat_message) ||
+        _.isEmpty(this.chat_message) ||
+        this.chat_message === "\n"
+      ) {
+        return;
+      }
+
       const message = {
-        user_id: this.user._id,
+        user_id: this.user_id,
         display_name: this.user.display_name,
         message: this.chat_message,
         time_sent: this.$moment(),
@@ -132,16 +143,6 @@ export default {
 </script>
 
 <style>
-.message-group {
-  height: 58vh !important;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-.receive {
-  background-color: #182533;
-}
-
 .send {
   background-color: #407fff;
 }
@@ -170,9 +171,5 @@ export default {
   background: #f1f0f0;
   color: black;
   margin-left: 5%;
-}
-
-.scrollable {
-  overflow: auto;
 }
 </style>

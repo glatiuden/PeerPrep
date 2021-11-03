@@ -5,7 +5,7 @@
         <h2 class="text-center mb-3">Featured Topics</h2>
         <v-row align-content="start" align="stretch">
           <v-col
-            v-for="(topic, index) in question_topics"
+            v-for="(topic, index) in featured_topics"
             :key="index"
             cols="12"
             md="4"
@@ -41,7 +41,7 @@
                   <li>
                     Questions on PeerPrep are curated from popular online
                     competitive programming platforms such as Leetcode and
-                    Hackerrank.
+                    HackerRank, otherwise stated.
                   </li>
                   <li>We do not own any of the questions and solutions.</li>
                 </ul>
@@ -275,7 +275,7 @@ export default {
     try {
       await Promise.all([
         this.GET_QUESTIONS_PAGINATED(),
-        this.GET_QUESTION_TOPICS(),
+        this.GET_FEATURED_QUESTION_TOPICS(),
       ]);
     } catch (err) {
       console.error(err);

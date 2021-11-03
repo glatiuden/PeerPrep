@@ -15,6 +15,8 @@ import {
   getMatchesByUserIdPaginatedController,
   endMatchController,
 } from "../../controllers/api/match";
+import { createRatingController, getAverageRatingByReceiverIdController } from "../../controllers/api/rating";
+import { createRatingRules } from "../../controllers/api/rating/validators";
 
 const matchRouter = express.Router();
 
@@ -23,5 +25,7 @@ matchRouter.get("/user/:user_id", makeExpressCallback(getMatchesByUserIdPaginate
 matchRouter.get("/:match_id", makeValidator(getMatchRules), makeExpressCallback(getMatchController));
 matchRouter.put("/end", makeValidator(endMatchRules), makeExpressCallback(endMatchController));
 matchRouter.put("/", makeValidator(updateMatchRules), makeExpressCallback(updateMatchController));
+matchRouter.post("/rating", makeValidator(createRatingRules), makeExpressCallback(createRatingController));
+matchRouter.get("/rating/:receiver_id", makeExpressCallback(getAverageRatingByReceiverIdController));
 
 export default matchRouter;

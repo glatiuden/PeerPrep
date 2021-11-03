@@ -1,5 +1,8 @@
 <template>
-  <v-card v-if="!loading">
+  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+    <v-progress-circular indeterminate color="primary"></v-progress-circular>
+  </div>
+  <v-card v-else>
     <v-divider></v-divider>
     <v-card-text class="my-3 text-center">
       <div v-if="is_timer_ended">
@@ -20,10 +23,7 @@
         />
         <h2 class="my-3 loading">Looking for a match</h2>
       </div>
-      <v-countdown
-        :end-time="new Date().getTime() + 30000"
-        @finish="timerEnded"
-      >
+      <v-countdown :left-time="time_left" @finish="timerEnded">
         <h1 slot="process" slot-scope="{ timeObj }">{{ `${timeObj.s}` }}s</h1>
         <p slot="finish">No match found! Do you want to try again?</p>
       </v-countdown>
@@ -46,7 +46,7 @@ import matchMixin from "@/mixins/match";
 import systemMixin from "@/mixins/system";
 
 export default {
-  name: "BaseQuestionDialog",
+  name: "BaseWaitMatchDialog",
   mixins: [matchMixin, systemMixin],
   data() {
     return {
@@ -54,6 +54,8 @@ export default {
       not_found_options: { animationData: notFoundLottie, loop: true },
       match_id: undefined,
       is_timer_ended: false,
+      match_mode: undefined,
+      time_left: 30000,
     };
   },
   mounted() {
@@ -63,13 +65,12 @@ export default {
       reconnection: true,
     });
 
-    const match_mode = _.get(this.match, "mode", "question");
-
+    this.match_mode = _.get(this.match, "mode", "question");
     this.socket.on("connect", () => {
       this.$notification.success(
         `Successfully created a match! We will notify and start the session once there is a match!`,
       );
-      this.socket.emit(`${match_mode}_matching`, this.match);
+      this.socket.emit(`${this.match_mode}_matching`, this.match);
     });
 
     this.socket.on("waiting", (data) => {
@@ -84,18 +85,24 @@ export default {
         this.SET_MATCH({ data });
         this.SET_OPEN_MATCHING_DIALOG({ data: false });
         localStorage.setItem("match_id", match_id);
-        this.$router.push(`/match/${match_id}`);
+        this.$notification.success(
+          `A match has been found! You will be redirected in 3 seconds...`,
+        );
+        setTimeout(() => {
+          this.$router.push(`/session/${match_id}`);
+        }, 3000);
       }
     });
   },
   methods: {
     closeDialog() {
-      this.socket.emit("cancel", this.match_id);
+      this.socket.emit(`${this.match_mode}_cancel`, this.match_id);
       this.SET_OPEN_MATCHING_DIALOG({ data: false });
     },
 
     timerEnded() {
       this.is_timer_ended = true;
+      this.time_left = 0;
     },
   },
 };

@@ -92,6 +92,14 @@ const mutations: MutationTree<MatchState> = {
   ) {
     state.open_elo_match_dialog = data;
   },
+  /**
+   * @description to set is video on
+   * @param state
+   * @param param1
+   */
+  [MutationTypes.SET_IS_VIDEO_ON](state, { data }: { data: boolean }) {
+    state.is_video_on = data;
+  },
 };
 
 export default mutations;

@@ -33,13 +33,23 @@ const actions: ActionTree<QuestionState, RootState> = {
     return question;
   },
   /**
-   * @description to get question by id
+   * @description to get question topics
    * @param param0
    * @param param1
    */
   async [ActionTypes.GET_QUESTION_TOPICS]({ commit }) {
     const { data: topics } = await this.$axios.$get(`/question/api/topic`);
     commit(MutationTypes.SET_QUESTION_TOPICS, { data: topics });
+    return topics;
+  },
+  /**
+   * @description to get featured topics
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.GET_FEATURED_QUESTION_TOPICS]({ commit }) {
+    const { data: topics } = await this.$axios.$get(`/question/api/featured`);
+    commit(MutationTypes.SET_FEATURED_TOPICS, { data: topics });
     return topics;
   },
 };

@@ -41,7 +41,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="email_rules"
                   />
                 </v-col>
@@ -57,7 +57,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="password_rules"
                   >
                     <template #append>
@@ -170,8 +170,7 @@ export default {
 </script>
 <style scoped>
 .background-url {
-  /* no-repeat center center fixed !important */
   background: url("../assets/background.png");
-  background-size: cover;
+  background-size: cover no-repeat center center fixed !important;
 }
 </style>

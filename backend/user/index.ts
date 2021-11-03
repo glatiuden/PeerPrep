@@ -8,7 +8,7 @@ import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
-import makeRabbit from "./src/configs/make-rpc-consumer";
+import makeRabbitMQ from "./src/configs/make-rabbitmq";
 
 const app = express();
 
@@ -22,8 +22,9 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
+  makeRabbitMQ();
 }
-makeRabbit();
+
 makeDb();
 const PORT = process.env.port || 3001;
 app.listen(PORT, () => {
@@ -33,11 +34,7 @@ app.listen(PORT, () => {
 // Initialize routes
 app.use("/user/api", apiRouter);
 app.use("/user/admin", adminRouter);
-
-app.get("/user", function (req, res) {
-  res.send("User Microservice is running");
-});
-app.get("/", function (req, res) {
+app.get(["/", "/user"], function (req, res) {
   res.send("User Microservice is running");
 });
 

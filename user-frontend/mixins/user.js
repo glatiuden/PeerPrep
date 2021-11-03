@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       elo_rankings: [
+        { elo: 0, text: "Unranked" },
         {
           elo: 1000,
           text: "Novice",
@@ -39,6 +40,7 @@ export default {
       LOGIN_USER: "user/LOGIN_USER",
       AUTH_USER: "user/AUTH_USER",
       LOGOUT_USER: "user/LOGOUT_USER",
+      GET_AVERAGE_RATING: "match/GET_AVERAGE_RATING",
     }),
 
     ...mapMutations({

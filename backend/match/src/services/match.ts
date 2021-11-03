@@ -1,5 +1,5 @@
 import _ from "lodash";
-import mongoose from "mongoose";
+import mongoose, { ClientSession } from "mongoose";
 
 import IMatch, { MatchMode, MatchStatus, PaginatedMatchResult } from "../models/interfaces/match";
 
@@ -9,9 +9,15 @@ export default function makeMatchService({
   matchDbModel: mongoose.Model<IMatch & mongoose.Document>;
 }) {
   return new (class MongooseMatchDb {
-    async insert(insertPayload: Partial<IMatch>): Promise<IMatch | null> {
-      const result = await matchDbModel.create([insertPayload]);
-      const updated = await matchDbModel.findOne({ _id: result[0]?._id });
+    async insert(
+      insertPayload: Partial<IMatch>,
+      { session = undefined }: { session?: ClientSession | undefined } = {},
+    ): Promise<IMatch | null> {
+      const result = await matchDbModel.create([insertPayload], { session });
+      const updated = await matchDbModel
+        .findOne({ _id: result[0]?._id })
+        .session(session || null)
+        .lean();
       if (updated) {
         return updated;
       }
@@ -100,7 +106,7 @@ export default function makeMatchService({
       if (query) {
         query_conditions["$or"] = [
           { programming_language: { $regex: ".*" + query + ".*", $options: "si" } },
-          { status: { $regex: ".*" + query + ".*", $options: "si" } }
+          { status: { $regex: ".*" + query + ".*", $options: "si" } },
         ];
       }
 
@@ -209,6 +215,8 @@ export default function makeMatchService({
         .sort({
           updated_at: "desc",
         })
+        .populate({ path: "meta.parter1_rating", select: "-__v" })
+        .populate({ path: "meta.partner2_rating", select: "-__v" })
         .lean({ virtuals: true });
 
       const total_count = await matchDbModel.countDocuments(query_conditions);
@@ -234,9 +242,15 @@ export default function makeMatchService({
       return null;
     }
 
-    async update(payload: Partial<IMatch>): Promise<IMatch | null> {
-      await matchDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await matchDbModel.findById({ _id: payload._id }).lean();
+    async update(
+      payload: Partial<IMatch>,
+      { session = undefined }: { session?: ClientSession | undefined } = {},
+    ): Promise<IMatch | null> {
+      await matchDbModel.findOneAndUpdate({ _id: payload._id }, payload, { session });
+      const updated = await matchDbModel
+        .findById({ _id: payload._id })
+        .session(session || null)
+        .lean();
       if (updated) {
         return updated;
       }

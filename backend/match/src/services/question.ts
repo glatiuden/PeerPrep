@@ -1,14 +1,20 @@
-// Retrieve question information via RPC
+// Message Queue Client to communicate with Question MS
 
 import { Exchange } from "@pager/jackrabbit";
 
-export default function makeQuestionService({ exchange }: { exchange: Exchange }) {
+export default function makeQuestionService({
+  rpcClient,
+  pubsubClient,
+}: {
+  rpcClient: Exchange;
+  pubsubClient: Exchange;
+}) {
   const requestor = "match";
 
   return new (class QuestionRPC {
     async findById({ id }: { id: string }): Promise<any> {
       return new Promise((resolve, reject) => {
-        exchange.publish(
+        rpcClient.publish(
           { requestor, request_type: "findById", question_id: id },
           {
             key: "question",
@@ -22,9 +28,10 @@ export default function makeQuestionService({ exchange }: { exchange: Exchange }
         );
       });
     }
+
     async findByDifficultyAndTopic({ difficulty, topic }: { difficulty: string; topic?: string }): Promise<any> {
       return new Promise((resolve, reject) => {
-        exchange.publish(
+        rpcClient.publish(
           { requestor, request_type: "findByDifficultyAndTopic", difficulty, topic },
           {
             key: "question",
@@ -37,6 +44,14 @@ export default function makeQuestionService({ exchange }: { exchange: Exchange }
           },
         );
       });
+    }
+
+    /**
+     * Update question's attempt count via Pub/Sub
+     * @param { question_id }
+     */
+    updateQuestionAttemptCount({ question_id }: { question_id: string }) {
+      pubsubClient.publish({ request_type: "updateQuestionAttemptCount", question_id });
     }
   })();
 }

@@ -61,15 +61,15 @@ export default {
       {
         name: "editor",
         default: true,
-        url: "https://server-staging.peerprep.tech/editor",
+        url: "http://localhost:3006/editor",
       },
       {
         name: "chat",
-        url: "https://server-staging.peerprep.tech/chat",
+        url: "http://localhost:3006/chat",
       },
       {
         name: "match",
-        url: "https://server-staging.peerprep.tech/match",
+        url: "http://localhost:3006/match",
       },
     ],
   },
@@ -101,7 +101,7 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "https://server-staging.peerprep.tech", // Used as fallback if no runtime config is provided
+    baseURL: "http://localhost:3006", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries

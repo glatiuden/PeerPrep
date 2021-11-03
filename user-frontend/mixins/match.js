@@ -2,6 +2,21 @@ import _ from "lodash";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
+  data() {
+    return {
+      programming_languages: [
+        "C++",
+        "C",
+        "C#",
+        "Java",
+        "JavaScript",
+        "Python",
+        "Ruby",
+        "Kotlin",
+        "Swift",
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       loading: "match/loading",
@@ -11,6 +26,7 @@ export default {
       chat_messages: "match/chat_messages",
       codes: "match/codes",
       open_matching_dialog: "match/open_matching_dialog",
+      is_video_on: "match/is_video_on",
     }),
   },
 
@@ -24,6 +40,7 @@ export default {
       GET_CHAT: "match/GET_CHAT",
       GET_EDITOR: "match/GET_EDITOR",
       EXECUTE_CODE: "match/EXECUTE_CODE",
+      CREATE_RATING: "match/CREATE_RATING",
     }),
 
     ...mapMutations({
@@ -33,6 +50,7 @@ export default {
       SET_MATCH: "match/SET_MATCH",
       UPDATE_CHAT_MESSAGES: "match/UPDATE_CHAT_MESSAGES",
       SET_CHAT_MESSAGES: "match/SET_CHAT_MESSAGES",
+      SET_IS_VIDEO_ON: "match/SET_IS_VIDEO_ON",
     }),
   },
 };

@@ -5,7 +5,7 @@ export default interface IMatch {
   partner1_id: string; // Used to fetch user info
   partner2_id: string; // Used to fetch user info
   question_id: string; // Used to fetch question info
-  status: MatchStatus; // Waiting | In-Progress | Completed -> Status to enqueue the match
+  status: MatchStatus; // Waiting | In-Progress | Completed | Cancelled -> Status to enqueue the match
   mode: MatchMode;
   match_requirements: {
     programming_language?: string;
@@ -18,6 +18,7 @@ export default interface IMatch {
     partner2_display_name?: string;
     question_title?: string;
   };
+  matched_at?: Date;
   completed_at?: Date;
   deleted_at?: Date;
   created_at: Date;

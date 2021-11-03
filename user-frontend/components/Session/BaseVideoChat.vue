@@ -1,16 +1,7 @@
 <template>
   <div>
-    <v-btn
-      v-if="!is_video_on"
-      color="primary"
-      block
-      depressed
-      @click="clickVideoChat"
-    >
-      Start Video Chat
-    </v-btn>
-    <v-btn v-else color="primary" block depressed @click="clickVideoChat">
-      Stop Video Chat
+    <v-btn color="primary" block depressed @click="clickVideoChat">
+      {{ `${is_video_on ? "Stop" : "Start"} Video Chat` }}
     </v-btn>
     <vue-webrtc
       v-show="is_video_on"
@@ -24,10 +15,11 @@
 
 <script>
 import systemMixin from "@/mixins/system";
+import matchMixin from "@/mixins/match";
 
 export default {
   name: "BaseVideoChat",
-  mixins: [systemMixin],
+  mixins: [systemMixin, matchMixin],
   props: {
     matchId: {
       type: String,
@@ -35,14 +27,14 @@ export default {
       default: localStorage.getItem("match_id"),
     },
   },
-  data() {
-    return {
-      is_video_on: false,
-    };
+  destroyed() {
+    if (this.$refs.webrtc) {
+      this.$refs.webrtc.leave();
+    }
   },
   methods: {
     clickVideoChat() {
-      this.is_video_on = !this.is_video_on;
+      this.SET_IS_VIDEO_ON({ data: !this.is_video_on });
       if (this.is_video_on) {
         this.$refs.webrtc.join();
       } else {
@@ -52,19 +44,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.message-group {
-  height: 58vh !important;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-
-.receive {
-  background-color: #182533;
-}
-
-.send {
-  background-color: #78acdb;
-}
-</style>

@@ -8,7 +8,7 @@ import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
-import makeRabbit from "./src/configs/make-rabbitmq-rpc";
+import makeRabbitMQ from "./src/configs/make-rabbitmq";
 import makeSockets from "./src/configs/make-sockets";
 import makeRedis from "./src/configs/make-redis";
 import http from "http";
@@ -29,7 +29,7 @@ const server = http.createServer(app);
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
   new makeRedis();
-  new makeRabbit();
+  new makeRabbitMQ();
   makeSockets(server, corsOptions);
 }
 

@@ -11,6 +11,7 @@ export const state = () => ({
   },
   chat_messages: [] as any[],
   codes: "" as string,
+  is_video_on: false,
 });
 
 export type MatchState = ReturnType<typeof state>;
