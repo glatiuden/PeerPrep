@@ -1,5 +1,3 @@
-import { Types } from "mongoose";
-
 export default interface IEditor {
   _id: string;
   match_id: string;

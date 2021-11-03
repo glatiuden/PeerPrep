@@ -4,9 +4,9 @@
     <div class="my-3">
       <pre
         class="pre"
-      >Run Your Code<v-textarea v-model="code_input" dense rows="1" label="Input (If any; else leave blank)" 
-        auto-grow hide-details class="custom-label-color" 
-        dark append-outer-icon="mdi-play"
+      >Run Your Code<v-textarea v-model="code_input" dense rows="1" placeholder="Input (If any; else leave blank)" 
+        hide-details class="custom-label-color" 
+        dark append-outer-icon="mdi-play" :disabled="execute_code_loading"
         :loading="execute_code_loading" @click:append-outer="executeCode" @keyup.enter="executeCode"></v-textarea></pre>
       <!-- <v-btn color="primary" depressed :loading="loading" @click="executeCode"
         >Run Your Code
@@ -25,6 +25,7 @@ import { WebsocketProvider } from "y-websocket";
 
 import loader from "@monaco-editor/loader";
 import matchMixin from "@/mixins/match";
+import { defaults } from "lodash";
 
 export default {
   mixins: [matchMixin],
@@ -44,33 +45,6 @@ export default {
       selected_language: "javascript",
       code_output: undefined,
       code_input: undefined,
-      programming_languages: [
-        {
-          text: "C",
-          value: "cpp",
-          language: "cpp",
-        },
-        {
-          text: "C++",
-          value: "cpp",
-          language: "cpp",
-        },
-        {
-          text: "Java",
-          value: "java",
-          language: "java",
-        },
-        {
-          text: "JavaScript",
-          value: "javascript",
-          language: "js",
-        },
-        {
-          text: "Python",
-          value: "python",
-          language: "py",
-        },
-      ],
       ydoc: undefined,
       provider: undefined,
       execute_code_loading: false,
@@ -92,13 +66,26 @@ export default {
     this.selected_language = _.get(
       this.match,
       "match_requirements.programming_language",
-    );
+    ).toLowerCase();
+
+    const editor_language = this.selected_language;
+    switch (editor_language) {
+      case "c":
+      case "c++":
+        editor_language = "cpp";
+        break;
+      case "c#":
+        editor_language = "cs";
+        break;
+      default:
+        break;
+    }
 
     const editor_ref = this.$refs.editor;
     const monaco = await loader.init();
     const editor = monaco.editor.create(editor_ref, {
       value: this.codes,
-      language: this.selected_language,
+      language: editor_language,
       theme: "vs-dark",
       readOnly: this.isHistoryMode,
     });

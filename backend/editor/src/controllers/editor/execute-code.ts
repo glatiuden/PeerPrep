@@ -19,9 +19,15 @@ export default function makeExecuteCodeController({ logger }: { logger: Logger }
       );
 
       let final_language;
-      switch (language) {
+      switch (language.toLowerCase()) {
         case "c++":
           final_language = "cpp";
+          break;
+        case "c":
+          final_language = "c";
+          break;
+        case "c#":
+          final_language = "cs";
           break;
         case "java":
           final_language = "java";
@@ -29,6 +35,29 @@ export default function makeExecuteCodeController({ logger }: { logger: Logger }
         case "python":
           final_language = "py";
           break;
+        case "ruby":
+          final_language = "rb";
+          break;
+        case "kotlin":
+          final_language = "kt";
+          break;
+        case "swift":
+          final_language = "swift";
+          break;
+        case "javascript":
+          final_language = "js";
+          break;
+      }
+
+      if (final_language === "js") {
+        const execution_result = eval(`(${code})`);
+        return {
+          headers,
+          statusCode: 200,
+          body: {
+            data: execution_result,
+          },
+        };
       }
 
       const stringify_data = JSON.stringify({

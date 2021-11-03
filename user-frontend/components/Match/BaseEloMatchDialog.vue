@@ -88,7 +88,7 @@
               outlined
               class="rounded-0"
               dense
-              :items="['Java', 'JavaScript', 'C++', 'C', 'Python']"
+              :items="programming_languages"
               persistent-hint
               :rules="select_rules"
               hide-details="auto"

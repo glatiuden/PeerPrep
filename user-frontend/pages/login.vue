@@ -170,8 +170,7 @@ export default {
 </script>
 <style scoped>
 .background-url {
-  /* no-repeat center center fixed !important */
   background: url("../assets/background.png");
-  background-size: cover;
+  background-size: cover no-repeat center center fixed !important;
 }
 </style>

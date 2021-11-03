@@ -2,6 +2,21 @@ import _ from "lodash";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
+  data() {
+    return {
+      programming_languages: [
+        "C++",
+        "C",
+        "C#",
+        "Java",
+        "JavaScript",
+        "Python",
+        "Ruby",
+        "Kotlin",
+        "Swift",
+      ],
+    };
+  },
   computed: {
     ...mapGetters({
       loading: "match/loading",

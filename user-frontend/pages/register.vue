@@ -1,10 +1,5 @@
 <template>
-  <v-container
-    fill-height
-    :style="{
-      backgroundImage: `url(${require('@/assets/background.png')}`,
-    }"
-  >
+  <v-container fill-height class="background-url">
     <v-layout fill-height>
       <v-row align="stretch">
         <v-spacer></v-spacer>
@@ -205,7 +200,8 @@ export default {
 };
 </script>
 <style scoped>
-.background_image {
-  background: url("assets/background.png");
+.background-url {
+  background: url("../assets/background.png");
+  background-size: cover no-repeat center center fixed !important;
 }
 </style>

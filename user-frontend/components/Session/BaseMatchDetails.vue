@@ -19,9 +19,13 @@
           <br />
         </template>
       </v-countdown>
-      <span v-else>
+      <span v-else-if="!is_otot_mode">
         <v-icon color="white" class="mr-1">mdi-timer</v-icon> Time Taken:
         <b>{{ time_taken }} min</b>
+      </span>
+      <span>
+        <v-icon color="white" class="mr-1">mdi-timer</v-icon> This session is
+        valid for 12 hours
       </span>
       <v-divider class="my-6 white"></v-divider>
       <v-icon color="white" class="mr-1">mdi-account</v-icon>
@@ -78,7 +82,7 @@ export default {
      * @description Computes the exact duration left
      */
     time_left() {
-      const updated_at = _.get(this.match, "updated_at");
+      const updated_at = _.get(this.match, "matched_at");
       const recommended_duration = _.get(
         this.match,
         "question.recommended_duration",
@@ -101,6 +105,7 @@ export default {
         this.match_question,
         "recommended_duration",
       );
+
       const end_time = this.$moment(updated_at).add(
         recommended_duration,
         "minutes",
@@ -116,6 +121,27 @@ export default {
       const is_timed =
         _.get(this.match, "match_requirements.question_mode") === "timed";
       return is_timed && !this.isHistoryMode;
+    },
+
+    /**
+     * @description Check whether is otot mode
+     */
+    is_otot_mode() {
+      const is_otot =
+        _.get(this.match, "match_requirements.question_mode") === "otot";
+      return is_otot;
+    },
+  },
+  methods: {
+    endMatch() {
+      if (this.time_left > 0) {
+        const answer = confirm("Are you sure you want to end the match?");
+        if (answer) {
+          this.$emit("end-match");
+        } else {
+          next(false);
+        }
+      }
     },
   },
 };

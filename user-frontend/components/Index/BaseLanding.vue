@@ -57,13 +57,18 @@
             Pair programming may progressively improve one’s algorithmic design
             capability and eventually, one’s confidence.
           </p>
+          <p class="text-subtitle-1">
+            You can find a suitable partner either via similar level, determined
+            by your <u>Elo</u>, or via the question chosen. The choice is all
+            yours!
+          </p>
 
           <v-btn
             depressed
             large
             color="primary"
             class="rounded-lg white--text"
-            @click="$router.push('/question')"
+            @click="$router.push('/login')"
           >
             Find Your Match
           </v-btn>
@@ -119,7 +124,7 @@
               <h2>Timed Challenge</h2>
             </v-card-subtitle>
             <v-card-text>
-              Challenge to finish the technical question within recommended the
+              Challenge to finish the technical question within the recommended
               time limit to improve yourself!
             </v-card-text>
           </v-card>

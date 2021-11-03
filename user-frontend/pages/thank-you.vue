@@ -52,15 +52,19 @@
           ><samp>{{ match_question.solution }}</samp></pre>
         </v-col>
         <v-col cols="12" md="6">
-          <template v-if="hide_ratings">
+          <template v-if="is_question_mode">
             <h2 class="text-center my-3">Featured Topics</h2>
-            <v-row align-content="start" align="stretch">
+            <v-row align-content="center" justify="center">
               <v-col
-                v-for="(topic, index) in question_topics"
+                v-for="(topic, index) in featured_topics"
                 :key="index"
-                cols="6"
+                :cols="index === 0 ? 12 : 6"
               >
-                <BaseQuestionCategoryCard :topic="topic" :index="index" />
+                <BaseQuestionCategoryCard
+                  :topic="topic"
+                  :index="index"
+                  @perform-filter="$router.push(`/question`)"
+                />
               </v-col>
             </v-row>
           </template>
@@ -76,38 +80,54 @@
                 fill-height
               "
             >
-              <v-card-subtitle class="text-center my-2">
-                Please help us by rating your partner! This allows us to improve
-                our matching criteria. <br />It will help us to match users with
-                higher compatibility in the future!
-              </v-card-subtitle>
-              <v-card-text class="text-center">
-                <span class="text-h6">
-                  1 is the lowest satisfaction, 5 is highest satisfaction
-                </span>
-                <v-rating
-                  v-model="elo_rating"
-                  class="text-center"
-                  color="yellow darken-3"
-                  background-color="grey lighten-1"
-                  empty-icon="$ratingFull"
-                  half-increments
-                  hover
-                  large
-                ></v-rating>
-              </v-card-text>
-              <v-spacer></v-spacer>
-              <v-card-actions>
+              <template v-if="!hide_ratings">
+                <v-card-subtitle class="text-center my-2">
+                  Please help us by rating your partner! This allows us to
+                  improve our matching criteria. <br />It will help us to match
+                  users with higher compatibility in the future!
+                </v-card-subtitle>
+                <v-card-text class="text-center">
+                  <span class="text-h6">
+                    1 is the lowest satisfaction, 5 is highest satisfaction
+                  </span>
+                  <v-rating
+                    v-model="elo_rating"
+                    class="text-center"
+                    color="yellow darken-3"
+                    background-color="grey lighten-1"
+                    empty-icon="$ratingFull"
+                    half-increments
+                    hover
+                    large
+                  ></v-rating>
+                </v-card-text>
                 <v-spacer></v-spacer>
-                <v-btn
-                  color="success"
-                  :loading="loading"
-                  depressed
-                  @click="rateUser"
-                >
-                  Submit <v-icon right>mdi-send-outline</v-icon>
-                </v-btn>
-              </v-card-actions>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="success"
+                    :loading="loading"
+                    depressed
+                    @click="rateUser"
+                  >
+                    Submit <v-icon right>mdi-send-outline</v-icon>
+                  </v-btn>
+                </v-card-actions>
+              </template>
+              <template v-else>
+                <v-card-text class="py-0 text-center">
+                  <Lottie
+                    class="my-auto"
+                    :options="ratinglottieOptions"
+                    :width="185"
+                    :height="185"
+                  />
+                  <h2 class="black--text my-2">
+                    Your ratings has been received!
+                  </h2>
+                  <p class="pa-0 ma-0">We hope you have enjoy PeerPrepping!</p>
+                </v-card-text>
+              </template>
             </v-card>
           </template>
         </v-col>
@@ -117,6 +137,7 @@
 </template>
 <script>
 import completedLottie from "@/assets/completed-lottie.json";
+import ratingLottie from "@/assets/rating-lottie.json";
 
 import systemMixin from "@/mixins/system";
 import userMixin from "@/mixins/user";
@@ -132,6 +153,7 @@ export default {
   data() {
     return {
       lottieOptions: { animationData: completedLottie, loop: true },
+      ratinglottieOptions: { animationData: ratingLottie, loop: true },
       elo_rating: 0,
       match_question: undefined,
       hide_ratings: false,
@@ -146,8 +168,8 @@ export default {
         await this.GET_MATCH({ match_id: this.match_id });
       }
       this.match_question = _.get(this.match, "question"); // Set it to data to be passed to question component
-      if (_.isEmpty(this.question_topics)) {
-        await this.GET_QUESTION_TOPICS();
+      if (_.isEmpty(this.featured_topics)) {
+        await this.GET_FEATURED_QUESTION_TOPICS();
       }
     } catch (err) {
       console.error(err);
@@ -156,6 +178,11 @@ export default {
       this.SET_LOADING({ data: false });
       // localStorage.removeItem("match_id");
     }
+  },
+  computed: {
+    is_question_mode() {
+      return _.get(this.match, "mode") === "question";
+    },
   },
   methods: {
     async rateUser() {
