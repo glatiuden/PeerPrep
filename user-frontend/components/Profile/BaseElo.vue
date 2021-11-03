@@ -1,7 +1,9 @@
 <template>
   <v-card class="rounded-lg soft-box-shadow px-2">
-    <v-card-title class="text-uppercase font-weight-bold d-flex mt-1">
-      <v-icon color="#FF9529" class="mr-1">mdi-star-circle</v-icon>
+    <v-card-title
+      class="text-uppercase text-body-1 font-weight-bold d-flex my-2"
+    >
+      <v-icon color="primary" left>mdi-finance</v-icon>
       Elo Tier
       <v-spacer></v-spacer>
     </v-card-title>

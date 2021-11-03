@@ -35,6 +35,9 @@
             <v-col>
               <BaseElo />
             </v-col>
+            <v-col>
+              <BaseRating />
+            </v-col>
           </v-row>
         </v-col>
         <v-col cols="12" sm="12" md="12" lg="9" xl="9">
@@ -53,6 +56,7 @@ import userMixin from "@/mixins/user";
 import BaseAvatar from "@/components/Profile/BaseAvatar";
 import BaseElo from "@/components/Profile/BaseElo";
 import BaseMatchHistory from "@/components/Profile/BaseMatchHistory";
+import BaseRating from "@/components/Profile/BaseRating";
 
 export default {
   name: "BaseProfile",
@@ -60,6 +64,7 @@ export default {
     BaseAvatar,
     BaseElo,
     BaseMatchHistory,
+    BaseRating,
   },
   mixins: [systemMixin, userMixin],
   data() {

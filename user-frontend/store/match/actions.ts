@@ -151,6 +151,21 @@ const actions: ActionTree<MatchState, RootState> = {
       console.error(err);
     }
   },
+  /**
+   * @description get average rating
+   * @param param0
+   * @param param1
+   */
+  async [ActionTypes.GET_AVERAGE_RATING]({ commit }, { receiver_id }) {
+    try {
+      const { data: rating } = await this.$axios.$get(
+        `/match/api/rating/${receiver_id}`,
+      );
+      return rating;
+    } catch (err) {
+      console.error(err);
+    }
+  },
 };
 
 export default actions;
