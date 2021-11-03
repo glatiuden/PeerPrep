@@ -23,10 +23,7 @@
         />
         <h2 class="my-3 loading">Looking for a match</h2>
       </div>
-      <v-countdown
-        :end-time="new Date().getTime() + 30000"
-        @finish="timerEnded"
-      >
+      <v-countdown :left-time="time_left" @finish="timerEnded">
         <h1 slot="process" slot-scope="{ timeObj }">{{ `${timeObj.s}` }}s</h1>
         <p slot="finish">No match found! Do you want to try again?</p>
       </v-countdown>
@@ -57,6 +54,8 @@ export default {
       not_found_options: { animationData: notFoundLottie, loop: true },
       match_id: undefined,
       is_timer_ended: false,
+      match_mode: undefined,
+      time_left: 30000,
     };
   },
   mounted() {
@@ -66,12 +65,12 @@ export default {
       reconnection: true,
     });
 
-    const match_mode = _.get(this.match, "mode", "question");
+    this.match_mode = _.get(this.match, "mode", "question");
     this.socket.on("connect", () => {
       this.$notification.success(
         `Successfully created a match! We will notify and start the session once there is a match!`,
       );
-      this.socket.emit(`${match_mode}_matching`, this.match);
+      this.socket.emit(`${this.match_mode}_matching`, this.match);
     });
 
     this.socket.on("waiting", (data) => {
@@ -97,12 +96,13 @@ export default {
   },
   methods: {
     closeDialog() {
-      this.socket.emit("cancel", this.match_id);
+      this.socket.emit(`${this.match_mode}_cancel`, this.match_id);
       this.SET_OPEN_MATCHING_DIALOG({ data: false });
     },
 
     timerEnded() {
       this.is_timer_ended = true;
+      this.time_left = 0;
     },
   },
 };

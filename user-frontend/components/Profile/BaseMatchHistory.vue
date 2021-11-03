@@ -119,10 +119,13 @@
       hide-default-footer
       :items-per-page="15"
       class="soft-box-shadow"
-      @click:row="$router.push(`/session/${$event._id}?history=true`)"
     >
       <template #item.meta.question_title="{ item }">
-        <div v-if="item.meta && item.meta.question_title">
+        <div
+          v-if="item.meta && item.meta.question_title"
+          class="clickable"
+          @click="$router.push(`/session/${item._id}?history=true`)"
+        >
           {{ item.meta.question_title }} <br />
           (with {{ getPartnerName(item.meta) }})
         </div>
