@@ -1,3 +1,3 @@
 ```bash
-kustomize build . | k apply -f -
+kustomize build . | kubectl apply -f -
 ```

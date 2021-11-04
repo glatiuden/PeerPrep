@@ -25,5 +25,10 @@ spec:
           ports:
             - containerPort: 3001
               protocol: TCP
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
       imagePullSecrets:
         - name: regcred
