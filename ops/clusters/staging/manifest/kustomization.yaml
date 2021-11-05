@@ -1,22 +1,20 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 resources:
   - ../../../apps/manifest
-
 images:
-- name: chat
-  newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms
-  newTag: master-7ab8b7c-1635957331 # {"$imagepolicy": "flux-system:chat"}
-- name: editor
-  newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms
-  newTag: master-7ab8b7c-1635957316 # {"$imagepolicy": "flux-system:editor"}
-- name: match
-  newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms
-  newTag: master-7ab8b7c-1635957305 # {"$imagepolicy": "flux-system:match"}
-- name: question
-  newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms
-  newTag: master-7ab8b7c-1635957304 # {"$imagepolicy": "flux-system:question"}
-- name: user
-  newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms
-  newTag: master-7ab8b7c-1635957320 # {"$imagepolicy": "flux-system:user"}
+  - name: chat
+    newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms
+    newTag: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms:master-7ab8b7c-1635957331 # {"$imagepolicy": "flux-system:chat"}
+  - name: editor
+    newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms
+    newTag: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms:master-5e487de-1636112070 # {"$imagepolicy": "flux-system:editor"}
+  - name: match
+    newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms
+    newTag: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms:master-7ab8b7c-1635957305 # {"$imagepolicy": "flux-system:match"}
+  - name: question
+    newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms
+    newTag: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms:master-7ab8b7c-1635957304 # {"$imagepolicy": "flux-system:question"}
+  - name: user
+    newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms
+    newTag: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms:master-7ab8b7c-1635957320 # {"$imagepolicy": "flux-system:user"}
