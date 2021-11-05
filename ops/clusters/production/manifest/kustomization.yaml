@@ -5,16 +5,16 @@ resources:
 images:
   - name: chat
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms # {"$imagepolicy": "flux-system:chat:name"}
-    newTag: master-7ab8b7c-1635957331 # {"$imagepolicy": "flux-system:chat:tag"}
+    newTag: 1.0.0 # {"$imagepolicy": "flux-system:chat:tag"}
   - name: editor
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms # {"$imagepolicy": "flux-system:editor:name"}
-    newTag: master-5e487de-1636112070 # {"$imagepolicy": "flux-system:editor:tag"}
+    newTag: 1.0.0 # {"$imagepolicy": "flux-system:editor:tag"}
   - name: match
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms # {"$imagepolicy": "flux-system:match:name"}
-    newTag: master-7ab8b7c-1635957305 # {"$imagepolicy": "flux-system:match:tag"}
+    newTag: 1.0.0 # {"$imagepolicy": "flux-system:match:tag"}
   - name: question
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms # {"$imagepolicy": "flux-system:question:name"}
-    newTag: master-7ab8b7c-1635957304 # {"$imagepolicy": "flux-system:question:tag"}
+    newTag: 1.0.0 # {"$imagepolicy": "flux-system:question:tag"}
   - name: user
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms # {"$imagepolicy": "flux-system:user:name"}
-    newTag: master-7ab8b7c-1635957320 # {"$imagepolicy": "flux-system:user:tag"}
+    newTag: 1.0.0 # {"$imagepolicy": "flux-system:user:tag"}
