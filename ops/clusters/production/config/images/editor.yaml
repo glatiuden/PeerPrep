@@ -5,8 +5,6 @@ metadata:
   name: editor
   namespace: flux-system
 spec:
-  secretRef:
-    name: ecr-credentials
   image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms
   interval: 1m0s
 ---
