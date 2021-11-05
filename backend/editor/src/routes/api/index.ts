@@ -16,4 +16,5 @@ editorRouter.post("/", makeValidator(createEditorRules), makeExpressCallback(cre
 editorRouter.get("/match/:match_id", makeExpressCallback(getEditorByMatchIdController));
 editorRouter.get("/:editor_id", makeValidator(getEditorRules), makeExpressCallback(getEditorController));
 editorRouter.post("/execute", makeValidator(executeCodeRules), makeExpressCallback(executeCodeController));
+
 export default editorRouter;
