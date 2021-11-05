@@ -18,9 +18,6 @@ metadata:
 spec:
   imageRepositoryRef:
     name: question
-  filterTags:
-    pattern: '^master-[a-fA-F0-9]+-(?P<ts>.*)'
-    extract: '$ts'
   policy:
-     numerical:
-      order: asc
+    semver:
+      range: '>=1.0.0'
