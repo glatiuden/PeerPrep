@@ -1,0 +1,26 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha1
+kind: ImageRepository
+metadata:
+  name: match
+  namespace: flux-system
+spec:
+  secretRef:
+    name: ecr-credentials
+  image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms
+  interval: 1m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha1
+kind: ImagePolicy
+metadata:
+  name: match
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: match
+  filterTags:
+    pattern: '^master-[a-fA-F0-9]+-(?P<ts>.*)'
+    extract: '$ts'
+  policy:
+     numerical:
+      order: asc
