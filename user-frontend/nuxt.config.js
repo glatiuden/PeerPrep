@@ -59,17 +59,13 @@ export default {
     // module options
     sockets: [
       {
-        name: "editor",
+        name: "match",
         default: true,
-        url: "http://localhost:3006/editor",
+        url: `${process.env.SERVER_URL}/match`,
       },
       {
         name: "chat",
-        url: "http://localhost:3006/chat",
-      },
-      {
-        name: "match",
-        url: "http://localhost:3006/match",
+        url: `${process.env.SERVER_URL}/chat`,
       },
     ],
   },
@@ -105,7 +101,7 @@ export default {
       process.env.NODE_ENV === "production" ||
         process.env.NODE_ENV === "staging"
         ? process.env.SERVER_URL
-        : "http://localhost:3006",
+        : "https://server.peerprep.tech",
 
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
@@ -129,5 +125,12 @@ export default {
 
   server: {
     port: 8082, // default: 3000
+  },
+  env: {
+    SERVER_URL:
+      process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "staging"
+        ? process.env.SERVER_URL
+        : "https://server.peerprep.tech",
   },
 };

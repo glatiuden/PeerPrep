@@ -22,10 +22,8 @@
 import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
 import { WebsocketProvider } from "y-websocket";
-
 import loader from "@monaco-editor/loader";
 import matchMixin from "@/mixins/match";
-import { defaults } from "lodash";
 
 export default {
   mixins: [matchMixin],
@@ -98,7 +96,7 @@ export default {
     this.ydoc = new Y.Doc();
     try {
       this.provider = new WebsocketProvider(
-        "ws://localhost:3004",
+        `wss://${process.env.SERVER_URL}/editor`,
         this.matchId,
         this.ydoc,
       );
