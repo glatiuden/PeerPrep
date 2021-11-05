@@ -101,7 +101,7 @@ export default {
       process.env.NODE_ENV === "production" ||
         process.env.NODE_ENV === "staging"
         ? process.env.SERVER_URL
-        : "https://server.peerprep.tech",
+        : "http://localhost:3006",
 
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
@@ -131,6 +131,6 @@ export default {
       process.env.NODE_ENV === "production" ||
         process.env.NODE_ENV === "staging"
         ? process.env.SERVER_URL
-        : "https://server.peerprep.tech",
+        : "http://localhost:3006",
   },
 };

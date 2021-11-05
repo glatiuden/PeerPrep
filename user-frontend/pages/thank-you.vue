@@ -176,7 +176,7 @@ export default {
       this.$notification.error(`Encountered error fetching match: ${err}`);
     } finally {
       this.SET_LOADING({ data: false });
-      // localStorage.removeItem("match_id");
+      localStorage.removeItem("match_id");
     }
   },
   computed: {
@@ -202,7 +202,6 @@ export default {
         this.$notification.error(`Encountered error create ratings: ${err}`);
       } finally {
         this.SET_LOADING({ data: false });
-        // localStorage.removeItem("match_id");
       }
     },
   },
