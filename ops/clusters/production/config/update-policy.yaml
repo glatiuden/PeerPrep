@@ -20,5 +20,5 @@ spec:
     push:
       branch: master
   update:
-    path: ./ops/clusters/staging
+    path: ./ops/clusters/production
     strategy: Setters
