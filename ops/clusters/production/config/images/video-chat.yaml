@@ -1,0 +1,21 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha1
+kind: ImageRepository
+metadata:
+  name: video-chat
+  namespace: flux-system
+spec:
+  image: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/video-chat-ms
+  interval: 1m0s
+---
+apiVersion: image.toolkit.fluxcd.io/v1alpha1
+kind: ImagePolicy
+metadata:
+  name: video-chat
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: video-chat
+  policy:
+    semver:
+      range: '>=1.0.0'

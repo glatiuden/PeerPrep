@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - ../../../apps/manifest
+bases:
+  - ../../../base/manifest
 images:
   - name: chat
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms # {"$imagepolicy": "flux-system:chat:name"}
@@ -18,3 +18,6 @@ images:
   - name: user
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms # {"$imagepolicy": "flux-system:user:name"}
     newTag: 1.0.0 # {"$imagepolicy": "flux-system:user:tag"}
+  - name: video-chat
+    newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/video-chat-ms # {"$imagepolicy": "flux-system:video-chat:name"}
+    newTag: master-1222161-1636166589 # {"$imagepolicy": "flux-system:video-chat:tag"}

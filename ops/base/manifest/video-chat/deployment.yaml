@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-chat
+  labels:
+    app: video-chat
+  namespace: peerprep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: video-chat
+  template:
+    metadata:
+      labels:
+        app: video-chat
+    spec:
+      containers:
+        - name: video-chat
+          image: video-chat
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3007
+              protocol: TCP
+      imagePullSecrets:
+        - name: regcred
