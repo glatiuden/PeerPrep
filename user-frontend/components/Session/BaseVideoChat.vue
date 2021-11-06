@@ -9,6 +9,7 @@
       class="py-2"
       width="100%"
       :room-id="matchId"
+      :socket-u-r-l="`${process.env.SERVER_URL}/video-chat`"
     />
   </div>
 </template>

@@ -34,11 +34,9 @@ export default {
     { src: "@/plugins/vue-lottie", mode: "client", ssr: false },
     { src: "@/plugins/vue-chat-scroll", mode: "client", ssr: false },
     { src: "@/plugins/vue-webrtc", mode: "client", ssr: false },
-    { src: "@/plugins/vue-awesome-swiper", mode: "client", ssr: false },
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-awesome-countdown", mode: "client", ssr: false },
     { src: "@/plugins/avatar", mode: "client" },
-    { src: "@/plugins/vue-monaco", mode: "client", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

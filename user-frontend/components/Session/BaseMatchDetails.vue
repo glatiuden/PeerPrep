@@ -23,7 +23,7 @@
         <v-icon color="white" class="mr-1">mdi-timer</v-icon> Time Taken:
         <b>{{ time_taken }} min</b>
       </span>
-      <span>
+      <span v-else>
         <v-icon color="white" class="mr-1">mdi-timer</v-icon> This session is
         valid for 12 hours
       </span>
@@ -43,7 +43,7 @@
         color="error"
         block
         depressed
-        @click="$emit('end-match')"
+        @click="endMatch"
       >
         End Match
       </v-btn>
