@@ -65,6 +65,10 @@ export default {
         name: "chat",
         url: `${process.env.SERVER_URL}/chat`,
       },
+      {
+        name: "video-chat",
+        url: `${process.env.SERVER_URL}/video-chat`,
+      },
     ],
   },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

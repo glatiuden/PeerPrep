@@ -32,7 +32,6 @@ app.get(["/", "/video-chat"], function (req, res) {
 });
 
 signalServer.on("discover", (request) => {
-  console.log(request);
   const memberId = request.socket.id;
   const roomId = request.discoveryData;
   let members = rooms.get(roomId);

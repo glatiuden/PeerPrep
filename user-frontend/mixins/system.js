@@ -19,21 +19,21 @@ export default {
      * @description return true if xs;
      */
     is_mobile() {
-      return this.$vuetify.breakpoint.name === "xs";
+      return _.get(this.$vuetify, "breakpoint.name", "xs") === "xs";
     },
 
     /**
      * @description return true if sm;
      */
     is_small_screen() {
-      return this.$vuetify.breakpoint.name === "sm";
+      return _.get(this.$vuetify, "breakpoint.name", "sm") === "sm";
     },
 
     /**
      * @description return true if md;
      */
     is_medium_screen() {
-      return this.$vuetify.breakpoint.name === "md";
+      return _.get(this.$vuetify, "breakpoint.name", "md") === "md";
     },
 
     /**

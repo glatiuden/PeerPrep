@@ -2,8 +2,7 @@
   <v-skeleton-loader
     v-if="loading"
     type="table-heading, table-tbody, table-tfoot"
-  >
-  </v-skeleton-loader>
+  />
   <div v-else class="black py-2 fill-height">
     <v-row class="fill-height">
       <v-col md="12" lg="3">
@@ -48,22 +47,22 @@ export default {
     BaseCodeEditor,
   },
   mixins: [matchMixin, systemMixin],
-  // beforeRouteLeave(to, from, next) {
-  //   if (this.match_ended) {
-  //     next();
-  //     return;
-  //   }
+  beforeRouteLeave(to, from, next) {
+    if (this.match_ended) {
+      next();
+      return;
+    }
 
-  //   const answer = confirm(
-  //     "Do you really want to leave? Your match is still ongoing!",
-  //   );
+    const answer = confirm(
+      "Do you really want to leave? Your match is still ongoing!",
+    );
 
-  //   if (answer) {
-  //     this.endMatch();
-  //   } else {
-  //     next(false);
-  //   }
-  // },
+    if (answer) {
+      this.endMatch();
+    } else {
+      next(false);
+    }
+  },
   data() {
     return {
       match_id: undefined,
@@ -73,6 +72,11 @@ export default {
     };
   },
   async fetch() {
+    if (!this.has_user) {
+      this.$router.push("/");
+      return;
+    }
+
     try {
       this.SET_LOADING({ data: true });
       // Retrieve Match ID either from localStorage or URL params
@@ -85,7 +89,7 @@ export default {
       this.match_question = _.get(this.match, "question");
 
       this.is_history_mode = Boolean(this.$route.query.history);
-      // this.checkIsValidMatch();
+      this.checkIsValidMatch();
     } catch (err) {
       console.error(err);
       this.$notification.error(`Encountered error fetching match: ${err}`);
@@ -95,38 +99,35 @@ export default {
   },
   methods: {
     /**
+     * @description Redirect user to home page
+     */
+    redirectUser() {
+      this.$notification.error(`This match has already ended.`);
+      this.match_ended = true;
+      this.$router.push("/");
+    },
+    /**
      * @description Check if the match is valid based on the ID
      */
     async checkIsValidMatch() {
       const is_match_ended = _.get(this.match, "status") === "completed";
       if (is_match_ended) {
-        this.$notification.error(`This match has already ended.`);
+        this.redirectUser();
+        return;
+      }
+
+      const is_not_in_progress = _.get(this.match, "status") != "in-progress";
+      if (is_not_in_progress) {
+        this.$notification.error(`This match has not in progress.`);
         this.match_ended = true;
         this.$router.push("/");
         return;
       }
 
-      const no_partner2_id = !_.get(this.match, "partner2_id");
-      const is_not_in_progress = _.get(this.match, "status") != "in-progress";
       const updated_at = _.get(this.match, "updated_at");
       const is_more_than_30s = this.$moment().isAfter(
         this.$moment(updated_at).add(30, "seconds"),
       );
-
-      // Match is not in progress or does not have partner2_id
-      if (is_not_in_progress || no_partner2_id) {
-        // More than 30 seconds -> Update match status to cancelled
-        if (is_more_than_30s) {
-          await this.END_MATCH({ match_id: this.match_id });
-          return;
-        } else {
-          // Match has not started, user not supposed to be on this page
-          this.$notification.error(`Match has not started yet.`);
-          this.match_ended = true;
-          this.$router.push("/");
-          return;
-        }
-      }
 
       const match_mode = _.get(this.match, "match_requirements.question_mode");
       const recommended_duration = _.get(
@@ -141,9 +142,7 @@ export default {
 
       // If is timed mode and duration has ended
       if (is_timed_mode && is_after_match_duration) {
-        this.$notification.error(`This match has already ended.`);
-        this.match_ended = true;
-        this.$router.push("/");
+        this.redirectUser();
         return;
       }
 
@@ -154,9 +153,7 @@ export default {
       );
 
       if (is_otot_mode && is_after_12_hours) {
-        this.$notification.error(`This match has already ended.`);
-        this.match_ended = true;
-        this.$router.push("/");
+        this.redirectUser();
         return;
       }
     },

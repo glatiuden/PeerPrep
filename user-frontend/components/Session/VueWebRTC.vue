@@ -20,8 +20,8 @@
 </template>
 
 <script>
-const io = require("socket.io-client");
-const SimpleSignalClient = require("simple-signal-client");
+import SimpleSignalClient from "simple-signal-client";
+
 export default {
   name: "VueWebrtc",
   components: {},
@@ -32,7 +32,7 @@ export default {
     },
     socketURL: {
       type: String,
-      default: `${process.env.SERVER_URL}/video-chat`,
+      default: `http://localhost:3007`,
     },
     cameraHeight: {
       type: [Number, String],
@@ -88,12 +88,12 @@ export default {
     async join() {
       var that = this;
       this.log("join");
-      this.socket = io(this.socketURL, {
-        rejectUnauthorized: false,
-        transports: ["websocket"],
+      this.socket = this.$nuxtSocket({
+        name: "video-chat",
+        persist: "video-chat",
         path: "/video-chat/new",
       });
-      console.log(this.socket);
+
       this.signalClient = new SimpleSignalClient(this.socket);
       let constraints = {
         video: that.enableVideo,

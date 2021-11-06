@@ -26,7 +26,6 @@ export default {
     matchId: {
       type: String,
       required: true,
-      default: localStorage.getItem("match_id"),
     },
   },
   destroyed() {
