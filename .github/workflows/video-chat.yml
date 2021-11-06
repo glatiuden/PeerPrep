@@ -13,7 +13,6 @@ defaults:
 
 jobs:
   build-and-push:
-    needs: test
     runs-on: ubuntu-latest
     env:
       ECR_REPOSITORY: video-chat-ms
