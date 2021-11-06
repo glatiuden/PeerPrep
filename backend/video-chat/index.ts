@@ -15,7 +15,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 const server = http.createServer(app);
-const io = new Server(server, { cors: corsOptions });
+const io = new Server(server, { cors: corsOptions, path: "/video-chat/new" });
 const signalServer = new simple_signal_server(io);
 const rooms = new Map();
 
@@ -24,7 +24,7 @@ server.listen(PORT, () => {
   console.log("Lobby server running on port " + PORT);
 });
 
-app.get("/", function (req, res) {
+app.get(["/", "/video-chat"], function (req, res) {
   let sum = 0;
   rooms.forEach((v, k) => (sum = sum + v.size));
   res.send("Lobby server<br/>rooms: " + rooms.size + "<br/>members: " + sum);

@@ -25,6 +25,7 @@
     "monaco-editor-webpack-plugin": "^5.0.0",
     "nuxt": "^2.15.7",
     "nuxt-socket-io": "^1.1.24",
+    "simple-signal-client": "^3.0.0",
     "vue-avatar": "^2.3.3",
     "vue-awesome-countdown": "^1.1.4",
     "vue-chat-scroll": "^1.4.0",

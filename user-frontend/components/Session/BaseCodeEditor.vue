@@ -46,6 +46,7 @@ export default {
       ydoc: undefined,
       provider: undefined,
       execute_code_loading: false,
+      socket_url: `${process.env.SERVER_URL}/editor`,
     };
   },
   async fetch() {
@@ -96,7 +97,7 @@ export default {
     this.ydoc = new Y.Doc();
     try {
       this.provider = new WebsocketProvider(
-        `wss://${process.env.SERVER_URL}/editor`,
+        `${this.socket_url.replace("https", "wss")}`,
         this.matchId,
         this.ydoc,
       );

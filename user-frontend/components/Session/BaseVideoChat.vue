@@ -3,13 +3,12 @@
     <v-btn color="primary" block depressed @click="clickVideoChat">
       {{ `${is_video_on ? "Stop" : "Start"} Video Chat` }}
     </v-btn>
-    <vue-webrtc
+    <VueWebRTC
       v-show="is_video_on"
       ref="webrtc"
       class="py-2"
       width="100%"
       :room-id="matchId"
-      :socket-u-r-l="`${process.env.SERVER_URL}/video-chat`"
     />
   </div>
 </template>
@@ -17,9 +16,11 @@
 <script>
 import systemMixin from "@/mixins/system";
 import matchMixin from "@/mixins/match";
+import VueWebRTC from "@/components/Session/VueWebRTC";
 
 export default {
   name: "BaseVideoChat",
+  components: { VueWebRTC },
   mixins: [systemMixin, matchMixin],
   props: {
     matchId: {
