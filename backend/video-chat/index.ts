@@ -15,7 +15,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 const server = http.createServer(app);
-
 const io = new Server(server, { cors: corsOptions });
 const signalServer = new simple_signal_server(io);
 const rooms = new Map();
