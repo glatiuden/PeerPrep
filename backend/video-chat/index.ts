@@ -18,9 +18,9 @@ const server = http.createServer(app);
 
 const io = new Server(server, { cors: corsOptions });
 const signalServer = new simple_signal_server(io);
-const PORT = process.env.port || 3007;
 const rooms = new Map();
 
+const PORT = process.env.port || 3007;
 server.listen(PORT, () => {
   console.log("Lobby server running on port " + PORT);
 });
