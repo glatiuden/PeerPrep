@@ -16,7 +16,8 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 const server = http.createServer(app);
 const io = new Server(server, { cors: corsOptions, path: "/video-chat/new" });
-const signalServer = new simple_signal_server(io);
+const nsp = io.of("/video-chat");
+const signalServer = new simple_signal_server(nsp);
 const rooms = new Map();
 
 const PORT = process.env.port || 3007;
@@ -31,6 +32,7 @@ app.get(["/", "/video-chat"], function (req, res) {
 });
 
 signalServer.on("discover", (request) => {
+  console.log(request);
   const memberId = request.socket.id;
   const roomId = request.discoveryData;
   let members = rooms.get(roomId);
