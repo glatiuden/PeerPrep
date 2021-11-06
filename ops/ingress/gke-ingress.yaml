@@ -48,3 +48,10 @@ spec:
             name: chat
             port: 
               number: 3005
+      - path: /video-chat
+        pathType: Prefix
+        backend:
+          service:
+            name: video-chat
+            port: 
+              number: 3007
