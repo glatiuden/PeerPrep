@@ -16,6 +16,6 @@ jobs:
 
     - name: Do something with the matrix value
       working-directory: ${{ matrix.dir }}
-      - run: |
-          echo "Hello ${{ matrix.dir }}!"
-          echo "- in ${{ matrix.dir | cut -d "/" -f3 }}!"
+    - run: |
+        echo "Hello ${{ matrix.dir }}!"
+        echo "- in ${{ matrix.dir | cut -d "/" -f3 }}!"
