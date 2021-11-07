@@ -6,6 +6,10 @@ on:
     paths:
       - 'admin-frontend/**'
 
+env: 
+  NODE_ENV: 'staging'
+  SERVER_URL: ${{secrets.STAGING_SERVER_URL}}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
