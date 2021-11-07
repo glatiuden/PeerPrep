@@ -1,4 +1,4 @@
-name: Production Server CI/CD
+name: Production Backend CI/CD
 on:
   release:
     types: [published]
