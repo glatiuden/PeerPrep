@@ -1,0 +1,21 @@
+name: Production CI/CD
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-push:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { dir: ['./backend/chat', './backend/editor'] }
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Do something with the matrix value
+      working-directory: ${{ matrix.dir }}
+      - run: |
+          echo "Hello ${{ matrix.dir }}!"
+          echo "- in ${{ matrix.dir | cut -d "/" -f3 }}!"
