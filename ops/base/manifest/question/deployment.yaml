@@ -19,6 +19,11 @@ spec:
         - name: question
           image: question
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 300m
           envFrom:
             - secretRef:
                 name: question-env

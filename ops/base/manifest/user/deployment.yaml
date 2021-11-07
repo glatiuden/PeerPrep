@@ -19,6 +19,11 @@ spec:
         - name: user
           image: user
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 300m
           envFrom:
             - secretRef:
                 name: user-env

@@ -19,6 +19,11 @@ spec:
         - name: chat
           image: chat
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 300m
           envFrom:
             - secretRef:
                 name: chat-env
