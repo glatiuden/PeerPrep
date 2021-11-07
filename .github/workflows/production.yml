@@ -20,7 +20,7 @@ jobs:
         echo "Hello ${{ matrix.dir }}!"
         echo ${{matrix.dir}} | cut -d "/" -f3
         id=$(echo ${{matrix.dir}} | cut -d "/" -f3)
-        echo "ECR_REPOSITORY=${{id}}" >> $GITHUB_ENV
+        echo "::set-output name=id::$id"
         
-    - run: echo "${{VERSION_TAG}}"
+    - run: echo "${{steps.get-id.outputs.id}}"
 
