@@ -11,11 +11,11 @@ jobs:
       matrix: { dir: ['./backend/chat', './backend/editor'] }
 
     steps:
-    - name: Checkout code
+    - name: Checkout 
       uses: actions/checkout@v2
 
     - name: Do something with the matrix value
       working-directory: ${{ matrix.dir }}
-    - run: |
+      run: |
         echo "Hello ${{ matrix.dir }}!"
         echo "- in ${{ matrix.dir | cut -d "/" -f3 }}!"
