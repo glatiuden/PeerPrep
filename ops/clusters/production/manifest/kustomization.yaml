@@ -20,4 +20,4 @@ images:
     newTag: 1.0.0 # {"$imagepolicy": "flux-system:user:tag"}
   - name: video-chat
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/video-chat-ms # {"$imagepolicy": "flux-system:video-chat:name"}
-    newTag: master-1222161-1636166589 # {"$imagepolicy": "flux-system:video-chat:tag"}
+    newTag: 1.0.0 # {"$imagepolicy": "flux-system:video-chat:tag"}
