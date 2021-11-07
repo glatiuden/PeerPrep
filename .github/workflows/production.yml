@@ -15,6 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Do something with the matrix value
+      id: get-ecr-repository
       working-directory: ${{ matrix.dir }}
       run: |
         echo "Hello ${{ matrix.dir }}!"
@@ -22,5 +23,5 @@ jobs:
         id=$(echo ${{matrix.dir}} | cut -d "/" -f3)
         echo "::set-output name=id::$id"
         
-    - run: echo "${{steps.get-id.outputs.id}}"
+    - run: echo "${{steps.get-ecr-repository.outputs.id}}"
 
