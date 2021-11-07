@@ -1,3 +1,3 @@
 cd/manifest/*/.env
-terraform
-terraform-google
+terraform-aws
+terraform-gke
