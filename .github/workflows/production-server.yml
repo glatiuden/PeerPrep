@@ -27,7 +27,7 @@ jobs:
         
     - name: Set the AWS ECR Repository as environment variable
       working-directory: ${{ matrix.dir }}
-      run: echo "ECR_REPOSITORY=${{ steps.get-ecr-repository.outputs.name }}" >> $GITHUB_ENV
+      run: echo "ECR_REPOSITORY=${{ steps.get-ecr-repository.outputs.name }}-ms" >> $GITHUB_ENV
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
