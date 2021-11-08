@@ -19,6 +19,8 @@ function getAccessControlAllowOrigin(req: Request): string {
     "https://admin-staging.peerprep.tech",
     "https://peerprep.tech",
     "https://admin.peerprep.tech",
+    "http://localhost:8082",
+    "http://localhost:8083",
   ];
   const origin = _.get(req, "headers.origin");
   const is_allowed = allowed_origins.includes(origin);
