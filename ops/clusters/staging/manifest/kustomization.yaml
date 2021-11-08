@@ -5,13 +5,13 @@ bases:
 images:
   - name: chat
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms # {"$imagepolicy": "flux-system:chat:name"}
-    newTag: master-7ab8b7c-1635957331 # {"$imagepolicy": "flux-system:chat:tag"}
+    newTag: master-ac8b65b-1636369142 # {"$imagepolicy": "flux-system:chat:tag"}
   - name: editor
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms # {"$imagepolicy": "flux-system:editor:name"}
     newTag: master-5e487de-1636112070 # {"$imagepolicy": "flux-system:editor:tag"}
   - name: match
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/match-ms # {"$imagepolicy": "flux-system:match:name"}
-    newTag: master-d8516f1-1636343949 # {"$imagepolicy": "flux-system:match:tag"}
+    newTag: master-ac8b65b-1636369122 # {"$imagepolicy": "flux-system:match:tag"}
   - name: question
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms # {"$imagepolicy": "flux-system:question:name"}
     newTag: master-45753c3-1636355471 # {"$imagepolicy": "flux-system:question:tag"}
