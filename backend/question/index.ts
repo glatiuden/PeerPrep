@@ -9,6 +9,7 @@ import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
 import makeRabbit from "./src/configs/make-rabbitmq";
+import makeRedis from "./src/configs/make-redis";
 
 const app = express();
 const corsOptions = {
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
   makeRabbit();
+  new makeRedis();
 }
 
 makeDb();
