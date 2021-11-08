@@ -7,7 +7,9 @@ import _ from "lodash";
  */
 const authenticated: Middleware = async ({ store }) => {
   try {
-    await store.dispatch("auth/AUTH");
+    if (_.isEmpty(store.getters["auth/admin"])) {
+      await store.dispatch("auth/AUTH");
+    }
   } catch (err) {
     console.error(err);
     localStorage.removeItem("login_token");

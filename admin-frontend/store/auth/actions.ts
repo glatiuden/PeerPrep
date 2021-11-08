@@ -49,6 +49,8 @@ const actions: ActionTree<AuthState, RootState> = {
       commit(MutationTypes.SET_HAS_ADMIN, { data: true });
       return user;
     } catch (err: any) {
+      commit(MutationTypes.SET_ADMIN, { data: null });
+      commit(MutationTypes.SET_HAS_ADMIN, { data: false });
       const origin = `${window.location.origin}/login`;
       window.location.replace(origin);
     }
@@ -71,6 +73,8 @@ const actions: ActionTree<AuthState, RootState> = {
       const origin = `${window.location.origin}/login`;
       window.location.replace(origin);
     } catch (err: any) {
+      commit(MutationTypes.SET_ADMIN, { data: null });
+      commit(MutationTypes.SET_HAS_ADMIN, { data: false });
       const error = err && err.message ? `?errorMessage=${err.message}` : "";
       const origin = `${window.location.origin}/login${error}`;
       window.location.replace(origin);
