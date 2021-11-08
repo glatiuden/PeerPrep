@@ -2,14 +2,16 @@ import { Server, Socket } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { logger } from "./logs";
 import { ChatDb } from "../data-access";
-import { corsOptions } from "../middlewares/access-controller-middleware";
 import { redisClient } from "./make-redis";
 
 export default function makeSockets(server) {
   const io = new Server(server, {
-    cors: corsOptions,
+    cors: {
+      origin: ["https://peerprep.tech", "https://staging.peerprep.tech", "http://localhost:8082"],
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
     transports: ["websocket", "polling"],
-    allowEIO3: true,
     path: "/chat/new",
   });
 

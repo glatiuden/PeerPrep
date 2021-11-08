@@ -12,15 +12,10 @@ import makeRabbitMQ from "./src/configs/make-rabbitmq";
 import makeSockets from "./src/configs/make-sockets";
 import makeRedis from "./src/configs/make-redis";
 import http from "http";
+import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
 
 const app = express();
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
-};
-
-app.use(cors(corsOptions));
+app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
 makeDb();
 
@@ -30,19 +25,17 @@ if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
   new makeRedis();
   new makeRabbitMQ();
-  makeSockets(server, corsOptions);
+  makeSockets(server);
 }
 
 // Initialize routes
 app.use("/match/api", apiRouter);
 app.use("/match/admin", adminRouter);
 
-app.get("/match", function (req, res) {
+app.get(["/", "/match"], function (req, res) {
   res.send("Match microservice is running");
 });
-app.get("/", function (req, res) {
-  res.send("Match microservice is running");
-});
+
 server.listen(PORT, () => {
   console.log(`${process.env.NODE_ENV} server is listening on port ${PORT}`);
 });

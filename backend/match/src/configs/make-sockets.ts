@@ -1,19 +1,28 @@
 import _ from "lodash";
 import { Server, Socket } from "socket.io";
-import { createAdapter } from "socket.io-redis";
+import { createAdapter } from "@socket.io/redis-adapter";
 import { logger } from "./logs";
 import { redisClient } from "./make-redis";
 import { findMatch, cancelMatch, getMatch, findEloMatch, cancelEloMatch } from "../services/use-cases";
 
-export default function makeSockets(server, cors) {
-  const io = new Server(server, { transports: ["polling"], cors, path: "/match/new" });
+export default function makeSockets(server) {
+  const io = new Server(server, {
+    cors: {
+      origin: ["https://peerprep.tech", "https://staging.peerprep.tech", "http://localhost:8082"],
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+    transports: ["websocket", "polling"],
+    path: "/match/new",
+  });
+
   const pubClient = redisClient.redis_client;
   if (!pubClient) {
-    console.warn("Redis not initialized not found. Socket is not established");
+    console.warn("Redis not initialized. Socket is not established");
     return;
   }
   const subClient = pubClient.duplicate();
-  io.adapter(createAdapter({ pubClient, subClient }));
+  io.adapter(createAdapter(pubClient, subClient));
   const nsp = io.of("/match");
 
   if (nsp) {

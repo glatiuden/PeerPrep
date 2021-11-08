@@ -7,12 +7,12 @@ replicas:
 - name: chat
   count: 2
 - name: editor
-  count: 1
+  count: 2
 - name: match
-  count: 1
+  count: 2
 - name: question
   count: 1
 - name: user
   count: 1
 - name: video-chat
-  count: 1
+  count: 2
