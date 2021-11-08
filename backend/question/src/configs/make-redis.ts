@@ -6,6 +6,7 @@ export default class Redis {
   redis_client: undefined | RedisClient;
   getAsync!: (key: string) => Promise<string | null>;
   setAsync!: (key: string, records: any, mode: string, duration: number) => Promise<any>;
+  has_redis = false;
 
   constructor() {
     if (Redis.redis_instance) {
@@ -13,12 +14,14 @@ export default class Redis {
     }
     const REDIS_ENDPOINT = process.env.REDIS_ENDPOINT;
     if (!REDIS_ENDPOINT) {
+      this.has_redis = false;
       console.warn("Redis Endpoint not found. Redis is not established");
       return;
     }
     const redis_client = createClient(REDIS_ENDPOINT, { auth_pass: process.env.REDIS_PASSWORD });
     redis_client.on("connect", () => {
       console.log("Succesfully connected to Redis");
+      this.has_redis = true;
     });
 
     this.redis_client = redis_client;

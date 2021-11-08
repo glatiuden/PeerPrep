@@ -11,24 +11,28 @@ async function getFeaturedQuestionTopicsController() {
     "Content-Type": "application/json",
   };
 
+  const redis_key = `question-featured_topics`;
   try {
-    const redis_key = `question-featured_topics`;
-    const data_exist_in_cache = await redisClient.getAsync(redis_key);
+    if (redisClient.has_redis) {
+      const data_exist_in_cache = await redisClient.getAsync(redis_key);
 
-    if (data_exist_in_cache) {
-      logger.verbose(`Redis: Featured topics found in cache! Returning...`);
-      return {
-        headers,
-        statusCode: 200,
-        body: {
-          data: JSON.parse(data_exist_in_cache),
-        },
-      };
+      if (data_exist_in_cache) {
+        logger.verbose(`Redis: Featured topics found in cache! Returning...`);
+        return {
+          headers,
+          statusCode: 200,
+          body: {
+            data: JSON.parse(data_exist_in_cache),
+          },
+        };
+      }
     }
 
     const topics = await questionService.findFeaturedTopics();
-    await redisClient.setAsync(redis_key, JSON.stringify(topics), "EX", 180000); // Cache last for 3 minutes
 
+    if (redisClient.has_redis) {
+      await redisClient.setAsync(redis_key, JSON.stringify(topics), "EX", 180000); // Cache last for 3 minutes
+    }
     return {
       headers,
       statusCode: 200,

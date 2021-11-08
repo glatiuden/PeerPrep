@@ -16,23 +16,29 @@ async function getQuestionController(httpRequest: Request & { context: { validat
   try {
     const { question_id }: { question_id: string } = _.get(httpRequest, "context.validated");
     const redis_key = `question-${question_id}`;
-    const data_exist_in_cache = await redisClient.getAsync(redis_key);
-    if (data_exist_in_cache) {
-      logger.verbose(`Redis: Question ${question_id} found in cache! Returning...`);
-      return {
-        headers,
-        statusCode: 200,
-        body: {
-          data: JSON.parse(data_exist_in_cache),
-        },
-      };
+
+    if (redisClient.has_redis) {
+      const data_exist_in_cache = await redisClient.getAsync(redis_key);
+      if (data_exist_in_cache) {
+        logger.verbose(`Redis: Question ${question_id} found in cache! Returning...`);
+        return {
+          headers,
+          statusCode: 200,
+          body: {
+            data: JSON.parse(data_exist_in_cache),
+          },
+        };
+      }
     }
 
     const question = await questionService.findById({ id: question_id });
     if (!question) {
       throw new Error(`Question ${question_id} does not exists.`);
     }
-    await redisClient.setAsync(redis_key, JSON.stringify(question), "EX", 180000); // Cache last for 3 minutes
+
+    if (redisClient.has_redis) {
+      await redisClient.setAsync(redis_key, JSON.stringify(question), "EX", 180000); // Cache last for 3 minutes
+    }
 
     return {
       headers,
