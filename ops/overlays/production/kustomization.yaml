@@ -5,14 +5,14 @@ bases:
   
 replicas:
 - name: chat
-  count: 2
+  count: 1
 - name: editor
-  count: 2
+  count: 1
 - name: match
-  count: 2
+  count: 1
 - name: question
-  count: 2
+  count: 1
 - name: user
-  count: 2
+  count: 1
 - name: video-chat
-  count: 2
+  count: 1
