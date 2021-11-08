@@ -12,12 +12,6 @@ import http from "http";
 import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
 
 const app = express();
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
-};
-
 app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
 

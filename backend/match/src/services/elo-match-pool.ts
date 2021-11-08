@@ -42,7 +42,7 @@ export default function makeEloMatchPoolService({
         programming_language,
         difficulty,
         deleted_at: undefined,
-        u1: { $gt: user_elo - 100, $lt: user_elo + 100 },
+        u1: { $gt: user_elo - 250, $lt: user_elo + 250 },
       };
 
       if (topic) {

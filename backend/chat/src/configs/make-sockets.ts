@@ -1,15 +1,17 @@
 import { Server, Socket } from "socket.io";
 import { createAdapter } from "socket.io-redis";
-import { createClient } from "redis";
 import { logger } from "./logs";
 import { ChatDb } from "../data-access";
 import { corsOptions } from "../middlewares/access-controller-middleware";
+import { redisClient } from "./make-redis";
 
 export default function makeSockets(server) {
   const io = new Server(server, { transports: ["polling"], cors: corsOptions, path: "/chat/new" });
-  const pubClient = createClient("//redis-12661.c292.ap-southeast-1-1.ec2.cloud.redislabs.com:12661", {
-    auth_pass: "N4llYIJfuTY48DLszrrow9JGPdWRX19B",
-  });
+  const pubClient = redisClient.redis_client;
+  if (!pubClient) {
+    console.warn("Redis not initialized not found. Socket is not established");
+    return;
+  }
   const subClient = pubClient.duplicate();
   io.adapter(createAdapter({ pubClient, subClient }));
   const nsp = io.of("/chat");
