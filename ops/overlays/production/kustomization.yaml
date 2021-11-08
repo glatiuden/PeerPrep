@@ -5,7 +5,7 @@ bases:
   
 replicas:
 - name: chat
-  count: 1
+  count: 2
 - name: editor
   count: 1
 - name: match
