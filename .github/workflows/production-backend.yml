@@ -1,0 +1,55 @@
+name: Production Backend CI/CD
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-push:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: { dir: ['./backend/chat', './backend/editor', './backend/user', './backend/question', './backend/match', './backend/video-chat'] }
+
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+      
+    - name: Get the tag name
+      working-directory: ${{ matrix.dir }}
+      run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
+    - name: Get ECR Repository Name
+      id: get-ecr-repository
+      working-directory: ${{ matrix.dir }}
+      run: |
+        name=$(echo ${{matrix.dir}} | cut -d "/" -f3)
+        echo "::set-output name=name::$name"
+        
+    - name: Set the AWS ECR Repository as environment variable
+      working-directory: ${{ matrix.dir }}
+      run: echo "ECR_REPOSITORY=${{ steps.get-ecr-repository.outputs.name }}-ms" >> $GITHUB_ENV
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+    - name: Log in to AWS ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Set the AWS ECR Registry as environment variable
+      working-directory: ${{ matrix.dir }}
+      run: echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
+
+    - name: Build Docker Image
+      id: build-image
+      working-directory: ${{ matrix.dir }}
+      run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$TAG .
+
+    - name: Push image(s) to AWS ECR 
+      id: push-image
+      working-directory: ${{ matrix.dir }}
+      run: docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
