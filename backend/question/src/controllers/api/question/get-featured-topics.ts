@@ -13,7 +13,7 @@ async function getFeaturedQuestionTopicsController() {
 
   const redis_key = `question-featured_topics`;
   try {
-    if (redisClient.has_redis) {
+    if (redisClient && redisClient.has_redis) {
       const data_exist_in_cache = await redisClient.getAsync(redis_key);
 
       if (data_exist_in_cache) {
@@ -30,7 +30,7 @@ async function getFeaturedQuestionTopicsController() {
 
     const topics = await questionService.findFeaturedTopics();
 
-    if (redisClient.has_redis) {
+    if (redisClient && redisClient.has_redis) {
       await redisClient.setAsync(redis_key, JSON.stringify(topics), "EX", 180000); // Cache last for 3 minutes
     }
     return {
