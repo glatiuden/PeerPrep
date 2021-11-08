@@ -113,7 +113,7 @@
               <v-col cols="11">
                 <v-text-field
                   v-model="new_question.constraints[index]"
-                  label="Example"
+                  label="Constraints"
                   outlined
                   hide-details
                 ></v-text-field>
