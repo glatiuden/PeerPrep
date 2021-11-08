@@ -4,18 +4,23 @@ import bodyParser from "body-parser";
 import http from "http";
 import { Server } from "socket.io";
 import simple_signal_server from "simple-signal-server";
+import accessControlMiddleware from "./middlewares/access-controller-middleware";
 
 const app = express();
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
-};
-
-app.use(cors(corsOptions));
+app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
+
 const server = http.createServer(app);
-const io = new Server(server, { cors: corsOptions, path: "/video-chat/new" });
+const io = new Server(server, {
+  cors: {
+    origin: ["https://peerprep.tech", "https://staging.peerprep.tech", "http://localhost:8082"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+  transports: ["websocket", "polling"],
+  path: "/video-chat/new",
+});
+
 const nsp = io.of("/video-chat");
 const signalServer = new simple_signal_server(nsp);
 const rooms = new Map();
