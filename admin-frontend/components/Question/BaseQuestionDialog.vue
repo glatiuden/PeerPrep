@@ -85,6 +85,7 @@ export default {
         const question_id = this.question._id;
         await this.DELETE_QUESTION({ question_id });
         this.$notification.success(`Successfully deleted!`);
+        await this.GET_QUESTIONS_PAGINATED();
         this.closeDialog();
         this.GET_QUESTION();
       } catch (err) {
