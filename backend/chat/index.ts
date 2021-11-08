@@ -10,6 +10,7 @@ import router from "./src/routes";
 import makeSockets from "./src/configs/make-sockets";
 import http from "http";
 import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
+import makeRedis from "./src/configs/make-redis";
 
 const app = express();
 app.use(cors(), accessControlMiddleware);
@@ -21,6 +22,7 @@ const server = http.createServer(app);
 
 if (process.env.NODE_ENV !== "test") {
   makeDb();
+  new makeRedis();
   makeSockets(server);
   app.use(makeLogger());
 }

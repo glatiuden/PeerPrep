@@ -1,19 +1,25 @@
 import { Server, Socket } from "socket.io";
-import { createAdapter } from "socket.io-redis";
+import { createAdapter } from "@socket.io/redis-adapter";
 import { logger } from "./logs";
 import { ChatDb } from "../data-access";
 import { corsOptions } from "../middlewares/access-controller-middleware";
 import { redisClient } from "./make-redis";
 
 export default function makeSockets(server) {
-  const io = new Server(server, { transports: ["polling"], cors: corsOptions, path: "/chat/new" });
+  const io = new Server(server, {
+    cors: corsOptions,
+    transports: ["websocket", "polling"],
+    allowEIO3: true,
+    path: "/chat/new",
+  });
+
   const pubClient = redisClient.redis_client;
   if (!pubClient) {
-    console.warn("Redis not initialized not found. Socket is not established");
+    console.warn("Redis not initialized. Socket is not established");
     return;
   }
   const subClient = pubClient.duplicate();
-  io.adapter(createAdapter({ pubClient, subClient }));
+  io.adapter(createAdapter(pubClient, subClient));
   const nsp = io.of("/chat");
 
   if (nsp) {
@@ -28,7 +34,7 @@ export default function makeSockets(server) {
 
     socket.on("message", (content) => {
       const { match_id, payload } = content;
-      logger.verbose("Code change detected", { match_id });
+      logger.verbose("Message sent", { match_id });
       nsp.to(match_id).emit("message", payload);
     });
 
