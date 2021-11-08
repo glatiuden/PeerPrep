@@ -37,7 +37,7 @@ async function getQuestionController(httpRequest: Request & { context: { validat
     }
 
     if (redisClient && redisClient.has_redis) {
-      await redisClient.setAsync(redis_key, JSON.stringify(question), "EX", 180000); // Cache last for 3 minutes
+      await redisClient.setAsync(redis_key, JSON.stringify(question), "EX", 180); // Cache last for 3 minutes
     }
 
     return {

@@ -52,7 +52,7 @@ async function getQuestionsPaginatedController(httpRequest: Request) {
     });
 
     if (redisClient && redisClient.has_redis) {
-      await redisClient.setAsync(redis_key, JSON.stringify(questions_paginated), "EX", 180000); // Cache last for 3 minutes
+      await redisClient.setAsync(redis_key, JSON.stringify(questions_paginated), "EX", 180); // Cache last for 3 minutes
     }
     return {
       headers,

@@ -1,5 +1,8 @@
 # Monitoring
-Monitoring is done through `kube-prometheus-stack` (formerly known as prometheus-operator chart), which comes with Prometheus and Grafana.
+Monitoring is done through `kube-prometheus-stack` (formerly known as `prometheus-operator` chart), which comes with Prometheus and Grafana.
+
+## Installation
+You need to have `helm` installed before running any of the commands below.
 
 To install monitoring on the cluster, run the following command:
 ```bash
@@ -49,7 +52,7 @@ kubectl -n monitoring port-forward service/prometheus-grafana 3000:80
 helm upgrade --install loki grafana/loki-stack --set grafana.enabled=false,prometheus.enabled=false
 ```
 
-Loki is used as a centralized log collector across the different pods deployed in cluster.
+Loki is used as a centralized log collector across the different pods deployed in the cluster.
 
 ### To view Loki Logs in Grafana
 If you haven't enabled Grafana Dashboard, please use any one of the method in Accessing the Dashboards above.
