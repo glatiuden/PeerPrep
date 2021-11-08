@@ -167,27 +167,10 @@
         </template>
 
         <template #item.actions="{ item }">
-          <v-btn
-            fab
-            dark
-            small
-            color="blue"
-            class="mr-2"
-            @click="openUpdateQuestionDialog(item._id)"
-          >
-            <v-icon dark> mdi-pencil-outline </v-icon>
-          </v-btn>
+            <v-icon class="mr-2"
+            @click="openUpdateQuestionDialog(item._id)"> mdi-pencil-outline </v-icon>
 
-          <v-btn
-            fab
-            dark
-            small
-            color="red"
-            class="mr-2"
-            @click="deleteQuestion(item._id)"
-          >
-            <v-icon dark> mdi-delete </v-icon>
-          </v-btn>
+            <v-icon @click="deleteQuestion(item._id)"> mdi-delete-forever-outline </v-icon>
         </template>
 
         <template #no-data> No question available </template>
@@ -266,11 +249,11 @@ export default {
           width: 150,
         },
         {
-          text: "",
+          text: "Actions",
           value: "actions",
           sortable: false,
           class: "data-table-heading",
-          width: 150,
+          width: 200,
         },
       ],
       search: "",
