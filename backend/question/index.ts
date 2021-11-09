@@ -10,6 +10,7 @@ import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
 import makeRabbit from "./src/configs/make-rabbitmq";
 import makeRedis from "./src/configs/make-redis";
+import adminTokenValidatorMiddleware from "./src/middlewares/admin-token-validator-middleware";
 
 const app = express();
 const corsOptions = {
@@ -34,7 +35,7 @@ app.listen(PORT, () => {
 
 // Initialize routes
 app.use("/question/api", apiRouter);
-app.use("/question/admin", adminRouter);
+app.use("/question/admin", adminTokenValidatorMiddleware, adminRouter);
 app.get(["/", "/question"], function (req, res) {
   res.send("Question microservice is running");
 });

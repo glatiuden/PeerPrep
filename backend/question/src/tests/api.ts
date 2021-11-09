@@ -10,31 +10,30 @@ describe("/question/admin", () => {
   let question: any;
 
   before(async () => {
-    question = await chai.request(app).post("/question/admin/").set("content-type", "application/json").send({
-      "title": "Test",
-      "description": "Sample Question",
-      "difficulty": "medium",
-      "recommended_duration": 55,
-      "topic": "Algorithms",
-      "hints": [
-        "hint1",
-        "hint2"
-      ],
-      "examples": [
-        {
-          "input": "input1",
-          "output": "output1"
-        },
-        {
-          "input": "input2",
-          "output": "output2"
-        }
-      ],
-      "constraints": [
-        "Sample Constraint"
-      ],
-      "solution": "Sample Solution"
-    });
+    question = await chai
+      .request(app)
+      .post("/question/admin/")
+      .set("content-type", "application/json")
+      .send({
+        title: "Test",
+        description: "Sample Question",
+        difficulty: "medium",
+        recommended_duration: 55,
+        topic: "Algorithms",
+        hints: ["hint1", "hint2"],
+        examples: [
+          {
+            input: "input1",
+            output: "output1",
+          },
+          {
+            input: "input2",
+            output: "output2",
+          },
+        ],
+        constraints: ["Sample Constraint"],
+        solution: "Sample Solution",
+      });
 
     Promise.all([question]);
   });
@@ -100,31 +99,30 @@ describe("/question/admin", () => {
   });
   describe("POST /", () => {
     it("should create a question", async () => {
-      const res = await chai.request(app).post(`/question/admin`).set("content-type", "application/json").send({
-        "title": "Test2",
-        "description": "Sample Question",
-        "difficulty": "medium",
-        "recommended_duration": 55,
-        "topic": "Algorithms",
-        "hints": [
-          "hint1",
-          "hint2"
-        ],
-        "examples": [
-          {
-            "input": "input1",
-            "output": "output1"
-          },
-          {
-            "input": "input2",
-            "output": "output2"
-          }
-        ],
-        "constraints": [
-          "Sample Constraint"
-        ],
-        "solution": "Sample Solution"
-      });
+      const res = await chai
+        .request(app)
+        .post(`/question/admin`)
+        .set("content-type", "application/json")
+        .send({
+          title: "Test2",
+          description: "Sample Question",
+          difficulty: "medium",
+          recommended_duration: 55,
+          topic: "Algorithms",
+          hints: ["hint1", "hint2"],
+          examples: [
+            {
+              input: "input1",
+              output: "output1",
+            },
+            {
+              input: "input2",
+              output: "output2",
+            },
+          ],
+          constraints: ["Sample Constraint"],
+          solution: "Sample Solution",
+        });
 
       expect(res).to.have.status(200);
       expect(res).to.be.a("object");
@@ -148,29 +146,28 @@ describe("/question/admin", () => {
 
     //Missing difficulty and description
     it("should not create a question", async () => {
-      const res = await chai.request(app).post(`/question/admin/`).set("content-type", "application/json").send({
-        "title": "Test2",
-        "recommended_duration": 55,
-        "topic": "Algorithms",
-        "hints": [
-          "hint1",
-          "hint2"
-        ],
-        "examples": [
-          {
-            "input": "input1",
-            "output": "output1"
-          },
-          {
-            "input": "input2",
-            "output": "output2"
-          }
-        ],
-        "constraints": [
-          "Sample Constraint"
-        ],
-        "solution": "Sample Solution"
-      });
+      const res = await chai
+        .request(app)
+        .post(`/question/admin/`)
+        .set("content-type", "application/json")
+        .send({
+          title: "Test2",
+          recommended_duration: 55,
+          topic: "Algorithms",
+          hints: ["hint1", "hint2"],
+          examples: [
+            {
+              input: "input1",
+              output: "output1",
+            },
+            {
+              input: "input2",
+              output: "output2",
+            },
+          ],
+          constraints: ["Sample Constraint"],
+          solution: "Sample Solution",
+        });
       expect(res).to.have.status(422);
       expect(res.body).to.be.a("object");
       expect(res.body).to.include.all.keys(["errors"]);
@@ -181,18 +178,18 @@ describe("/question/admin", () => {
     it("should update topic", async () => {
       const id = question.body.data._id;
       const res = await chai.request(app).put(`/question/admin`).send({
-        "_id": id,
-        "topic": "Algorithms"
+        _id: id,
+        topic: "Algorithms",
       });
       expect(res).to.have.status(200);
       expect(res.body).to.be.a("object");
-      expect(res.body).to.have.property("data")
+      expect(res.body).to.have.property("data");
     });
     it("should not update topic", async () => {
       const id = "invalid_id";
       const res = await chai.request(app).put(`/question/admin`).send({
-        "_id": id,
-        "topic": "Algorithms"
+        _id: id,
+        topic: "Algorithms",
       });
       expect(res).to.have.status(422);
       expect(res.body).to.be.a("object");
@@ -239,35 +236,34 @@ describe("/question/api", () => {
   let question: any;
 
   before(async () => {
-    question = await chai.request(app).post("/question/admin/").set("content-type", "application/json").send({
-      "title": "Test",
-      "description": "Sample Question",
-      "difficulty": "medium",
-      "recommended_duration": 55,
-      "topic": "Algorithms",
-      "hints": [
-        "hint1",
-        "hint2"
-      ],
-      "examples": [
-        {
-          "input": "input1",
-          "output": "output1"
-        },
-        {
-          "input": "input2",
-          "output": "output2"
-        }
-      ],
-      "constraints": [
-        "Sample Constraint"
-      ],
-      "solution": "Sample Solution"
-    });
+    question = await chai
+      .request(app)
+      .post("/question/admin/")
+      .set("content-type", "application/json")
+      .send({
+        title: "Test",
+        description: "Sample Question",
+        difficulty: "medium",
+        recommended_duration: 55,
+        topic: "Algorithms",
+        hints: ["hint1", "hint2"],
+        examples: [
+          {
+            input: "input1",
+            output: "output1",
+          },
+          {
+            input: "input2",
+            output: "output2",
+          },
+        ],
+        constraints: ["Sample Constraint"],
+        solution: "Sample Solution",
+      });
   });
 
   after(async () => {
-    await chai.request(app).delete("/question/api/reset");
+    await chai.request(app).delete("/question/admin/reset");
   });
   describe("GET /", () => {
     it("should get all questions", async () => {
@@ -295,6 +291,7 @@ describe("/question/api", () => {
   describe("GET /:question_id", () => {
     it("should get one question", async () => {
       const id = question.body.data._id;
+      console.log(id);
       const res = await chai.request(app).get(`/question/api/${id}`);
       expect(res).to.have.status(200);
       expect(res).to.be.a("object");
@@ -329,8 +326,8 @@ describe("/question/api", () => {
     it("should not update", async () => {
       const id = question.body.data._id;
       const res = await chai.request(app).put(`/question/api`).send({
-        "_id": id,
-        "topic": "Algorithms"
+        _id: id,
+        topic: "Algorithms",
       });
       expect(res).to.have.status(404);
       expect(res.body).to.be.a("object");

@@ -17,15 +17,37 @@ import {
 } from "../../controllers/api/match";
 import { createRatingController, getAverageRatingByReceiverIdController } from "../../controllers/api/rating";
 import { createRatingRules } from "../../controllers/api/rating/validators";
+import tokenValidatorMiddleware from "../../middlewares/token-validator-middleware";
 
 const matchRouter = express.Router();
 
 matchRouter.post("/", makeValidator(createMatchRules), makeExpressCallback(createMatchController));
-matchRouter.get("/user/:user_id", makeExpressCallback(getMatchesByUserIdPaginatedController));
-matchRouter.get("/:match_id", makeValidator(getMatchRules), makeExpressCallback(getMatchController));
-matchRouter.put("/end", makeValidator(endMatchRules), makeExpressCallback(endMatchController));
 matchRouter.put("/", makeValidator(updateMatchRules), makeExpressCallback(updateMatchController));
-matchRouter.post("/rating", makeValidator(createRatingRules), makeExpressCallback(createRatingController));
-matchRouter.get("/rating/:receiver_id", makeExpressCallback(getAverageRatingByReceiverIdController));
+
+// Used in frontends
+matchRouter.get("/user/:user_id", tokenValidatorMiddleware, makeExpressCallback(getMatchesByUserIdPaginatedController));
+matchRouter.get(
+  "/:match_id",
+  tokenValidatorMiddleware,
+  makeValidator(getMatchRules),
+  makeExpressCallback(getMatchController),
+);
+matchRouter.put(
+  "/end",
+  tokenValidatorMiddleware,
+  makeValidator(endMatchRules),
+  makeExpressCallback(endMatchController),
+);
+matchRouter.post(
+  "/rating",
+  tokenValidatorMiddleware,
+  makeValidator(createRatingRules),
+  makeExpressCallback(createRatingController),
+);
+matchRouter.get(
+  "/rating/:receiver_id",
+  tokenValidatorMiddleware,
+  makeExpressCallback(getAverageRatingByReceiverIdController),
+);
 
 export default matchRouter;
