@@ -17,9 +17,11 @@ const app = express();
 
 app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
-app.use(makeLogger());
 
-makeDb();
+if (process.env.NODE_ENV !== "test") {
+  app.use(makeLogger());
+  makeDb();
+}
 
 // Initialize sockets & routes
 app.use("/editor/api", tokenValidatorMiddleware, apiRouter);
