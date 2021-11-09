@@ -7,7 +7,7 @@ export default function makeFakeEditor(overwritingPayload: Partial<IEditor> = {}
     {
       _id: new Types.ObjectId(),
       match_id: new Types.ObjectId(),
-      content: faker.lorem.paragraph,
+      content: faker.lorem.paragraph(),
       created_at: new Date(),
       updated_at: new Date(),
     },

@@ -9,25 +9,20 @@ import express from "express";
 import makeLogger from "./src/configs/logs";
 import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
-import adminRouter from "./src/routes/admin";
 import makeWebsockets, { cleanup } from "./src/configs/make-websockets";
+import tokenValidatorMiddleware from "./src/middlewares/token-validator-middleware";
+import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
 
 const app = express();
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
-};
 
-app.use(cors(corsOptions));
+app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
 app.use(makeLogger());
 
 makeDb();
 
 // Initialize sockets & routes
-app.use("/editor/api", apiRouter);
-app.use("/editor/admin", adminRouter);
+app.use("/editor/api", tokenValidatorMiddleware, apiRouter);
 app.get(["/", "/editor"], function (req, res) {
   res.send("Editor microservice is running");
 });

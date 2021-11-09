@@ -1,5 +1,4 @@
 import IEditor from "./interfaces/editor";
-import { Types } from "mongoose";
 
 export default class Editor implements IEditor {
   public readonly _id: string;

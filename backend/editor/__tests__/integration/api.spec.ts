@@ -36,22 +36,6 @@ describe("Editors Postive Test Cases", () => {
       expect(_.get(res, "body.data.match_id")).toEqual(String(mock_editor.match_id));
     });
   });
-
-  describe("PUT /", () => {
-    it("Should update editor that was previously created", async () => {
-      const second_mock_editor = makeFakeEditor();
-      const updated_editor = Object.assign({}, mock_editor, {
-        match_id: second_mock_editor.match_id,
-      });
-
-      const res = await api.put("/editor/api").send(updated_editor);
-
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty("data");
-      expect(_.get(res, "body.data._id")).toEqual(String(mock_editor._id));
-      expect(_.get(res, "body.data.match_id")).toEqual(String(updated_editor.match_id));
-    });
-  });
 });
 
 describe("Editors Negative Test Cases", () => {
@@ -63,7 +47,6 @@ describe("Editors Negative Test Cases", () => {
     await clearDatabase();
   });
 
-  const mock_editor = makeFakeEditor();
   const valid_editor_id = makeFakeEditor()._id;
   const invalid_editor_id = "123"; // Invalid ID as it is not a valid ObjectID
 
@@ -84,26 +67,6 @@ describe("Editors Negative Test Cases", () => {
 
     it("Should not fetch a editor due to record not found", async () => {
       const res = await api.get(`/editor/api/${valid_editor_id}`);
-      expect(res.status).toBe(404);
-      expect(res.body).toHaveProperty("errors");
-    });
-  });
-
-  describe("PUT /", () => {
-    it("Should not update editor due to invalid ID", async () => {
-      const res = await api.put("/editor/api").send({
-        _id: invalid_editor_id,
-        match_id: mock_editor.match_id,
-      });
-      expect(res.status).toBe(422);
-      expect(res.body).toHaveProperty("errors");
-    });
-
-    it("Should not update editor due to record not found", async () => {
-      const res = await api.put("/editor/api").send({
-        _id: valid_editor_id,
-        match_id: mock_editor.match_id,
-      });
       expect(res.status).toBe(404);
       expect(res.body).toHaveProperty("errors");
     });

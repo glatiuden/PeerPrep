@@ -10,6 +10,10 @@ module.exports = {
       },
     },
   },
+  transform: {
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
+  },
   testMatch: ["**/?(*.)+(spec|test).[t]s?(x)"],
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   testPathIgnorePatterns: ["/node_modules/", "/__fixtures__/"],
