@@ -6,7 +6,7 @@ metadata:
     k8s-addon: cluster-autoscaler.addons.k8s.io
     k8s-app: cluster-autoscaler
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::694217600744:role/eksctl-terraform-eks-addon-iamserviceaccount-Role1-O271BAJDMPNV
+    eks.amazonaws.com/role-arn: arn:aws:iam::694217600744:role/eksctl-terraform-eks-addon-iamserviceaccount-Role1-O271BAJDMPNV # Change to your role ARN
   name: cluster-autoscaler
   namespace: kube-system
 ---
@@ -162,7 +162,7 @@ spec:
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
-            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/terraform-eks
+            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/terraform-eks # Change to your cluster name
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt #/etc/ssl/certs/ca-bundle.crt for Amazon Linux Worker Nodes

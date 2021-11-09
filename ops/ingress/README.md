@@ -1,1 +1,0 @@
-[Detailed Instructions](https://medium.com/cloudzone/aws-alb-ingress-controller-guide-ec16233f5903)
