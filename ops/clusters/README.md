@@ -2,6 +2,8 @@
 
 This folder contains CD cluster configuration using Flux v2.
 
+It uses the [Automate image updates to Git](https://fluxcd.io/docs/guides/image-update/) as part of CD and GitOps.
+
 ## Getting Started
 Please ensure you have `Flux` installed on your machine. Please follow the instructions [here](https://fluxcd.io/docs/installation/).
 

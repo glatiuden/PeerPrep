@@ -18,7 +18,7 @@
               />
               <v-select
                 v-model="update_question.topic"
-                :items="['Data Structures', 'Algorithms', 'Database']"
+                :items="['Data Structures', 'Algorithms', 'Concurrency']"
                 label="Topic"
                 outlined
                 dense

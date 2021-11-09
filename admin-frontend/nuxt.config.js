@@ -68,7 +68,11 @@ export default {
    * For axios configuration
    */
   axios: {
-    baseURL: "https://server-staging.peerprep.tech", // Used as fallback if no runtime config is provided
+    baseURL:
+      process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "staging"
+        ? process.env.SERVER_URL
+        : "http://localhost:3006", // Used as fallback if no runtime config is provided
     https: false, // Set to true if want to use https
     progress: true, // Show progress bar
     retry: { retries: 3 }, // number of API call retries
@@ -77,6 +81,14 @@ export default {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+  },
+
+  publicRuntimeConfig: {
+    SERVER_URL:
+      process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "staging"
+        ? process.env.SERVER_URL
+        : "http://localhost:3006",
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

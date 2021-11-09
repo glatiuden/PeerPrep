@@ -6,7 +6,7 @@ const questionSchema = new mongoose.Schema(
     description: { type: String, default: "" }, // Description of the question
     difficulty: { type: String, enum: ["easy", "medium", "hard"], default: "", trim: true },
     recommended_duration: { type: Number, default: 30 },
-    topic: { type: String, enum: ["Data Structures", "Algorithms", "Database"], default: "", trim: true },
+    topic: { type: String, enum: ["Data Structures", "Algorithms", "Concurrency"], default: "", trim: true },
     hints: [{ type: String, trim: true }],
     examples: [
       {
