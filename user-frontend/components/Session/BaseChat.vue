@@ -1,12 +1,12 @@
 <template>
   <div>
-    <BaseVideoChat v-if="!isHistoryMode" :match-id="matchId" />
+    <BaseVideoChat
+      v-if="!isHistoryMode"
+      :match-id="matchId"
+      @on-video-chat="onVideoChat"
+    />
     <v-divider></v-divider>
-    <v-sheet
-      class="fill-height"
-      style="overflow: auto"
-      :height="chat_div_height()"
-    >
+    <v-sheet class="fill-height chat-overflow" :height="chat_div_height()">
       <section ref="chatArea" class="chat-area">
         <p
           v-for="(message, index) in chat_messages"
@@ -68,6 +68,7 @@ export default {
     return {
       chat_message: undefined,
       chat_height: window.innerHeight,
+      room: false,
     };
   },
   async fetch() {
@@ -76,6 +77,9 @@ export default {
     }
     const match_id = this.$route.params.id;
     await this.GET_CHAT({ match_id });
+  },
+  destroyed() {
+    this.SET_CHAT_MESSAGES({ data: [] });
   },
   mounted() {
     if (this.isHistoryMode) {
@@ -86,19 +90,23 @@ export default {
       name: "chat",
       persist: "chat",
       path: "/chat/new",
+      reconnection: true,
+      withCredentials: true,
     });
 
     this.socket.on("connect", () => {
       this.socket.emit("room", this.matchId);
     });
 
+    this.socket.on("preload", (data) => {
+      this.SET_CHAT_MESSAGES({ data });
+    });
+
     this.socket.on("message", (data) => {
-      console.log("Incoming message: ", data);
       this.UPDATE_CHAT_MESSAGES({ data });
     });
 
     this.socket.on("end_session", (match_id) => {
-      console.log("Incoming message: ", match_id);
       this.$router.push("/thank-you");
     });
   },
@@ -116,11 +124,12 @@ export default {
      * @description Send message
      */
     sendMessage() {
-      if (
+      const is_invalid =
         _.isNil(this.chat_message) ||
         _.isEmpty(this.chat_message) ||
-        this.chat_message === "\n"
-      ) {
+        this.chat_message === "\n";
+
+      if (is_invalid) {
         return;
       }
 
@@ -138,38 +147,20 @@ export default {
 
       this.chat_message = "";
     },
+
+    onVideoChat() {
+      const message = {
+        user_id: this.user_id,
+        display_name: this.user.display_name,
+        message: `Automated Message: ${this.user.display_name} has joined the video chat.`,
+        time_sent: this.$moment(),
+      };
+
+      this.socket.emit("message", {
+        match_id: this.matchId,
+        payload: message,
+      });
+    },
   },
 };
 </script>
-
-<style>
-.send {
-  background-color: #407fff;
-}
-
-.chat-area {
-  padding-top: 1em;
-  background: white;
-  overflow: auto;
-}
-
-.message {
-  width: 45%;
-  border-radius: 10px;
-  padding: 0.5em;
-  font-size: 0.8em;
-  word-wrap: break-word;
-}
-
-.message-out {
-  background: #407fff;
-  color: white;
-  margin-left: 50%;
-}
-
-.message-in {
-  background: #f1f0f0;
-  color: black;
-  margin-left: 5%;
-}
-</style>

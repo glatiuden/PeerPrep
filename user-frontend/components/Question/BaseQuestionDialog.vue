@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+  <div v-if="loading" class="loading-skeleton">
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </div>
   <v-card v-else>
@@ -34,7 +34,7 @@
           <template v-if="question_examples.length > 0">
             <p class="font-weight-bold">Examples:</p>
             <div v-for="(example, index) in question_examples" :key="index">
-              <code style="display: block">
+              <code class="code-block">
                 <b>Input: </b> {{ example.input }}
                 <br />
                 <b>Output: </b> {{ example.output }}
@@ -46,7 +46,7 @@
 
           <template v-if="question_constraints.length > 0">
             <p class="font-weight-bold">Constraints:</p>
-            <code style="display: block">
+            <code class="code-block">
               <ul>
                 <li
                   v-for="(constraint, index) in question_constraints"
@@ -148,7 +148,6 @@ export default {
     },
     question_constraints() {
       const constraints = _.get(this.question, "constraints", []);
-      console.log(constraints);
       return _.compact(constraints);
     },
   },

@@ -1,16 +1,17 @@
 <template>
   <div class="mt-3">
-    <div id="monaco-editor" ref="editor" />
-    <div class="my-3">
+    <div
+      id="monaco-editor"
+      ref="editor"
+      :class="`monaco-height ${isHistoryMode ? '-tall' : ''}`"
+    />
+    <div v-if="!isHistoryMode" class="my-3">
       <pre
         class="pre"
       >Run Your Code<v-textarea v-model="code_input" dense rows="1" placeholder="Input (If any; else leave blank)" 
         hide-details class="custom-label-color" 
         dark append-outer-icon="mdi-play" :disabled="execute_code_loading"
         :loading="execute_code_loading" @click:append-outer="executeCode" @keyup.enter="executeCode"></v-textarea></pre>
-      <!-- <v-btn color="primary" depressed :loading="loading" @click="executeCode"
-        >Run Your Code
-      </v-btn> -->
       <pre
         v-if="code_output"
         class="pre mt-6 py-6"
@@ -23,6 +24,7 @@ import * as Y from "yjs";
 import { MonacoBinding } from "y-monaco";
 import { WebsocketProvider } from "y-websocket";
 import loader from "@monaco-editor/loader";
+
 import matchMixin from "@/mixins/match";
 
 export default {
@@ -46,7 +48,9 @@ export default {
       ydoc: undefined,
       provider: undefined,
       execute_code_loading: false,
-      socket_url: `${process.env.SERVER_URL}/editor`,
+      socket_url: process.env.SERVER_URL
+        ? `${process.env.SERVER_URL}/editor`
+        : "ws://localhost:3004",
     };
   },
   async fetch() {
@@ -58,7 +62,7 @@ export default {
       await this.GET_EDITOR({ match_id: this.matchId });
     } catch (err) {
       console.error(err);
-      this.$notification.error(`Encountered error fetching editor: ${err}`);
+      // this.$notification.error(`Encountered error fetching editor: ${err}`);
     }
   },
   async mounted() {
@@ -67,7 +71,7 @@ export default {
       "match_requirements.programming_language",
     ).toLowerCase();
 
-    const editor_language = this.selected_language;
+    let editor_language = this.selected_language;
     switch (editor_language) {
       case "c":
       case "c++":
@@ -135,38 +139,3 @@ export default {
   },
 };
 </script>
-<style>
-#monaco-editor {
-  height: 600px;
-}
-
-.yRemoteSelection {
-  background-color: rgb(250, 129, 0, 0.5);
-}
-
-.yRemoteSelectionHead {
-  position: absolute;
-  border-left: orange solid 2px;
-  border-top: orange solid 2px;
-  border-bottom: orange solid 2px;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-.yRemoteSelectionHead::after {
-  position: absolute;
-  content: " ";
-  border: 3px solid orange;
-  border-radius: 4px;
-  left: -4px;
-  top: -5px;
-}
-
-.custom-label-color .v-label {
-  color: white !important;
-}
-
-.custom-label-color input {
-  color: white !important;
-}
-</style>

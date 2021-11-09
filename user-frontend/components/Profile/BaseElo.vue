@@ -76,19 +76,32 @@ export default {
     };
   },
   computed: {
+    /**
+     * @description Get the next percentage to rank up
+     */
     user_percentage() {
       const percentage =
         1 - (this.next_tier.elo - this.user.elo) / this.next_tier.elo;
       return percentage * 100;
     },
+    /**
+     * @description Get current tier
+     */
     current_tier() {
-      const current_tier = _.find(
+      const current_tiers = _.filter(
         this.elo_rankings,
         ({ elo }) => elo <= this.user.elo,
       );
 
-      return current_tier;
+      if (current_tiers.length === 0) {
+        return this.elo_rankings[this.elo_rankings.length - 1];
+      }
+
+      return current_tiers[current_tiers.length - 1];
     },
+    /**
+     * @description Get next tier
+     */
     next_tier() {
       const next_tier = _.find(
         this.elo_rankings,
@@ -99,9 +112,3 @@ export default {
   },
 };
 </script>
-<style>
-.level-caption {
-  font-size: 13px;
-  color: black;
-}
-</style>

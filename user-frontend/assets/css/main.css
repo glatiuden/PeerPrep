@@ -47,11 +47,165 @@
 
 .loading-skeleton {
   width: 100%;
-  height: 500px;
+  height: 200px !important;
   display: flex;
   flex-direction: column;
   -webkit-box-pack: center;
   justify-content: center;
   -webkit-box-align: center;
   align-items: center;
+}
+
+.break-word {
+  word-break: break-word !important;
+}
+
+.loading::after {
+  display: inline-block;
+  animation: dotty steps(1, end) 5s infinite;
+  content: "";
+}
+
+@keyframes dotty {
+  0% {
+    content: "";
+  }
+  25% {
+    content: ".";
+  }
+  50% {
+    content: "..";
+  }
+  75% {
+    content: "...";
+  }
+  100% {
+    content: "";
+  }
+}
+
+.avatar-card {
+  background-color: rgba(53, 92, 125, 0.2);
+}
+
+.level-caption {
+  font-size: 13px;
+  color: black;
+}
+
+.card-background-0 {
+  background: rgb(63, 94, 251);
+  background: radial-gradient(
+    circle,
+    rgba(63, 94, 251, 1) 0%,
+    rgba(252, 70, 107, 1) 100%
+  );
+}
+
+.card-background-1 {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}
+
+.card-background-2 {
+  background: rgb(34, 193, 195);
+  background: linear-gradient(
+    0deg,
+    rgba(34, 193, 195, 1) 0%,
+    rgba(253, 187, 45, 1) 100%
+  );
+}
+
+.send {
+  background-color: #407fff;
+}
+
+.chat-area {
+  padding-top: 1em;
+  background: white;
+  overflow: auto;
+}
+
+.message {
+  width: 45%;
+  border-radius: 10px;
+  padding: 0.5em;
+  font-size: 0.8em;
+  word-wrap: break-word;
+}
+
+.message-out {
+  background: #407fff;
+  color: white;
+  margin-left: 50%;
+}
+
+.message-in {
+  background: #f1f0f0;
+  color: black;
+  margin-left: 5%;
+}
+
+.monaco-height-tall {
+  height: 700px;
+}
+
+.monaco-height {
+  height: 700px;
+}
+
+.yRemoteSelection {
+  background-color: rgb(250, 129, 0, 0.5);
+}
+
+.yRemoteSelectionHead {
+  position: absolute;
+  border-left: orange solid 2px;
+  border-top: orange solid 2px;
+  border-bottom: orange solid 2px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.yRemoteSelectionHead::after {
+  position: absolute;
+  content: " ";
+  border: 3px solid orange;
+  border-radius: 4px;
+  left: -4px;
+  top: -5px;
+}
+
+.custom-label-color .v-label {
+  color: white !important;
+}
+
+.custom-label-color input {
+  color: white !important;
+}
+
+.example {
+  display: block;
+  background-color: #383b40 !important;
+}
+
+.section-color {
+  background-color:#f8fafc;
+}
+
+.code-block {
+  display: block !important;
+}
+
+.chat-overflow {
+  overflow: auto !important;
+}
+
+.search-field {
+  width: 350px !important;
 }

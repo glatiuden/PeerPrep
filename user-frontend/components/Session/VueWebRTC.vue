@@ -7,6 +7,7 @@
       class="video-item"
     >
       <video
+        v-if="!item.isLocal"
         :id="item.id"
         ref="videos"
         controls
@@ -15,6 +16,9 @@
         :height="cameraHeight"
         :muted="item.muted"
       ></video>
+      <span v-else-if="videoList && videoList.length === 1"
+        >Please wait for your partner to join...</span
+      >
     </div>
   </div>
 </template>
@@ -90,8 +94,9 @@ export default {
       this.log("join");
       this.socket = this.$nuxtSocket({
         name: "video-chat",
-        persist: "video-chat",
         path: "/video-chat/new",
+        reconnection: true,
+        withCredentials: true,
       });
 
       this.signalClient = new SimpleSignalClient(this.socket);

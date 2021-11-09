@@ -59,6 +59,7 @@
                     required
                     hide-details
                     :rules="password_rules"
+                    @keyup.enter="login"
                   >
                     <template #append>
                       <v-slide-x-reverse-transition mode="out-in">
@@ -82,8 +83,13 @@
                     class="
                       text-caption text-uppercase
                       primary--text
-                      clickable
                       float-right
+                      clickable
+                    "
+                    @click="
+                      $notification.warning(
+                        'This feature is not available! Please contact the administrator if there is a need to reset password.',
+                      )
                     "
                   >
                     Forget password

@@ -67,7 +67,6 @@ const actions: ActionTree<UserState, RootState> = {
     commit(MutationTypes.SET_HAS_USER, { data: true });
     return user;
   },
-
   async [ActionTypes.LOGOUT_USER]({ commit, state }) {
     try {
       const login_token = localStorage.getItem("login_token");
@@ -87,6 +86,17 @@ const actions: ActionTree<UserState, RootState> = {
       const origin = `${window.location.origin}/login${error}`;
       window.location.replace(origin);
     }
+  },
+  /**
+   * @description update user
+   * @param param0
+   */
+  async [ActionTypes.UPDATE_USER]({ commit, state }, params) {
+    const { data: user } = await this.$axios.$put("/user/api/", {
+      _id: state.user._id,
+      ...params,
+    });
+    return user;
   },
 };
 

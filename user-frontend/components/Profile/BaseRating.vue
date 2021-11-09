@@ -55,7 +55,7 @@
 import userMixin from "@/mixins/user";
 
 export default {
-  name: "BaseElo",
+  name: "BaseRating",
   mixins: [userMixin],
   data() {
     return {
@@ -70,13 +70,8 @@ export default {
       });
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error fetching ratings: ${err}`);
     }
   },
 };
 </script>
-<style>
-.level-caption {
-  font-size: 13px;
-  color: black;
-}
-</style>

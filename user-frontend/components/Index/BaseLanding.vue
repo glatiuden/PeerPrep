@@ -37,7 +37,7 @@
       </v-col>
     </v-row>
 
-    <div style="background-color: #f8fafc">
+    <div class="section-color">
       <v-row
         class="app-max-width mx-auto fill-height"
         align="center"

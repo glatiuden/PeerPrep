@@ -25,7 +25,7 @@
         </v-chip-group>
       </div>
     </div>
-    <div class="mx-auto app-max-width px-6 px-lg-0">
+    <div class="mx-auto app-max-width px-6 px-lg-0 pb-4">
       <v-row justify="start" align="start">
         <v-col cols="12" sm="12" md="12" lg="3" xl="3">
           <v-row class="d-flex flex-column">

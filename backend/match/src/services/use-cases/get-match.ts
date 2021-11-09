@@ -24,14 +24,15 @@ export default async function getMatch(match_id: string) {
 
     const question = await questionService.findById({ id: match.question_id });
     const users = await userService.findByIds({ user_ids: [match.partner1_id, match.partner2_id] });
-    const partner1 = _.get(users, "[0]");
-    const partner2 = _.get(users, "[1]");
+    const partner1 = _.find(users, ({ _id }) => String(_id) === String(match?.partner1_id));
+    const partner2 = _.find(users, ({ _id }) => String(_id) === String(match?.partner2_id));
 
-    const has_no_meta = !_.get(match, "meta") || _.isEqual(match.meta, {});
+    const has_no_meta = !_.get(match, "meta.partner1_display_name");
     if (has_no_meta) {
       match = await matchService.update({
-        _id: match._id,
+        _id: match_id,
         meta: {
+          ...match.meta,
           partner1_display_name: partner1.display_name,
           partner2_display_name: partner2.display_name,
           question_title: question.title,

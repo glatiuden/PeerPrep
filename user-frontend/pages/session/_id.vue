@@ -15,11 +15,13 @@
         </div>
       </v-col>
       <v-col md="12" lg="6">
-        <BaseCodeEditor
-          :match-id="match_id"
-          class="mx-md-5 mx-lg-0"
-          :is-history-mode="is_history_mode"
-        />
+        <div class="sticky-column">
+          <BaseCodeEditor
+            :match-id="match_id"
+            class="mx-md-5 mx-lg-0"
+            :is-history-mode="is_history_mode"
+          />
+        </div>
       </v-col>
       <v-col md="12" lg="3">
         <div class="sticky-column mx-5 mr-lg-5">
@@ -32,6 +34,7 @@
 <script>
 import systemMixin from "@/mixins/system";
 import matchMixin from "@/mixins/match";
+import userMixin from "@/mixins/user";
 
 import BaseQuestionDetails from "@/components/Session/BaseQuestionDetails";
 import BaseMatchDetails from "@/components/Session/BaseMatchDetails";
@@ -46,9 +49,9 @@ export default {
     BaseChat,
     BaseCodeEditor,
   },
-  mixins: [matchMixin, systemMixin],
+  mixins: [matchMixin, systemMixin, userMixin],
   beforeRouteLeave(to, from, next) {
-    if (this.match_ended) {
+    if (this.match_ended || this.is_history_mode) {
       next();
       return;
     }
@@ -112,7 +115,7 @@ export default {
     async checkIsValidMatch() {
       const is_match_ended = _.get(this.match, "status") === "completed";
       if (is_match_ended) {
-        this.redirectUser();
+        this.$router.push(`/session/${this.match._id}?history=true`);
         return;
       }
 
@@ -121,39 +124,6 @@ export default {
         this.$notification.error(`This match has not in progress.`);
         this.match_ended = true;
         this.$router.push("/");
-        return;
-      }
-
-      const updated_at = _.get(this.match, "updated_at");
-      const is_more_than_30s = this.$moment().isAfter(
-        this.$moment(updated_at).add(30, "seconds"),
-      );
-
-      const match_mode = _.get(this.match, "match_requirements.question_mode");
-      const recommended_duration = _.get(
-        this.match_question,
-        "recommended_duration",
-      );
-
-      const is_timed_mode = match_mode === "timed";
-      const is_after_match_duration = this.$moment().isAfter(
-        this.$moment(updated_at).add(recommended_duration, "minutes"),
-      );
-
-      // If is timed mode and duration has ended
-      if (is_timed_mode && is_after_match_duration) {
-        this.redirectUser();
-        return;
-      }
-
-      // If is OTOT mode and duration is after 12 hours
-      const is_otot_mode = match_mode === "otot";
-      const is_after_12_hours = this.$moment().isAfter(
-        this.$moment(updated_at).add(12, "hours"),
-      );
-
-      if (is_otot_mode && is_after_12_hours) {
-        this.redirectUser();
         return;
       }
     },

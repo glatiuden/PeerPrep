@@ -49,7 +49,7 @@
           <h2 class="text-center my-3">Sample Solution</h2>
           <pre
             class="pre fill-height my-2"
-          ><samp>{{ match_question.solution }}</samp></pre>
+          ><samp>{{ match_question.solution.trim() }}</samp></pre>
         </v-col>
         <v-col cols="12" md="6">
           <template v-if="is_question_mode">
@@ -163,6 +163,11 @@ export default {
     try {
       this.SET_LOADING({ data: true });
       this.match_id = localStorage.getItem("match_id");
+      if (!this.match_id) {
+        this.$router.push("/");
+        return;
+      }
+
       // If match is not in store, retrieve from server
       if (!this.match) {
         await this.GET_MATCH({ match_id: this.match_id });
@@ -190,7 +195,7 @@ export default {
         this.SET_LOADING({ data: true });
         await this.CREATE_RATING({
           match_id: this.match_id,
-          user_id: this.user_id,
+          giver_id: this.user_id,
           rating: this.elo_rating,
         });
         this.$notification.success(

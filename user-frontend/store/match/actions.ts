@@ -34,28 +34,6 @@ const actions: ActionTree<MatchState, RootState> = {
     return match;
   },
   /**
-   * @description to create match
-   * @param param0
-   * @param param1
-   */
-  async [ActionTypes.CREATE_MATCH]({ commit }, { match }) {
-    const { data: created_match } = await this.$axios.$post(
-      `/match/api`,
-      match,
-    );
-    return created_match;
-  },
-
-  /**
-   * @description to update match
-   * @param param0
-   * @param param1
-   */
-  async [ActionTypes.UPDATE_MATCH]({ commit }, { match }) {
-    const { data: updated_match } = await this.$axios.$put(`/match/api`, match);
-    return updated_match;
-  },
-  /**
    * @description to end match
    * @param param0
    * @param param1
@@ -66,18 +44,6 @@ const actions: ActionTree<MatchState, RootState> = {
     });
 
     if (is_completed) {
-      // dispatch(
-      //   "$nuxtSocket/emit",
-      //   {
-      //     label: "editor",
-      //     evt: "end_session",
-      //     msg: {
-      //       match_id,
-      //       content: state.codes,
-      //     },
-      //   },
-      //   { root: true },
-      // );
       dispatch(
         "$nuxtSocket/emit",
         {

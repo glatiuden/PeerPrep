@@ -20,8 +20,8 @@ async function createRatingController(httpRequest: Request & { context: { valida
     const {
       match_id,
       rating: rating_str,
-      user_id,
-    }: { match_id: string; user_id: string; rating: string } = _.get(httpRequest, "context.validated");
+      giver_id,
+    }: { match_id: string; rating: string; giver_id: string } = _.get(httpRequest, "context.validated");
 
     const rating = Number(rating_str);
 
@@ -31,17 +31,16 @@ async function createRatingController(httpRequest: Request & { context: { valida
     }
 
     const { partner1_id, partner2_id } = match_details;
-    let receiver_id = partner1_id;
+    let receiver_id = String(partner1_id);
     let is_partner1 = true;
-
-    if (user_id === partner1_id) {
-      receiver_id = partner2_id;
+    if (String(partner1_id) === giver_id) {
       is_partner1 = false;
+      receiver_id = String(partner2_id);
     }
 
     const rating_details = {
       match_id,
-      giver_id: user_id,
+      giver_id,
       receiver_id,
       rating,
     };
@@ -51,20 +50,24 @@ async function createRatingController(httpRequest: Request & { context: { valida
       throw Error("Rating not created");
     }
 
-    const update_match_details = {
-      _id: match_id,
-      updated_at: new Date(),
-    };
+    const update_match_details = await matchService.findById({ id: match_id });
+    if (!update_match_details) {
+      throw Error("No such match");
+    }
 
     if (is_partner1) {
       Object.assign(update_match_details, {
+        updated_at: new Date(),
         meta: {
+          ...update_match_details.meta,
           partner1_rating: rating_obj._id,
         },
       });
     } else {
       Object.assign(update_match_details, {
+        updated_at: new Date(),
         meta: {
+          ...update_match_details.meta,
           partner2_rating: rating_obj._id,
         },
       });

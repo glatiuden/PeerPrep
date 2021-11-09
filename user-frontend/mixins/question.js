@@ -7,8 +7,8 @@ export default {
       question_descriptions: {
         Algorithms:
           "Better prepare your interviews with algorithm-related questions!",
-        Database:
-          "Practice popular database question which cover most of the SQL common queries!",
+        Concurrency:
+          "Preparing for System Design Interview? This is the right place to go!",
         "Data Structures":
           "Get hands-on on the Arrays, Queue, Linked List and other data structure questions!",
       },

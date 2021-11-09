@@ -159,7 +159,7 @@ export default function makeQuestionService({
             number_of_attempts: { $first: "$number_of_attempts" },
           },
         },
-        { $sort: { number_of_attempts: 1 } },
+        { $sort: { number_of_attempts: -1 } },
         { $limit: 3 },
       ]);
       return featured_topics;

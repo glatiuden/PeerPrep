@@ -30,13 +30,15 @@
     "vue-awesome-countdown": "^1.1.4",
     "vue-chat-scroll": "^1.4.0",
     "vue-lottie": "^0.2.1",
+    "vue-password-strength-meter": "^1.7.2",
     "vue-webrtc": "^2.0.0",
     "vuejs-ace-editor": "^1.0.1",
     "vuetify": "^2.5.5",
     "y-monaco": "^0.1.2",
     "y-webrtc": "^10.2.0",
     "y-websocket": "^1.3.17",
-    "yjs": "^13.5.16"
+    "yjs": "^13.5.16",
+    "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
     "@mdi/font": "^6.2.95",
@@ -55,6 +57,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^7.18.0",
     "jest": "^27.0.5",
+    "nuxt-compress": "^5.0.0",
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.3",
     "vue-jest": "^3.0.4"

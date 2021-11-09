@@ -36,7 +36,8 @@ export default {
     { src: "@/plugins/vue-webrtc", mode: "client", ssr: false },
     { src: "@/plugins/vue-notification", mode: "client", ssr: false },
     { src: "@/plugins/vue-awesome-countdown", mode: "client", ssr: false },
-    { src: "@/plugins/avatar", mode: "client" },
+    { src: "@/plugins/avatar", mode: "client", ssr: false },
+    { src: "@/plugins/password-strength", mode: "client", ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -59,15 +60,18 @@ export default {
       {
         name: "match",
         default: true,
-        url: `${process.env.SERVER_URL}/match`,
+        // url: `${process.env.SERVER_URL}/match`,
+        url: `http://localhost:3003`,
       },
       {
         name: "chat",
-        url: `${process.env.SERVER_URL}/chat`,
+        // url: `${process.env.SERVER_URL}/chat`,
+        url: `http://localhost:3005`,
       },
       {
         name: "video-chat",
-        url: `${process.env.SERVER_URL}/video-chat`,
+        // url: `${process.env.SERVER_URL}/video-chat`,
+        url: `http://localhost:3007`,
       },
     ],
   },
@@ -115,6 +119,14 @@ export default {
     },
   },
 
+  publicRuntimeConfig: {
+    SERVER_URL:
+      process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "staging"
+        ? process.env.SERVER_URL
+        : "http://localhost:3006",
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^vuetify/],
@@ -127,12 +139,5 @@ export default {
 
   server: {
     port: 8082, // default: 3000
-  },
-  env: {
-    SERVER_URL:
-      process.env.NODE_ENV === "production" ||
-        process.env.NODE_ENV === "staging"
-        ? process.env.SERVER_URL
-        : "http://localhost:3006",
   },
 };

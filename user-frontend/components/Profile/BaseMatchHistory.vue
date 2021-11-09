@@ -127,7 +127,7 @@
           @click="$router.push(`/session/${item._id}?history=true`)"
         >
           {{ item.meta.question_title }} <br />
-          (with {{ getPartnerName(item.meta) }})
+          (with {{ getPartnerName(item) }})
         </div>
         <div v-else>No Question Selected</div>
       </template>
@@ -153,6 +153,23 @@
         <span class="text-capitalize">
           {{ item.match_requirements.programming_language }}</span
         >
+      </template>
+
+      <template #item.meta="{ item }">
+        <div class="d-flex">
+          <span v-if="getRating(item.meta) === 0">No Ratings</span>
+          <v-rating
+            v-else
+            color="yellow darken-3"
+            :value="getRating(item.meta)"
+            background-color="grey lighten-1"
+            empty-icon="$ratingFull"
+            half-increments
+            hover
+            readonly
+            small
+          ></v-rating>
+        </div>
       </template>
 
       <template #item.updated_at="{ item }">
@@ -221,6 +238,12 @@ export default {
         {
           text: "Programming Language",
           value: "match_requirements.programming_language",
+          sortable: true,
+          class: "data-table-heading",
+        },
+        {
+          text: "Rating Received",
+          value: "meta",
           sortable: true,
           class: "data-table-heading",
         },
@@ -324,13 +347,38 @@ export default {
     /**
      * @description Determines the partner name by checking against own
      */
-    getPartnerName(meta) {
-      const partner1_display_name = _.get(meta, "partner1_display_name");
-      const partner2_display_name = _.get(meta, "partner2_display_name");
-      if (partner1_display_name === this.user.display_name) {
+    getPartnerName(item) {
+      const partner1_display_name = _.get(item, "meta.partner1_display_name");
+      const partner2_display_name = _.get(item, "meta.partner2_display_name");
+      const partner1_id = _.get(item, "partner1_id");
+      if (partner1_id === this.user_id) {
         return partner2_display_name;
       }
       return partner1_display_name;
+    },
+    /**
+     * @description get match rating received
+     */
+    getRating(meta) {
+      const partner1_rating = _.get(meta, "partner1_rating");
+      const partner2_ratings = _.get(meta, "partner2_rating");
+      if (!partner1_rating && !partner2_ratings) {
+        return 0;
+      }
+
+      const is_partner1 =
+        _.get(partner1_rating, "receiver_id") === this.user_id;
+      if (is_partner1) {
+        return partner1_rating.rating;
+      }
+
+      const is_partner2 =
+        _.get(partner2_ratings, "receiver_id") === this.user_id;
+      if (is_partner2) {
+        return partner2_ratings.rating;
+      }
+
+      return 0;
     },
   },
 };

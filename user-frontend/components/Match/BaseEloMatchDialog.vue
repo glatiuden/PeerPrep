@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+  <div v-if="loading" class="loading-skeleton">
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </div>
   <v-card v-else>

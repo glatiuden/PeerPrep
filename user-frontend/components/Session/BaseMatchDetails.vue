@@ -99,18 +99,9 @@ export default {
      * @description Computes the exact duration left
      */
     time_taken() {
-      const updated_at = _.get(this.match, "updated_at");
+      const matched_at = _.get(this.match, "matched_at");
       const completed_at = _.get(this.match, "completed_at");
-      const recommended_duration = _.get(
-        this.match_question,
-        "recommended_duration",
-      );
-
-      const end_time = this.$moment(updated_at).add(
-        recommended_duration,
-        "minutes",
-      );
-      const time_taken = end_time.diff(completed_at, "minutes");
+      const time_taken = this.$moment(completed_at).diff(matched_at, "minutes");
       return time_taken;
     },
 

@@ -29,7 +29,7 @@ const matchSchema = new Schema(
       partner1_display_name: { type: String },
       partner2_display_name: { type: String },
       question_title: { type: String },
-      parter1_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
+      partner1_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
       partner2_rating: { type: Schema.Types.ObjectId, ref: "Rating" },
     },
     matched_at: { type: Date },

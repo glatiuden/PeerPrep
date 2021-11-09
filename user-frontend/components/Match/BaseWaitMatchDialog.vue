@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="loading-skeleton" style="height: 200px">
+  <div v-if="loading" class="loading-skeleton">
     <v-progress-circular indeterminate color="primary"></v-progress-circular>
   </div>
   <v-card v-else>
@@ -63,6 +63,7 @@ export default {
       name: "match",
       path: "/match/new",
       reconnection: true,
+      withCredentials: true,
     });
 
     this.match_mode = _.get(this.match, "mode", "question");
@@ -101,34 +102,9 @@ export default {
     },
 
     timerEnded() {
-      this.is_timer_ended = true;
-      this.time_left = 0;
+      this.closeDialog();
+      this.$notification.error("No match found. Please try again.");
     },
   },
 };
 </script>
-<style>
-.loading::after {
-  display: inline-block;
-  animation: dotty steps(1, end) 5s infinite;
-  content: "";
-}
-
-@keyframes dotty {
-  0% {
-    content: "";
-  }
-  25% {
-    content: ".";
-  }
-  50% {
-    content: "..";
-  }
-  75% {
-    content: "...";
-  }
-  100% {
-    content: "";
-  }
-}
-</style>

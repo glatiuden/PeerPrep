@@ -38,6 +38,7 @@ export default {
       this.SET_IS_VIDEO_ON({ data: !this.is_video_on });
       if (this.is_video_on) {
         this.$refs.webrtc.join();
+        this.$emit("on-video-chat");
       } else {
         this.$refs.webrtc.leave();
       }

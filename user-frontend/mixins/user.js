@@ -41,6 +41,7 @@ export default {
       AUTH_USER: "user/AUTH_USER",
       LOGOUT_USER: "user/LOGOUT_USER",
       GET_AVERAGE_RATING: "match/GET_AVERAGE_RATING",
+      UPDATE_USER: "user/UPDATE_USER",
     }),
 
     ...mapMutations({

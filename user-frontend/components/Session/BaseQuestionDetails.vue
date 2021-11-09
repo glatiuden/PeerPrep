@@ -1,6 +1,8 @@
 <template>
   <v-card outlined class="white--text mt-3" color="#242424">
-    <v-card-title> Question: {{ question.title }} </v-card-title>
+    <v-card-title class="break-word">
+      Question: {{ question.title }}
+    </v-card-title>
     <v-card-text class="white--text">
       <p>
         <v-icon color="white" class="mr-1">mdi-code-tags</v-icon>
@@ -18,7 +20,7 @@
         <b>Topic:</b>
         <v-chip small color="primary">{{ question.topic }}</v-chip>
       </p>
-      <p class="font-weight-bold ma-0">
+      <p class="font-weight-bold ma-0 break-word">
         <v-icon color="white" class="mr-1">mdi-text-long</v-icon>
         Description:
       </p>
@@ -156,9 +158,3 @@ export default {
   },
 };
 </script>
-<style>
-.example {
-  display: block;
-  background-color: #383b40 !important;
-}
-</style>

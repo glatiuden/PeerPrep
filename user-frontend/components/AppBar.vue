@@ -7,6 +7,7 @@
     clipped-right
   >
     <v-img
+      v-if="!is_mobile"
       :max-height="80"
       :max-width="160"
       contain
@@ -15,7 +16,7 @@
       @click="$router.push('/')"
     />
 
-    <v-tabs v-model="tab" align-with-title show-arrows class="ml-0 ml-sm-5">
+    <v-tabs v-model="tab" align-with-title class="ml-0 ml-sm-5">
       <template v-for="(nav, index) in nav_items">
         <v-menu
           v-if="nav.children && nav.children.length > 0"

@@ -41,7 +41,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="display_name_rules"
                   />
                 </v-col>
@@ -57,7 +57,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="email_rules"
                   />
                 </v-col>
@@ -74,7 +74,7 @@
                     outlined
                     dense
                     required
-                    hide-details="auto"
+                    hide-details
                     :rules="password_rules"
                   >
                     <template #append>
@@ -92,6 +92,11 @@
                       </v-slide-x-reverse-transition>
                     </template>
                   </v-text-field>
+                  <password
+                    v-model="register_user.password"
+                    :strength-meter-only="true"
+                    strength-meter-class="Password__strength-meter mx-0"
+                  />
                 </v-col>
 
                 <v-col cols="12" sm="9" md="9" lg="9" xl="8">
@@ -104,7 +109,7 @@
                     outlined
                     dense
                     required
-                    :hide-details="auto"
+                    hide-details
                     :rules="confirm_password_rules"
                   >
                   </v-text-field>

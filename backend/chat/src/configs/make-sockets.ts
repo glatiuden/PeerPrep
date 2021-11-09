@@ -29,14 +29,27 @@ export default function makeSockets(server) {
   }
 
   nsp.on("connection", (socket: Socket) => {
-    socket.on("room", (room) => {
+    socket.on("room", async (room) => {
       socket.join(room);
       logger.verbose("User has connected to the socket");
+      const data_exist_in_cache = await redisClient.getAsync(room);
+      if (data_exist_in_cache) {
+        nsp.to(room).emit("preload", JSON.parse(data_exist_in_cache));
+      }
     });
 
-    socket.on("message", (content) => {
+    socket.on("message", async (content) => {
       const { match_id, payload } = content;
       logger.verbose("Message sent", { match_id });
+      const data_exist_in_cache = await redisClient.getAsync(match_id);
+      if (data_exist_in_cache) {
+        console.log(data_exist_in_cache);
+        const data = JSON.parse(data_exist_in_cache) as any[];
+        data.push(payload);
+        await redisClient.setAsync(match_id, JSON.stringify(data), "EX", 180);
+      } else {
+        await redisClient.setAsync(match_id, JSON.stringify([payload]), "EX", 180);
+      }
       nsp.to(match_id).emit("message", payload);
     });
 
