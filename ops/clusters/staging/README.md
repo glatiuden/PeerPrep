@@ -1,4 +1,6 @@
-CI/CD for Staging Server
+# Flux for Staging
+
+Please ensure you have already exported your `GITHUB_TOKEN` as instructed in `/clusters/README.md`.
 
 ```bash
 flux bootstrap github \
@@ -9,3 +11,11 @@ flux bootstrap github \
   --branch=master \
   --token-auth
 ```
+
+Tell Flux to pull and apply the changes
+```bash
+flux reconcile kustomization flux-system --with-source
+```
+
+To configure image repository settings, please go to `config/images`.
+If you need to add an additional service, you may copy one of the yaml files and change the spec/image.

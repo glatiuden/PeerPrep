@@ -2,6 +2,18 @@
 
 This folder contains CD cluster configuration using Flux v2.
 
+## Getting Started
+Please ensure you have `Flux` installed on your machine. Please follow the instructions [here](https://fluxcd.io/docs/installation/).
+
+In order to deploy the clusters, you’ll need a GitHub account and a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) that can create repositories (check all permissions under `repo`).
+
+Export your GitHub personal access token:
+```bash
+export GITHUB_TOKEN=<your-token>
+```
+
+## Setup
+
 The configuration files are split between `staging` and `production`.
 
 `staging`
@@ -14,3 +26,6 @@ The configuration files are split between `staging` and `production`.
 - Scans for Docker image's tag that is the following format: `>=1.0.0`
 
 As `staging` and `production` have a different set of tag requirements, to retain the original manifest files from `bases/manifest`, a `kustomization.yaml` file is created within each folder, and Flux will only update the `kustomization.yaml`.
+
+## Installation
+Please go to the respective folders for the installation command.

@@ -10,7 +10,13 @@ Folder Structure
 - AWS Setup: `/terraform-aws`
 - GCP's GKE Setup: `/terraform-gke`
 
-Each folder will contain more deployment instructions.
+Each folder will contains detailed deployment instructions.
+
+## Creating the Staging Cluster (GKE)
+
+## Creating the Production Environment (AWS)
+The `terraform-aws` folder is included in this folder. This folder includes the services and specification that was used to create this project.
+
 
 ## Deployment of Microservices
 
