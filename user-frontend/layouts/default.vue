@@ -14,8 +14,8 @@
     <v-dialog
       v-if="open_matching_dialog"
       v-model="open_matching_dialog"
+      persistent
       max-width="550px"
-      @click:outside="SET_OPEN_MATCHING_DIALOG({ data: false })"
     >
       <BaseWaitMatchDialog />
     </v-dialog>

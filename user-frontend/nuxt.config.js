@@ -50,6 +50,7 @@ export default {
     // https://go.nuxtjs.dev/vuetify
     "@nuxtjs/vuetify",
     "@nuxtjs/moment",
+    "nuxt-compress",
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -60,18 +61,18 @@ export default {
       {
         name: "match",
         default: true,
-        // url: `${process.env.SERVER_URL}/match`,
-        url: `http://localhost:3003`,
+        url: `${process.env.SERVER_URL}/match`,
+        // url: `http://localhost:3003`,
       },
       {
         name: "chat",
-        // url: `${process.env.SERVER_URL}/chat`,
-        url: `http://localhost:3005`,
+        url: `${process.env.SERVER_URL}/chat`,
+        // url: `http://localhost:3005`,
       },
       {
         name: "video-chat",
-        // url: `${process.env.SERVER_URL}/video-chat`,
-        url: `http://localhost:3007`,
+        url: `${process.env.SERVER_URL}/video-chat`,
+        // url: `http://localhost:3007`,
       },
     ],
   },

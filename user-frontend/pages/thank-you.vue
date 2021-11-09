@@ -58,7 +58,7 @@
               <v-col
                 v-for="(topic, index) in featured_topics"
                 :key="index"
-                :cols="index === 0 ? 12 : 6"
+                cols="12"
               >
                 <BaseQuestionCategoryCard
                   :topic="topic"
@@ -78,6 +78,7 @@
                 soft-box-shadow
                 rounded-lg
                 fill-height
+                mb-3
               "
             >
               <template v-if="!hide_ratings">
