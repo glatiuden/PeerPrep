@@ -14,7 +14,7 @@ images:
     newTag: master-fe7749f-1636464013 # {"$imagepolicy": "flux-system:match:tag"}
   - name: question
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms # {"$imagepolicy": "flux-system:question:name"}
-    newTag: master-fe7749f-1636464005 # {"$imagepolicy": "flux-system:question:tag"}
+    newTag: master-5ea8679-1636476044 # {"$imagepolicy": "flux-system:question:tag"}
   - name: user
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms # {"$imagepolicy": "flux-system:user:name"}
     newTag: master-fe7749f-1636464016 # {"$imagepolicy": "flux-system:user:tag"}
