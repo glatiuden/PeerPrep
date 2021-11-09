@@ -13,7 +13,8 @@ export default async function (req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET || "AUTH_SECRET");
+    const secret = process.env.JWT_ADMIN_SECRET || "ADMIN_AUTH_SECRET";
+    const verified = jwt.verify(token, secret);
     if (verified) {
       const user_id = await accessTokenService.findUserId({ token });
       req.body.user_id = user_id;

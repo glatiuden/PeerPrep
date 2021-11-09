@@ -10,9 +10,6 @@ import {
   updateUserController,
 } from "../../controllers/admin/user";
 
-// TODO: Use for all admin routes.
-import tokenValidatorMiddleware from "../../middleware/token-validator-middleware";
-
 const userRouter = express.Router();
 
 userRouter.post("/", makeExpressCallback(createUserController));

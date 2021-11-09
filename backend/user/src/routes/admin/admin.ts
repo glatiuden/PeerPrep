@@ -6,14 +6,13 @@ import {
   getAdminController,
   logoutAdminContorller,
 } from "../../controllers/admin/admin";
-
-import tokenValidatorMiddleware from "../../middleware/token-validator-middleware";
+import adminTokenValidatorMiddleware from "../../middleware/admin-token-validator-middleware";
 
 const adminRouter = express.Router();
 
-adminRouter.post("/", makeExpressCallback(createAdminController));
+adminRouter.post("/", adminTokenValidatorMiddleware, makeExpressCallback(createAdminController));
 adminRouter.post("/login", makeExpressCallback(loginAdminController));
 adminRouter.post("/logout", makeExpressCallback(logoutAdminContorller));
-adminRouter.get("/auth", tokenValidatorMiddleware, makeExpressCallback(getAdminController)); // Used to check whether is user token valid
+adminRouter.get("/auth", adminTokenValidatorMiddleware, makeExpressCallback(getAdminController)); // Used to check whether is user token valid
 
 export default adminRouter;

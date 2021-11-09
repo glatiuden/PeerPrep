@@ -1,6 +1,5 @@
 import _ from "lodash";
-import IUser from "../../../models/interfaces/user";
-import { userService, accessTokenService } from "../../../services";
+import { accessTokenService } from "../../../services";
 
 /**
  * @description Logout user by destroying their token
@@ -11,14 +10,8 @@ async function logoutUserController(httpRequest: { context: { validated: { email
     "Content-Type": "application/json",
   };
   try {
-    const { email }: IUser = _.get(httpRequest, "context.validated");
-    const user_exists = await userService.findByEmail({ email });
-
-    if (!user_exists) {
-      throw new Error(`User by ${email} does not exists.`);
-    }
-
-    const is_logout = await accessTokenService.revoke({ user_id: user_exists._id, user_role: "user" });
+    const { user_id } = _.get(httpRequest, "context.validated");
+    const is_logout = await accessTokenService.revoke({ user_id, user_role: "user" });
 
     return {
       headers,

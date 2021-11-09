@@ -41,7 +41,7 @@ async function loginAdminController(httpRequest: Request & { context: { validate
 
     if (!login_token) {
       logger.verbose(`User has no valid token, creating one now...`);
-      login_token = generateJWTToken({ user_id: admin_exists._id, user_role: admin_exists.role }, { expiresIn: "1y" });
+      login_token = generateJWTToken({ user_id: admin_exists._id, user_role: admin_exists.role }, { expiresIn: "24h" });
       await accessTokenService.insert({
         user_id: admin_exists._id,
         user_role: admin_exists.role,

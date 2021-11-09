@@ -89,12 +89,12 @@ export default function makeAccessTokenDb({
         user_role?: string;
       },
       options = { session: null },
-    ): Promise<string | null> {
+    ): Promise<boolean | null> {
       const result = await accessTokenDbModel
         .findOneAndUpdate({ user_id, user_role, revoked: false }, { revoked: true, updated_at: new Date() })
         .session(options.session)
         .lean();
-      return result && result.token;
+      return !!result && !!result.token;
     }
 
     async revokeAllByUserId({ user_id }: { user_id: string }, options = { session: null }): Promise<boolean> {

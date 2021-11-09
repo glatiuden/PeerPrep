@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { hashPassword } from "../../../configs/bcrypt";
+import { omit } from "../../../configs/omit";
 
 import IUser from "../../../models/interfaces/user";
 import { userService } from "../../../services";
@@ -38,7 +39,7 @@ async function updateUserController(
       headers,
       statusCode: 200,
       body: {
-        data: _.omit(updated_user, "password_hash"),
+        data: omit(updated_user, "password_hash"),
       },
     };
   } catch (err: any) {

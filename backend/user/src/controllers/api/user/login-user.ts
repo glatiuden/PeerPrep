@@ -2,6 +2,7 @@ import _ from "lodash";
 import { verifyPassword } from "../../../configs/bcrypt";
 import { generateJWTToken } from "../../../configs/jwt";
 import { logger } from "../../../configs/logs";
+import { omit } from "../../../configs/omit";
 
 import IUser, { UserRole } from "../../../models/interfaces/user";
 import { userService, accessTokenService } from "../../../services";
@@ -55,7 +56,7 @@ async function loginUserController(httpRequest: Request & { context: { validated
       headers,
       statusCode: 200,
       body: {
-        data: _.omit(user_exists, "password_hash"),
+        data: omit(user_exists, ["password_hash"]),
         login_token,
       },
     };

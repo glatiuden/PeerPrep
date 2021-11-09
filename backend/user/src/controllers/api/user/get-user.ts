@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { omit } from "../../../configs/omit";
 
 import { userService } from "../../../services";
 
@@ -22,7 +23,7 @@ async function getUserController(httpRequest: Request & { context: { validated: 
       headers,
       statusCode: 200,
       body: {
-        data: _.omit(user, "password_hash"),
+        data: omit(user, ["password_hash"]),
       },
     };
   } catch (err: any) {

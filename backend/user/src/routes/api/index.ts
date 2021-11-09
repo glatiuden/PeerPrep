@@ -16,12 +16,11 @@ const userRouter = express.Router();
 
 userRouter.post("/", makeExpressCallback(createUserController));
 userRouter.post("/login", makeExpressCallback(loginUserController));
-userRouter.post("/logout", makeExpressCallback(logoutUserController));
-
-userRouter.get("/auth", tokenValidatorMiddleware, makeExpressCallback(getUserController)); // Used to check whether is user token valid
-userRouter.get("/email/:email", makeExpressCallback(getUserByEmailController));
-userRouter.get("/:user_id", makeExpressCallback(getUserController));
-userRouter.put("/elo/:user_id", makeExpressCallback(updateUserEloController));
-userRouter.put("/", makeExpressCallback(updateUserController));
+userRouter.post("/logout", tokenValidatorMiddleware, makeExpressCallback(logoutUserController));
+userRouter.get("/auth", tokenValidatorMiddleware, makeExpressCallback(getUserController));
+userRouter.get("/email/:email", tokenValidatorMiddleware, makeExpressCallback(getUserByEmailController));
+userRouter.get("/:user_id", tokenValidatorMiddleware, makeExpressCallback(getUserController));
+userRouter.put("/elo/:user_id", tokenValidatorMiddleware, makeExpressCallback(updateUserEloController));
+userRouter.put("/", tokenValidatorMiddleware, makeExpressCallback(updateUserController));
 
 export default userRouter;

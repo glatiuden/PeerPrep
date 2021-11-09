@@ -9,16 +9,11 @@ import makeDb from "./src/configs/make-db";
 import apiRouter from "./src/routes/api";
 import adminRouter from "./src/routes/admin";
 import makeRabbitMQ from "./src/configs/make-rabbitmq";
+import accessControlMiddleware from "./src/middleware/access-controller-middleware";
 
 const app = express();
 
-const corsOptions = {
-  origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: "Content-Type,Origin,Accept,Authorization,X-Requested-With",
-};
-
-app.use(cors(corsOptions));
+app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
