@@ -234,16 +234,7 @@ describe("/user/api", () => {
       expect(res.body).to.be.a("object");
       expect(res.body)
         .to.have.property("data")
-        .that.includes.all.keys([
-          "_id",
-          "display_name",
-          "email",
-          "password_hash",
-          "role",
-          "elo",
-          "created_at",
-          "updated_at",
-        ]);
+        .that.includes.all.keys(["_id", "display_name", "email", "role", "elo", "created_at", "updated_at"]);
       expect(res.body).to.have.property("login_token");
     });
     it("should not login user", async () => {
@@ -272,14 +263,14 @@ describe("/user/api", () => {
   describe("GET /email/:email", () => {
     it("should get user", async () => {
       const email = user.data.email;
-      const res = await chai.request(app).get(`/user/api/email/${email}`);
+      const res = await chai.request(app).get(`/user/api/email/${email}`).set("Authorization", user.login_token);
       expect(res).to.have.status(200);
       expect(res.body).to.be.a("object");
       expect(res.body).to.have.property("data");
     });
     it("should not get user", async () => {
       const email = "invalid_email@email.com";
-      const res = await chai.request(app).get(`/user/api/email/${email}`);
+      const res = await chai.request(app).get(`/user/api/email/${email}`).set("Authorization", user.login_token);
       expect(res).to.have.status(404);
       expect(res.body).to.be.a("object");
       expect(res.body).to.have.key("errors");
@@ -288,14 +279,14 @@ describe("/user/api", () => {
   describe("GET /:user_id", () => {
     it("should get user", async () => {
       const id = user.data._id;
-      const res = await chai.request(app).get(`/user/api/${id}`);
+      const res = await chai.request(app).get(`/user/api/${id}`).set("Authorization", user.login_token);
       expect(res).to.have.status(200);
       expect(res.body).to.be.a("object");
       expect(res.body).to.have.property("data");
     });
     it("should not get user", async () => {
       const id = "invalid_id";
-      const res = await chai.request(app).get(`/user/api/${id}`);
+      const res = await chai.request(app).get(`/user/api/${id}`).set("Authorization", user.login_token);
 
       expect(res).to.have.status(404);
       expect(res.body).to.be.a("object");
@@ -305,14 +296,22 @@ describe("/user/api", () => {
   describe("PUT /elo/:user_id", () => {
     it("should update elo", async () => {
       const id = user.data._id;
-      const res = await chai.request(app).put(`/user/api/elo/${id}`).send({ elo: 123 });
+      const res = await chai
+        .request(app)
+        .put(`/user/api/elo/${id}`)
+        .send({ elo: 123 })
+        .set("Authorization", user.login_token);
       expect(res).to.have.status(200);
       expect(res.body).to.be.a("object");
       expect(res.body).to.have.property("data");
     });
     it("should not update elo", async () => {
       const id = "invalid_id";
-      const res = await chai.request(app).put(`/user/api/elo/${id}`).send({ elo: 123 });
+      const res = await chai
+        .request(app)
+        .put(`/user/api/elo/${id}`)
+        .send({ elo: 123 })
+        .set("Authorization", user.login_token);
       expect(res).to.have.status(404);
       expect(res.body).to.be.a("object");
       expect(res.body).to.include.keys(["errors"]);
@@ -321,20 +320,28 @@ describe("/user/api", () => {
   describe("PUT /:user_id", () => {
     it("should update user", async () => {
       const id = user.data._id;
-      const res = await chai.request(app).put(`/user/api/`).send({
-        _id: id,
-        display_name: "test_user",
-      });
+      const res = await chai
+        .request(app)
+        .put(`/user/api/`)
+        .send({
+          _id: id,
+          display_name: "test_user",
+        })
+        .set("Authorization", user.login_token);
       expect(res).to.have.status(200);
       expect(res.body).to.be.a("object");
       expect(res.body).to.have.property("data").with.property("display_name").which.equals("test_user");
     });
     it("should not update user", async () => {
       const id = "invalid_id";
-      const res = await chai.request(app).put(`/user/api/`).send({
-        _id: id,
-        display_name: "test_user",
-      });
+      const res = await chai
+        .request(app)
+        .put(`/user/api/`)
+        .send({
+          _id: id,
+          display_name: "test_user",
+        })
+        .set("Authorization", user.login_token);
 
       expect(res).to.have.status(404);
       expect(res.body).to.be.a("object");
@@ -344,21 +351,29 @@ describe("/user/api", () => {
 
   describe("POST /logout", () => {
     it("should logout", async () => {
-      const res = await chai.request(app).post("/user/api/logout").set("content-type", "application/json").send({
-        email: "test_user@email.com",
-      });
+      const res = await chai
+        .request(app)
+        .post("/user/api/logout")
+        .set("content-type", "application/json")
+        .send({
+          email: "test_user@email.com",
+        })
+        .set("Authorization", user.login_token);
 
       expect(res).to.have.status(200);
       expect(res.body).to.be.a("object");
       expect(res.body).to.have.property("data");
     });
     it("should not logout", async () => {
-      const res = await chai.request(app).post("/user/api/logout").set("content-type", "application/json").send({
-        email: "invalid_user@email.com",
-      });
-      expect(res).to.have.status(404);
-      expect(res.body).to.be.a("object");
-      expect(res.body).to.have.all.keys(["errors"]);
+      const res = await chai
+        .request(app)
+        .post("/user/api/logout")
+        .set("content-type", "application/json")
+        .send({
+          email: "invalid_user@email.com",
+        })
+        .set("Authorization", "invalid_token");
+      expect(res).to.have.status(400);
     });
   });
 });

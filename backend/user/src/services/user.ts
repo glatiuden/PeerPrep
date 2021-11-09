@@ -59,7 +59,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
 
     async update(payload: Partial<IUser>): Promise<IUser | null> {
       await userDbModel.findOneAndUpdate({ _id: payload._id }, payload);
-      const updated = await userDbModel.findById({ _id: payload._id });
+      const updated = await userDbModel.findById({ _id: payload._id }).lean();
       if (updated) {
         return updated;
       }
@@ -72,7 +72,7 @@ export default function makeUserService({ userDbModel }: { userDbModel: mongoose
     }
 
     async delete({ id }: { id: string }): Promise<IUser | null> {
-      const existing = await userDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() });
+      const existing = await userDbModel.findOneAndUpdate({ _id: id }, { deleted_at: new Date() }).lean();
       if (existing) {
         return existing;
       }

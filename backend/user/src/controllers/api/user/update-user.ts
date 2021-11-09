@@ -39,7 +39,7 @@ async function updateUserController(
       headers,
       statusCode: 200,
       body: {
-        data: omit(updated_user, "password_hash"),
+        data: omit(updated_user, ["password_hash"]),
       },
     };
   } catch (err: any) {

@@ -21,7 +21,6 @@ async function logoutUserController(httpRequest: { context: { validated: { email
       },
     };
   } catch (err: any) {
-    // TODO: add in error handling here
     throw {
       headers,
       statusCode: 404,

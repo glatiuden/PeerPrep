@@ -3,10 +3,6 @@ import jwt from "jsonwebtoken";
 import { accessTokenService } from "../services";
 
 export default async function (req: Request, res: Response, next: NextFunction) {
-  if (process.env.NODE_ENV === "test") {
-    next();
-  }
-
   const token = req.header("Authorization");
   if (!token) {
     return res.status(401).send("Access Denied");

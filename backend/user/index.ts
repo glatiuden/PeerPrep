@@ -15,6 +15,7 @@ const app = express();
 
 app.use(cors(), accessControlMiddleware);
 app.use(bodyParser.json());
+
 if (process.env.NODE_ENV !== "test") {
   app.use(makeLogger());
   makeRabbitMQ();
