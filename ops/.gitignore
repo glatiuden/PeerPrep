@@ -1,3 +1,2 @@
 cd/manifest/*/.env
 terraform-aws
-terraform-gke
