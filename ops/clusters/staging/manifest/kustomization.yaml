@@ -14,10 +14,10 @@ images:
     newTag: master-c56d762-1636482645 # {"$imagepolicy": "flux-system:match:tag"}
   - name: question
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms # {"$imagepolicy": "flux-system:question:name"}
-    newTag: master-c56d762-1636482642 # {"$imagepolicy": "flux-system:question:tag"}
+    newTag: master-84df5c0-1636521140 # {"$imagepolicy": "flux-system:question:tag"}
   - name: user
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms # {"$imagepolicy": "flux-system:user:name"}
-    newTag: master-fe7749f-1636464016 # {"$imagepolicy": "flux-system:user:tag"}
+    newTag: master-84df5c0-1636521162 # {"$imagepolicy": "flux-system:user:tag"}
   - name: video-chat
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/video-chat-ms # {"$imagepolicy": "flux-system:video-chat:name"}
     newTag: master-e3fbd0d-1636387773 # {"$imagepolicy": "flux-system:video-chat:tag"}
