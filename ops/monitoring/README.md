@@ -2,7 +2,7 @@
 Monitoring is done through `kube-prometheus-stack` (formerly known as `prometheus-operator` chart), which comes with Prometheus and Grafana.
 
 ## Installation
-You need to have `helm` installed before running any of the commands below.
+You need to have `helm` installed before running any of the commands below. If you have not installed, please refer to `./ops/README.md` for the installation instructions.
 
 To install monitoring on the cluster, run the following command:
 ```bash
@@ -57,15 +57,17 @@ Loki is used as a centralized log collector across the different pods deployed i
 ### To view Loki Logs in Grafana
 If you haven't enabled Grafana Dashboard, please use any one of the method in Accessing the Dashboards above.
 
-Please go to Configuration (Cog Button on the Side Navbar) -> Data Source
-Click on New Data Source and Select Loki
-The URL to input is `http://loki:3100`
-Press `Save & test` and a success notification popup `Data source connected and labels found.` should be shown.
-Click on the `Explore` button and you will be redirected to the `Explore` page, where you can query the logs.
-You may use a custom query using [LogQL](https://grafana.com/docs/loki/latest/logql/). Otherwise, you may click the `Log Browser`, where there are presets to choose from to build our query.
+1. Please go to Configuration (Cog Button on the Side Navbar) -> Data Source
+1. Click on New Data Source and Select Loki
+1. The URL to input is `http://loki:3100`
+1. Press `Save & test` and a success notification popup `Data source connected and labels found.` should be shown.
+1. Click on the `Explore` button and you will be redirected to the `Explore` page, where you can query the logs.
+1. You may use a custom query using [LogQL](https://grafana.com/docs/loki/latest/logql/). Otherwise, you may click the `Log Browser`, where there are presets to choose from to build our query.
 
 For example, if you wish to view all the logs of `peerprep` namespace, `chat` container, you may click on the labels and press `Show logs`. 
 All the logs should be displayed.
+
+![Image](images/SS.png)
 
 ## Cleanup
 To uninstall `kube-prometheus-stack`
