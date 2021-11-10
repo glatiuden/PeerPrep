@@ -8,7 +8,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "alb"
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/certificate-arn: 	arn:aws:acm:ap-southeast-1:694217600744:certificate/9f1aaeef-554a-494b-9e78-7168d8654a3a
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:694217600744:certificate/9f1aaeef-554a-494b-9e78-7168d8654a3a # Change to your certificate ARN
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: '443'
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=60

@@ -1,6 +1,6 @@
 # AWS Load Balancer Controller (ALB)
 
-The setup instructions follows closely from the [AWS official user guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
+The setup instructions follow closely from the [AWS official user guide](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html). If there are any unclarity, please do follow the official user guide. This set of instructions is typed out to the developer's fullest knowledge.
 
 ## OIDC
 If you have not set up an OIDC, you may run the following command or create on the AWS console.
@@ -38,8 +38,12 @@ Once it's done, please run
 kubectl apply -f alb-ingress-controller.yaml
 ```
 
-To get the external IP of the ingress, you can run `kubectl get ingress -n peerprep`. After awhile, the external address should be available.
+## SSL Certificate
+An SSL certificate is required before proceeding. If you have not created one yet, please follow the instruction in `./ops/README.md`.
+Copy the certificate ARN to replace the one in `ingress.yaml`.
 
-To create the ingress, please run `kubectl apply -f ingress.yaml`. 
+Once it's done, please run `kubectl apply -f ingress.yaml` to create the ingress. 
+
+To get the external IP of the ingress, you can run `kubectl get ingress -n peerprep`. After awhile, the external address should be available.
 
 You may test by going to `<URL ENDPOINT>/user`, it should display a message `User Microservice is running`

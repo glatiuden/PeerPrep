@@ -1,7 +1,7 @@
 # Autoscaler
 
 ## Cluster Autoscaler
-The cluster autoscaler follows closely from the [AWS official user guide](https://docs.aws.amazon.com/eks/latest/userguide/cluster-autoscaler.html)
+The cluster autoscaler follows closely from the [AWS official user guide](https://docs.aws.amazon.com/eks/latest/userguide/cluster-autoscaler.html). If there are any unclarity, please do follow the official user guide. This set of instructions is typed out to the developer's fullest knowledge.
 
 ## IAM Policy
 
