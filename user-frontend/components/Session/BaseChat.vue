@@ -107,7 +107,7 @@ export default {
     });
 
     this.socket.on("end_session", (match_id) => {
-      this.$router.push("/thank-you");
+      this.$emit("end-match");
     });
   },
   methods: {

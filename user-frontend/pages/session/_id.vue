@@ -25,7 +25,11 @@
       </v-col>
       <v-col md="12" lg="3">
         <div class="sticky-column mx-5 mr-lg-5">
-          <BaseChat :match-id="match_id" :is-history-mode="is_history_mode" />
+          <BaseChat
+            :match-id="match_id"
+            :is-history-mode="is_history_mode"
+            @end-match="endMatch"
+          />
         </div>
       </v-col>
     </v-row>
