@@ -3,7 +3,7 @@ import { Schema } from "mongoose";
 
 export default class Chat implements IChat {
   public readonly _id: string;
-  public readonly match_id: Schema.Types.ObjectId;
+  public readonly match_id: string;
   public readonly content: {
     user_id: Schema.Types.ObjectId;
     display_name: string;

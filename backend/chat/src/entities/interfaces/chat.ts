@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 
 export default interface IChat {
   _id: string;
-  match_id: Schema.Types.ObjectId;
+  match_id: string;
   content: {
     user_id: Schema.Types.ObjectId;
     display_name: string;

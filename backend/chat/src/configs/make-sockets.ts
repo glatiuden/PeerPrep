@@ -3,6 +3,7 @@ import { createAdapter } from "@socket.io/redis-adapter";
 import { logger } from "./logs";
 import { ChatDb } from "../data-access";
 import { redisClient } from "./make-redis";
+import { createOrUpdateChat } from "../use-cases/chat";
 
 export default function makeSockets(server) {
   const io = new Server(server, {
@@ -55,7 +56,7 @@ export default function makeSockets(server) {
 
     socket.on("end_session", async (payload) => {
       const { match_id, content } = payload;
-      await ChatDb.insert({
+      await createOrUpdateChat({
         match_id,
         content,
       });

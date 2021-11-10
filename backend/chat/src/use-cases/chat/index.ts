@@ -7,6 +7,7 @@ import makeGetChats from "./get-chats";
 import makeUpdateChat from "./update-chat";
 import makeDeleteChatById from "./delete-chat-by-id";
 import makeHardDeleteChatById from "./hard-delete-chat-by-id";
+import makeCreateOrUpdateChat from "./create-or-update-chat";
 
 /**
  * @description Use case to create a new chat
@@ -50,6 +51,12 @@ const deleteChatById = makeDeleteChatById({ chatDb: ChatDb });
  */
 const hardDeleteChatById = makeHardDeleteChatById({ chatDb: ChatDb });
 
+/**
+ * @description Unit of work to create or update chat
+ * @function createOrUpdateChat
+ */
+const createOrUpdateChat = makeCreateOrUpdateChat({ createChat, updateChat, getChatByMatchId });
+
 const chatServices = Object.freeze({
   createChat,
   getChatById,
@@ -58,7 +65,17 @@ const chatServices = Object.freeze({
   updateChat,
   deleteChatById,
   hardDeleteChatById,
+  createOrUpdateChat,
 });
 
 export default chatServices;
-export { createChat, getChatById, getChatByMatchId, getChats, updateChat, deleteChatById, hardDeleteChatById };
+export {
+  createChat,
+  getChatById,
+  getChatByMatchId,
+  getChats,
+  updateChat,
+  deleteChatById,
+  hardDeleteChatById,
+  createOrUpdateChat,
+};

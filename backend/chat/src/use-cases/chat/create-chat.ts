@@ -3,7 +3,7 @@ import IChat from "../../entities/interfaces/chat";
 import IChatDb from "../../data-access/interfaces/chat-db";
 
 interface ICreateChatData {
-  chatDetails: Omit<IChat, "_id">;
+  chatDetails: Partial<IChat>;
 }
 
 export type ICreateChat = ({ chatDetails }: ICreateChatData) => Promise<Chat | null>;
