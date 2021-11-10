@@ -27,7 +27,7 @@
       <div class="ml-8">{{ question.description }}</div>
 
       <!-- Examples -->
-      <v-card-actions v-if="question_examples.length > 0">
+      <v-card-actions v-if="question_examples.length > 0" class="pb-0">
         <v-btn text color="white" @click="show_examples = !show_examples"
           >{{ show_examples ? "Hide" : "Show" }} Examples</v-btn
         >
@@ -110,10 +110,11 @@
   </v-card>
 </template>
 <script>
+import _ from "lodash";
 import systemMixin from "@/mixins/system";
 
 export default {
-  name: "BaseQuestion",
+  name: "BaseQuestionDetails",
   mixins: [systemMixin],
   props: {
     question: {

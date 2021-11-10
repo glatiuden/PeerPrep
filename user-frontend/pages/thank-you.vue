@@ -47,9 +47,7 @@
       <v-row align="stretch">
         <v-col cols="12" md="6">
           <h2 class="text-center my-3">Sample Solution</h2>
-          <pre
-            class="pre fill-height my-2"
-          ><samp>{{ match_question.solution.trim() }}</samp></pre>
+          <pre class="pre my-2"><samp>{{ match_question.solution }}</samp></pre>
         </v-col>
         <v-col cols="12" md="6">
           <template v-if="is_question_mode">

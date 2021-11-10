@@ -10,6 +10,7 @@ import router from "./src/routes";
 import makeSockets from "./src/configs/make-sockets";
 import http from "http";
 import accessControlMiddleware from "./src/middlewares/access-controller-middleware";
+import tokenValidatorMiddleware from "./src/middlewares/token-validator-middleware";
 import makeRedis from "./src/configs/make-redis";
 
 const app = express();
@@ -26,7 +27,7 @@ if (process.env.NODE_ENV !== "test") {
   makeSockets(server);
   app.use(makeLogger());
 }
-app.use("/chat/api", router);
+app.use("/chat/api", tokenValidatorMiddleware, router);
 app.get(["/", "/chat"], function (req, res) {
   res.send("Chat microservice is running");
 });

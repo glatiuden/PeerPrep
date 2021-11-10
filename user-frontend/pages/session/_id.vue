@@ -85,13 +85,14 @@ export default {
       // Retrieve Match ID either from localStorage or URL params
       this.match_id = localStorage.getItem("match_id") || this.$route.params.id;
       // If match is not in store, retrieve from server
-      if (!this.match) {
+      this.is_history_mode = Boolean(this.$route.query.history);
+
+      if (!this.match || this.is_history_mode) {
         await this.GET_MATCH({ match_id: this.match_id });
       }
       // Set it to data to be passed to question component
       this.match_question = _.get(this.match, "question");
 
-      this.is_history_mode = Boolean(this.$route.query.history);
       this.checkIsValidMatch();
     } catch (err) {
       console.error(err);
@@ -100,6 +101,7 @@ export default {
       this.SET_LOADING({ data: false });
     }
   },
+
   methods: {
     /**
      * @description Redirect user to home page
@@ -116,6 +118,7 @@ export default {
       const is_match_ended = _.get(this.match, "status") === "completed";
       if (is_match_ended) {
         this.$router.push(`/session/${this.match._id}?history=true`);
+        await this.GET_MATCH({ match_id: this.match_id });
         return;
       }
 

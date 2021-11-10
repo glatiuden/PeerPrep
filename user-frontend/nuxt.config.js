@@ -92,14 +92,7 @@ export default {
       },
     },
   },
-  // configureWebpack: {
-  //   plugins: [
-  //     new MonacoWebpackPlugin({
-  //       // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-  //       languages: ["javascript", "css", "html", "typescript", "json"],
-  //     }),
-  //   ],
-  // },
+
   /**
    * For axios configuration
    */

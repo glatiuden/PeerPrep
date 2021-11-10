@@ -16,5 +16,7 @@ module.exports = {
     "<rootDir>/components/**/*.vue",
     "<rootDir>/pages/**/*.vue",
   ],
+  setupFiles: ["./tests/setup.js"], // <- add this
   forceExit: !!process.env.CI, // almost every CI platform sets this by default
+  testEnvironment: "jsdom",
 };

@@ -1,11 +1,11 @@
 # PeerPrep User Frontend
-We are using [Nuxt.js](https://nuxtjs.org/) for our frontend, which is a framework of [Vue](https://vuejs.org/).
-
-Hence, whatever can be done in Vue can be done in Nuxt. If you need to Google, e.g. error, how to do..., you can search it as Vue as well.
-Likewise, for the tutorials, Vue tutorials are also applicable to Nuxt framework as well.
+[Nuxt.js](https://nuxtjs.org/) is used to develop this frontend, which is a framework of [Vue](https://vuejs.org/).
 
 ## Build Setup
 For a detailed explanation of how things work, check out the [documentation](https://nuxtjs.org).
+
+A `.env` file is recommended to switch the `baseURL` and `SERVER_URL` in runtime easily. A sample `.env.sample` is included in the folder. Please copy and change it to `.env`. Then, you may change the `SERVER_URL` to one of your choices.
+
 ```bash
 # install dependencies
 $ yarn install
@@ -13,6 +13,14 @@ $ yarn install
 # serve with hot reload at localhost:8082
 $ yarn dev
 ```
+
+## Generate Static Sites for Deployment
+Please run 
+```bash
+yarn generate
+```
+It will generate the static pages & compress them afterwards.
+The output will be in the `.dist` folder, which can be used to upload to an S3 bucket or a web provider of your choice.
 
 ## Main structure of PeerPrep User Frontend
 
@@ -53,19 +61,16 @@ This directory contains your Vuex store files. Creating a file in this directory
 
 So what is `Vuex`? It is similar to the Flux architecture structured as went through in the lecture. It is a variation of MV* pattern which is modelled as a "single" flow.
 
-#### Setup store
-- Ideally, copy the `editor` folder.
-- Within each subfolder (e.g. `editor`), there are 5 files
+#### Store Folder Structure
+- Within each subfolder (e.g. `match`), there are 5 files
   1. `action-type.ts` -> An enum that describes what the action method should do.
-  2. `actions.ts` -> Actions which will interact with your backend services. Please reference the examples and [this link](https://axios.nuxtjs.org/usage) and see how it works as I'll not go into the specific details of what parameters or what each Axios method can do.
+  2. `actions.ts` -> Actions which will interact with your backend services. Please reference the examples and [this link](https://axios.nuxtjs.org/usage) and see how it works.
   - `CREATE` is `$post`, `DELETE` is `$delete`, `UPDATE` is `$put` and GET is `$get`.
   - Side Note: **ONLY** includes actions which a normal user can do. So, methods such as `hard/soft-delete`, `update` (depending on which service) should not be defined on the user frontend. Those methods should be exclusive to the admin frontend.
   3. `getters.ts` -> Allows your variables to read the value from the store. 
   4. `index.ts` -> Define the variables for your store.
   5. `mutation-types.ts` -> An enum that describes what kind of data mutation can a user perform.
   6. `mutations.ts` -> Contains mutation methods that will set/change the values of your variables defined in your `index.ts`.
-
-This is a brief overview. By copying the `editor` folder and changing it to your respective service should suffice.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
 

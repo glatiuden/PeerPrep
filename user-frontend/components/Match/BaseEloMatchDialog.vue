@@ -99,7 +99,6 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <!-- <small> 1 pair are solving the problem, 2 in queue... </small> -->
         <v-spacer></v-spacer>
         <v-btn color="error" text :loading="loading" @click="closeDialog">
           Close

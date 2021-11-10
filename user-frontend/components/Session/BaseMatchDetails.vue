@@ -23,7 +23,7 @@
         <v-icon color="white" class="mr-1">mdi-timer</v-icon> Time Taken:
         <b>{{ time_taken }} min</b>
       </span>
-      <span v-else>
+      <span v-else-if="match.status === 'in-progress'">
         <v-icon color="white" class="mr-1">mdi-timer</v-icon> This session is
         valid for 12 hours
       </span>
