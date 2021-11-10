@@ -78,7 +78,6 @@ export default {
     try {
       await this.GET_EDITOR({ match_id: this.matchId });
     } catch (err) {
-      console.error(err);
       this.UPDATE_CODES({ data: "" });
     }
 

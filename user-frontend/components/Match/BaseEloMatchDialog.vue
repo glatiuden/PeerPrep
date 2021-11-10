@@ -155,7 +155,6 @@ export default {
           programming_language: this.selected_programming_language,
           difficulty: this.selected_difficulty,
           user_elo: this.user.elo,
-          topic: this.selected_topic,
           mode: "elo",
         };
         this.SET_MATCH({ data: match });
