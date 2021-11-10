@@ -121,6 +121,14 @@ export default {
         : "http://localhost:3006",
   },
 
+  env: {
+    SERVER_URL:
+      process.env.NODE_ENV === "production" ||
+        process.env.NODE_ENV === "staging"
+        ? process.env.SERVER_URL
+        : "http://localhost:3006",
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^vuetify/],

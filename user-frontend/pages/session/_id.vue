@@ -96,6 +96,7 @@ export default {
       if (!this.match) {
         await this.GET_MATCH({ match_id: this.match_id });
       }
+      this.match_question = _.get(this.match, "question");
       this.checkIsValidMatch();
     } catch (err) {
       console.error(err);

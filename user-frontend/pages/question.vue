@@ -19,7 +19,7 @@
         </v-row>
       </div>
     </div>
-    <div class="app-max-width mx-auto pt-6 px-8 px-lg-2">
+    <div class="app-max-width mx-auto pt-6 px-8 px-lg-6 px-xl-0">
       <v-card class="my-9 my-sm-4 rounded-lg" outlined>
         <v-card-title class="justify-center text-body-1">
           <h2>Questions</h2>
