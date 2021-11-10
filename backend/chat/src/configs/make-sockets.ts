@@ -56,7 +56,7 @@ export default function makeSockets(server) {
 
     socket.on("end_session", async (payload) => {
       const { match_id, content } = payload;
-      await createOrUpdateChat({
+      await ChatDb.insert({
         match_id,
         content,
       });
