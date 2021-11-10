@@ -1,0 +1,77 @@
+name: Production Frontend CI/CD
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-deploy-user:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+        - uses: actions/checkout@v2
+        - name: Install dependencies
+          working-directory: ./user-frontend
+          run: yarn
+          
+        - name: Create env file
+          working-directory: ./user-frontend
+          run: |
+            cat << EOF > .env
+            NODE_ENV=production
+            SERVER_URL=${{secrets.SERVER_URL}}
+            EOF
+        - name: Build
+          working-directory: ./user-frontend
+          run: yarn generate
+          
+        - name: Deploy
+          uses: reggionick/s3-deploy@v3
+          with:
+            folder: ./user-frontend/dist
+            bucket: ${{ secrets.S3_USER_BUCKET }}
+            bucket-region: ${{ secrets.AWS_DEFAULT_REGION }}
+            dist-id: ${{ secrets.USER_CLOUDFRONT_DISTRIBUTION_ID }}
+            invalidation: /*
+            delete-removed: true
+            no-cache: true
+            private: true
+    
+  build-and-deploy-admin:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+        - uses: actions/checkout@v2
+
+        - name: Install dependencies
+          working-directory: ./admin-frontend
+          run: yarn
+
+        - name: Create env file
+          working-directory: ./admin-frontend
+          run: |
+            cat << EOF > .env
+            NODE_ENV=production
+            SERVER_URL=${{secrets.SERVER_URL}}
+            EOF
+
+        - name: Build
+          working-directory: ./admin-frontend
+          run: yarn generate
+          
+        - name: Deploy
+          uses: reggionick/s3-deploy@v3
+          with:
+            folder: ./admin-frontend/dist
+            bucket: ${{ secrets.S3_ADMIN_BUCKET }}
+            bucket-region: ${{ secrets.AWS_DEFAULT_REGION }}
+            dist-id: ${{ secrets.ADMIN_CLOUDFRONT_DISTRIBUTION_ID }}
+            invalidation: /*
+            delete-removed: true
+            no-cache: true
+            private: true
