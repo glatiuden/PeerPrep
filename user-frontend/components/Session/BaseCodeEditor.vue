@@ -53,18 +53,6 @@ export default {
         : "ws://localhost:3004",
     };
   },
-  async fetch() {
-    if (!this.isHistoryMode) {
-      return;
-    }
-
-    try {
-      await this.GET_EDITOR({ match_id: this.matchId });
-    } catch (err) {
-      console.error(err);
-      // this.$notification.error(`Encountered error fetching editor: ${err}`);
-    }
-  },
   async mounted() {
     this.selected_language = _.get(
       this.match,
@@ -86,6 +74,14 @@ export default {
 
     const editor_ref = this.$refs.editor;
     const monaco = await loader.init();
+
+    try {
+      await this.GET_EDITOR({ match_id: this.matchId });
+    } catch (err) {
+      console.error(err);
+      this.UPDATE_CODES({ data: "" });
+    }
+
     const editor = monaco.editor.create(editor_ref, {
       value: this.codes,
       language: editor_language,
@@ -112,6 +108,7 @@ export default {
       this.provider.connect();
     } catch (err) {
       console.error(err);
+      this.$notification.error(`Encountered error loading editor: ${err}`);
     }
   },
   destroyed() {

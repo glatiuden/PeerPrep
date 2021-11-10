@@ -51,6 +51,7 @@ export default {
       UPDATE_CHAT_MESSAGES: "match/UPDATE_CHAT_MESSAGES",
       SET_CHAT_MESSAGES: "match/SET_CHAT_MESSAGES",
       SET_IS_VIDEO_ON: "match/SET_IS_VIDEO_ON",
+      UPDATE_CODES: "match/UPDATE_CODES",
     }),
   },
 };

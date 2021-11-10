@@ -84,19 +84,19 @@ export default {
       this.SET_LOADING({ data: true });
       // Retrieve Match ID either from localStorage or URL params
       this.match_id = localStorage.getItem("match_id") || this.$route.params.id;
-      // If match is not in store, retrieve from server
       this.is_history_mode = Boolean(this.$route.query.history);
+      if (this.is_history_mode) {
+        await this.GET_MATCH({ match_id: this.match_id });
+        // Set it to data to be passed to question component
+        this.match_question = _.get(this.match, "question");
+        return;
+      }
 
-      if (!this.match || this.is_history_mode) {
+      // If match is not in store, retrieve from server
+      if (!this.match) {
         await this.GET_MATCH({ match_id: this.match_id });
       }
-
-      // Set it to data to be passed to question component
-      this.match_question = _.get(this.match, "question");
-
-      if (!this.is_history_mode) {
-        this.checkIsValidMatch();
-      }
+      this.checkIsValidMatch();
     } catch (err) {
       console.error(err);
       this.$notification.error(`Encountered error fetching match: ${err}`);
