@@ -5,7 +5,7 @@ bases:
 images:
   - name: chat
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/chat-ms # {"$imagepolicy": "flux-system:chat:name"}
-    newTag: 1.0.3 # {"$imagepolicy": "flux-system:chat:tag"}
+    newTag: 1.0.4 # {"$imagepolicy": "flux-system:chat:tag"}
   - name: editor
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/editor-ms # {"$imagepolicy": "flux-system:editor:name"}
     newTag: 1.0.3 # {"$imagepolicy": "flux-system:editor:tag"}
@@ -14,7 +14,7 @@ images:
     newTag: 1.0.4 # {"$imagepolicy": "flux-system:match:tag"}
   - name: question
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/question-ms # {"$imagepolicy": "flux-system:question:name"}
-    newTag: 1.0.3 # {"$imagepolicy": "flux-system:question:tag"}
+    newTag: 1.0.4 # {"$imagepolicy": "flux-system:question:tag"}
   - name: user
     newName: 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/user-ms # {"$imagepolicy": "flux-system:user:name"}
     newTag: 1.0.4 # {"$imagepolicy": "flux-system:user:tag"}
