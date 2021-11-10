@@ -91,12 +91,12 @@ export default {
         await this.GET_MATCH({ match_id: this.match_id });
       }
 
+      // Set it to data to be passed to question component
+      this.match_question = _.get(this.match, "question");
+
       if (!this.is_history_mode) {
         this.checkIsValidMatch();
       }
-
-      // Set it to data to be passed to question component
-      this.match_question = _.get(this.match, "question");
     } catch (err) {
       console.error(err);
       this.$notification.error(`Encountered error fetching match: ${err}`);
