@@ -63,7 +63,7 @@ export default async function setupWSConnection(conn: WS, req: http.IncomingMess
     const content = doc.getText("monaco").toJSON() || "";
     if (content) {
       await createOrUpdateEditor({
-        match_id: docname,
+        match_id: docname.replace("editor/", ""),
         content: content,
       });
     }

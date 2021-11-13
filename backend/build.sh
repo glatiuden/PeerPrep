@@ -7,8 +7,8 @@ do
   name="${dir%/}"    
   if [[ $name != "local-build" ]]
   then
-    docker buildx build --platform=linux/amd64 -t 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/$name-ms:latest .
-    docker push 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/$name-ms:latest
+    docker buildx build --platform=linux/amd64 -t 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/$name-ms:1.0.6 .
+    docker push 694217600744.dkr.ecr.ap-southeast-1.amazonaws.com/$name-ms:1.0.6
     echo "Deployed $name-MS"
   fi
   cd ../

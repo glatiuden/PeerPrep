@@ -11,8 +11,8 @@ replicas:
 - name: match
   count: 2
 - name: question
-  count: 1
-- name: user
-  count: 1
-- name: video-chat
   count: 2
+- name: user
+  count: 2
+- name: video-chat
+  count: 1

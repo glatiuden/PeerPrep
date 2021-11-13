@@ -130,25 +130,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.item-info {
-  position: relative;
-}
-.item-info__activator {
-  position: absolute;
-  bottom: -5px;
-  left: 25px;
-}
-.title-info {
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: #121f2a;
-}
-.menu-item:hover {
-  background-color: #f2f6fa;
-}
-
-.indent-item {
-  padding-left: 56px;
-}
-</style>

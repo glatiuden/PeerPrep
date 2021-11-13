@@ -274,7 +274,9 @@ export default {
   async fetch() {
     try {
       await Promise.all([
-        this.GET_QUESTIONS_PAGINATED(),
+        this.GET_QUESTIONS_PAGINATED({
+          difficulty_levels: this.selected_difficulty_levels,
+        }),
         this.GET_FEATURED_QUESTION_TOPICS(),
       ]);
     } catch (err) {

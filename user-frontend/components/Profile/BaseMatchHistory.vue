@@ -168,6 +168,7 @@
             hover
             readonly
             small
+            dense
           ></v-rating>
         </div>
       </template>

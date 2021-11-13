@@ -16,7 +16,6 @@ export default async function (req: Request, res: Response, next: NextFunction) 
     const secret = process.env.JWT_ADMIN_SECRET || "ADMIN_AUTH_SECRET";
     const verified = jwt.verify(token, secret);
     if (verified) {
-      console.log(verified);
       next();
     }
   } catch (err) {

@@ -3,7 +3,7 @@
     <div
       id="monaco-editor"
       ref="editor"
-      :class="`monaco-height ${isHistoryMode ? '-tall' : ''}`"
+      :class="`monaco-height${isHistoryMode ? '-tall' : ''}`"
     />
     <div v-if="!isHistoryMode" class="my-3">
       <pre
@@ -14,7 +14,7 @@
         :loading="execute_code_loading" @click:append-outer="executeCode" @keyup.enter="executeCode"></v-textarea></pre>
       <pre
         v-if="code_output"
-        class="pre mt-6 py-6"
+        class="pre my-3 py-6"
       ><samp>{{ code_output }}</samp></pre>
     </div>
   </div>
@@ -66,7 +66,7 @@ export default {
         editor_language = "cpp";
         break;
       case "c#":
-        editor_language = "cs";
+        editor_language = "csharp";
         break;
       default:
         break;

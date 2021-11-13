@@ -156,6 +156,7 @@ export default {
           difficulty: this.selected_difficulty,
           user_elo: this.user.elo,
           mode: "elo",
+          topic: this.selected_topic,
         };
         this.SET_MATCH({ data: match });
         this.closeDialog();

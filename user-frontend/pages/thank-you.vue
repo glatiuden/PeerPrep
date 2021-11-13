@@ -50,7 +50,7 @@
           <pre class="pre my-2"><samp>{{ match_question.solution }}</samp></pre>
         </v-col>
         <v-col cols="12" md="6">
-          <template v-if="is_question_mode">
+          <template v-if="is_question_mode" class="mb-3">
             <h2 class="text-center my-3">Featured Topics</h2>
             <v-row align-content="center" justify="center">
               <v-col
@@ -69,15 +69,7 @@
           <template v-else>
             <h2 class="text-center my-3">Rate your Partner! 😄</h2>
             <v-card
-              class="
-                d-flex
-                flex-column
-                pa-3
-                soft-box-shadow
-                rounded-lg
-                fill-height
-                mb-3
-              "
+              class="d-flex flex-column pa-3 soft-box-shadow rounded-lg mb-3"
             >
               <template v-if="!hide_ratings">
                 <v-card-subtitle class="text-center my-2">

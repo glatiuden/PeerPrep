@@ -199,14 +199,10 @@ export default {
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error registering: ${err}`);
+      } finally {
+        this.SET_LOADING({ data: false });
       }
     },
   },
 };
 </script>
-<style scoped>
-.background-url {
-  background: url("../assets/background.png");
-  background-size: cover no-repeat center center fixed !important;
-}
-</style>

@@ -146,7 +146,9 @@ export default {
         this.SET_LOADING({ data: true });
         await this.END_MATCH({ match_id: this.match_id });
         this.match_ended = true;
-        this.$router.push("/thank-you");
+        // this.$router.push("/thank-you");
+        this.SET_CHAT_MESSAGES({ data: [] });
+        window.location.replace("/thank-you");
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error ending match: ${err}`);

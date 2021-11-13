@@ -26,7 +26,7 @@ kubectl patch svc prometheus-grafana -p '{"spec": {"type": "LoadBalancer"}}' -n 
 kubectl get svc prometheus-grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' -n monitoring
 
 # STEP 5: Getting the admin username and password 
-kubectl get secret loki-grafana -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}' -n monitoring
+kubectl get secret prometheus-grafana -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}' -n monitoring
 ```
 - Prometheus Dashboard will be available at the URL retrieved from step 2 e.g. `xxx.ap-southeast-1.elb.amazonaws.com`
 - Grafana Dashboard will be available at the URL retrieved from step 4 e.g. `xxx.ap-southeast-1.elb.amazonaws.com`
@@ -49,7 +49,7 @@ kubectl -n monitoring port-forward service/prometheus-grafana 3000:80
 
 ## Logging
 ```bash
-helm upgrade --install loki grafana/loki-stack --set grafana.enabled=false,prometheus.enabled=false
+helm upgrade --install loki grafana/loki-stack --set grafana.enabled=false,prometheus.enabled=false -n monitoring
 ```
 
 Loki is used as a centralized log collector across the different pods deployed in the cluster.

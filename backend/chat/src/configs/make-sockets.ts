@@ -44,7 +44,6 @@ export default function makeSockets(server) {
       logger.verbose("Message sent", { match_id });
       const data_exist_in_cache = await redisClient.getAsync(match_id);
       if (data_exist_in_cache) {
-        console.log(data_exist_in_cache);
         const data = JSON.parse(data_exist_in_cache) as any[];
         data.push(payload);
         await redisClient.setAsync(match_id, JSON.stringify(data), "EX", 180);
@@ -56,7 +55,7 @@ export default function makeSockets(server) {
 
     socket.on("end_session", async (payload) => {
       const { match_id, content } = payload;
-      await ChatDb.insert({
+      await createOrUpdateChat({
         match_id,
         content,
       });

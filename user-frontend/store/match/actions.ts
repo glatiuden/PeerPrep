@@ -57,6 +57,7 @@ const actions: ActionTree<MatchState, RootState> = {
         { root: true },
       );
     }
+    commit(MutationTypes.SET_CHAT_MESSAGES, { data: [] });
     return is_completed;
   },
   /**

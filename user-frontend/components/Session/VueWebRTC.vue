@@ -16,9 +16,15 @@
         :height="cameraHeight"
         :muted="item.muted"
       ></video>
-      <span v-else-if="videoList && videoList.length === 1"
-        >Please wait for your partner to join...</span
+      <v-container
+        v-else-if="videoList && videoList.length === 1"
+        fill-height
+        style="height: 160px"
       >
+        <v-row align="center" justify="center" height="160">
+          <p class="my-auto">Awaiting for your partner to join...</p>
+        </v-row>
+      </v-container>
     </div>
   </div>
 </template>
@@ -248,20 +254,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.video-list {
-  background: whitesmoke;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.video-list div {
-  padding: 0px;
-}
-.video-item {
-  background: #c5c4c4;
-  display: inline-block;
-}
-</style>

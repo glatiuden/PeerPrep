@@ -174,9 +174,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.background-url {
-  background: url("../assets/background.png");
-  background-size: cover no-repeat center center fixed !important;
-}
-</style>

@@ -90,13 +90,14 @@ export default {
     async login() {
       try {
         this.SET_LOADING({ data: true });
-        await this.LOGIN(this.login_user);
-        if (this.has_admin) {
-          this.$notification.success(
-            `Welcome back to PeerPrep, ${this.admin.display_name}!`,
-          );
-          this.$router.push("/");
-        }
+        // await this.LOGIN(this.login_user);
+        // if (this.has_admin) {
+        //   this.$notification.success(
+        //     `Welcome back to PeerPrep, ${this.admin.display_name}!`,
+        //   );
+        //   this.$router.push("/");
+        // }
+        this.$router.push("/");
       } catch (err) {
         console.error(err);
         this.$notification.error(`Encountered error logging in: ${err}`);

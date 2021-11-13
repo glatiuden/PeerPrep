@@ -6,7 +6,11 @@
       @on-video-chat="onVideoChat"
     />
     <v-divider></v-divider>
-    <v-sheet class="fill-height chat-overflow" :height="chat_div_height()">
+    <v-sheet
+      ref="chat_panel"
+      class="fill-height chat-overflow"
+      :height="chat_div_height()"
+    >
       <section ref="chatArea" class="chat-area">
         <p
           v-for="(message, index) in chat_messages"
@@ -75,11 +79,13 @@ export default {
     if (!this.isHistoryMode) {
       return;
     }
-    const match_id = this.$route.params.id;
-    await this.GET_CHAT({ match_id });
-  },
-  destroyed() {
-    this.SET_CHAT_MESSAGES({ data: [] });
+
+    try {
+      const match_id = this.$route.params.id;
+      await this.GET_CHAT({ match_id });
+    } catch (err) {
+      this.SET_CHAT_MESSAGES({ data: [] });
+    }
   },
   mounted() {
     if (this.isHistoryMode) {
@@ -100,15 +106,27 @@ export default {
 
     this.socket.on("preload", (data) => {
       this.SET_CHAT_MESSAGES({ data });
+      this.scrollToElement();
     });
 
     this.socket.on("message", (data) => {
       this.UPDATE_CHAT_MESSAGES({ data });
+      this.scrollToElement();
     });
 
     this.socket.on("end_session", (match_id) => {
-      this.$emit("end-match");
+      this.$notification.success(
+        `Your partner has ended the match! Your session is ending in 3 seconds...`,
+      );
+      setTimeout(() => {
+        this.$emit("end-match");
+      }, 3000);
     });
+  },
+  destroyed() {
+    if (this.isHistoryMode) {
+      this.SET_CHAT_MESSAGES({ data: [] });
+    }
   },
   methods: {
     /**
@@ -159,6 +177,14 @@ export default {
       this.socket.emit("message", {
         match_id: this.matchId,
         payload: message,
+      });
+    },
+
+    scrollToElement() {
+      const el = this.$refs.chat_panel;
+      this.$nextTick(() => {
+        // DOM updated
+        el.scrollTop = el.scrollHeight;
       });
     },
   },

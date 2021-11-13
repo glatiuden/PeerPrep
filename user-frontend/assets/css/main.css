@@ -152,11 +152,11 @@
 }
 
 .monaco-height-tall {
-  height: 700px;
+  height: calc(100vh - 190px);
 }
 
 .monaco-height {
-  height: 640px;
+  height: calc(100vh - 255px);
 }
 
 .yRemoteSelection {
@@ -208,4 +208,36 @@
 
 .search-field {
   width: 350px !important;
+}
+
+.video-list {
+  background: whitesmoke;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.video-list div {
+  padding: 0px;
+}
+
+.video-item {
+  display: inline-block;
+}
+
+.title-info {
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: #121f2a;
+}
+
+.menu-item:hover {
+  background-color: #f2f6fa;
+}
+
+.background-url {
+  background: url("@/assets/background.png");
+  background-size: cover no-repeat center center fixed !important;
 }

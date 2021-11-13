@@ -16,7 +16,7 @@ const eloMatchPoolSchema = new Schema(
     },
     programming_language: { type: String, trim: true, lowercase: true },
     difficulty: { type: String, enum: ["easy", "medium", "hard"], trim: true },
-    topic: { type: String, enum: ["Data Structures", "Algorithms", "Database"], trim: true }, // Optional
+    topic: { type: String, enum: ["Data Structures", "Algorithms", "Concurrency"], trim: true }, // Optional
     deleted_at: { type: Date },
     created_at: { type: Date, default: Date.now },
     updated_at: { type: Date, default: Date.now },
